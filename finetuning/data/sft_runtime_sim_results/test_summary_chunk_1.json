@@ -1,0 +1,7 @@
+{
+  "task_id": 1,
+  "samples_processed": 32,
+  "compile_rate": 0.3125,
+  "mean_energy_reduction_pct": -0.0317787780278287,
+  "median_energy_reduction_pct": -0.0317787780278287
+}

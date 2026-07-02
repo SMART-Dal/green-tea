@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+*.so
+
+# Environments
+venv/
+.venv/
+env/
+
+# Caches / build artifacts
+.cache/
+unsloth_compiled_cache/
+pie_energy_cache/
+
+# Trained model weights are released on Hugging Face, not tracked here
+*.safetensors
+*.bin
+*.pt
+*.ckpt
+checkpoints/
+
+# Raw dataset is released on Zenodo, not tracked here
+PIE_Dataset/
+analysis/completed_samples.jsonl
+finetuning/data/grpo_train.jsonl
+finetuning/data/sft_pairs_train.jsonl
+**/generations/
+**/grpo_generations/
+**/sft_generations/
+
+# Regenerable analysis outputs (produced by the scripts)
+analysis/plots/
+analysis/figures/
+analysis/publication_plots/
+analysis/attention_plots_compare_paper/
+*.npy
+
+# Logs / scratch
+logs/
+*.log
+*.out
+*.err
+*.tmp
+
+# Editor / OS
+.DS_Store
+*.code-workspace
+.idea/
+.vscode/
+
+# Node (slide-deck tooling, not part of the package)
+node_modules/

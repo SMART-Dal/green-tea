@@ -1,0 +1,113 @@
+# Energy-Efficient Code Generation with Trinity-RFT CHORD
+# Configuration for PIE dataset energy optimization using CHORD algorithm
+# Maintains Trinity-RFT's original CHORD loss function with energy-aware data
+
+project: "Energy-Efficient-Code-Generation"
+name: "pie_energy_chord"
+checkpoint_root_dir: ${oc.env:TRINITY_CHECKPOINT_ROOT_DIR,./checkpoints}
+
+algorithm:
+  algorithm_type: mix_chord              # Use Trinity-RFT CHORD exactly (no modifications to loss function)
+  repeat_times: 8
+  kl_loss_fn_args:
+    kl_coef: 0.0
+  sample_strategy_args:
+    expert_data_ratio: 0.20             # 20% expert (high energy efficiency samples)
+  policy_loss_fn_args:                  # Trinity-RFT CHORD loss (unchanged)
+    mu_warmup_steps: 200
+    mu_decay_steps: 400
+    mu_peak: 0.5
+    mu_valley: 0.02
+    enable_phi_function: true
+    clip_range: 0.2
+    use_token_level_loss_in_sft: true
+    use_dynamic_bsz: true
+    ppo_mini_batch_size: 320
+    ppo_micro_batch_size_per_gpu: 4
+    ngpus_trainer: 8
+    train_batch_size_expert: 64
+    train_batch_size_usual: 256
+
+model:
+  model_path: ${oc.env:TRINITY_MODEL_PATH,Qwen/Qwen2.5-1.5B-Instruct}
+  max_response_tokens: 10240            # Accommodate longer code responses
+  max_model_len: 11264
+
+cluster:
+  node_num: 1
+  gpu_per_node: 8
+
+buffer:
+  total_epochs: 4
+  batch_size: 32
+  train_batch_size: 320
+  explorer_input:
+    taskset:
+      name: pie_energy_data
+      storage_type: file
+      path: ${oc.env:TRINITY_TASKSET_PATH}
+      format:
+        prompt_key: 'problem'
+        response_key: 'answer'
+      rollout_args:
+        temperature: 1.0
+        logprobs: 0
+      workflow_args:
+        with_think: true
+    eval_tasksets: []
+    default_workflow_type: 'code_optimization_workflow'
+  trainer_input:
+    experience_buffer:
+      name: energy_buffer
+      storage_type: queue
+      path: 'sqlite:///pie_energy_chord.db'
+    auxiliary_buffers:
+      sft_dataset:
+        total_epochs: 25
+        name: PIE_SFT_data
+        storage_type: file
+        path: ${oc.env:TRINITY_SFT_DATASET_PATH}
+        split: 'train'
+        format:
+          prompt_type: messages
+          messages_key: 'messages'
+
+explorer:
+  eval_interval: 10
+  runner_per_model: 8
+  rollout_model:
+    engine_num: 8
+    tensor_parallel_size: 1
+    enable_prefix_caching: false
+    enforce_eager: true
+    dtype: bfloat16
+    seed: 42
+
+synchronizer:
+  sync_method: 'nccl'
+  sync_interval: 1
+  sync_timeout: 1200
+
+trainer:
+  save_interval: 50
+  trainer_config:
+    actor_rollout_ref:
+      model:
+        use_remove_padding: true
+      actor:
+        use_dynamic_bsz: true
+        ppo_max_token_len_per_gpu: 25600
+        ulysses_sequence_parallel_size: 2
+        optim:
+          lr: 1e-6
+      ref:
+        log_prob_use_dynamic_bsz: ${trainer.trainer_config.actor_rollout_ref.actor.use_dynamic_bsz}
+        log_prob_max_token_len_per_gpu: ${trainer.trainer_config.actor_rollout_ref.actor.ppo_max_token_len_per_gpu}
+        ulysses_sequence_parallel_size: ${trainer.trainer_config.actor_rollout_ref.actor.ulysses_sequence_parallel_size}
+
+monitor:
+  monitor_type: wandb
+  wandb:
+    project: "energy-efficient-code-generation"
+    entity: "energy-chord"
+    tags: ["energy", "chord", "pie-dataset", "code-optimization"]

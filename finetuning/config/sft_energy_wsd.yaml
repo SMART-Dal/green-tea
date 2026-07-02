@@ -1,0 +1,123 @@
+# LLaMA-Factory Configuration for SFT with Energy Prediction Head
+# Based on facebook/llm-compiler-13b-ftd base model
+
+### Model Settings
+model_name_or_path: facebook/llm-compiler-13b-ftd
+finetuning_type: lora
+
+### Training Stage
+stage: sft
+do_train: true
+do_eval: true
+do_predict: false
+
+### Dataset Configuration
+dataset: pie_energy_stage1,pie_energy_stage2,pie_energy_stage3,stack_cpp_replay
+dataset_dir: data
+template: energy_optimization_progressive
+cutoff_len: 2048
+overwrite_cache: false
+preprocessing_num_workers: 16
+
+### Progressive Curriculum
+# Epochs 1-3: Stage 1 (basic optimizations)
+# Epochs 4-6: Stage 2 (cache/memory)
+# Epochs 7-10: Stage 3 (SIMD/vectorization)
+curriculum_stages:
+  - name: stage1
+    epochs: [1, 2, 3]
+    dataset: pie_energy_stage1
+    difficulty: easy
+  - name: stage2
+    epochs: [4, 5, 6]
+    dataset: pie_energy_stage2
+    difficulty: medium
+  - name: stage3
+    epochs: [7, 8, 9, 10]
+    dataset: pie_energy_stage3
+    difficulty: hard
+
+### Data Mixture (85% optimization pairs + 15% replay buffer)
+mix_strategy: concat
+interleave_probs: [0.85, 0.15]
+
+### LoRA Configuration
+lora_rank: 64
+lora_alpha: 128
+lora_dropout: 0.05
+lora_target: all  # Apply to all linear layers
+
+### Auxiliary Energy Prediction Head
+use_auxiliary_loss: true
+energy_head_config:
+  hidden_size: 5120  # llm-compiler-13b hidden size
+  intermediate_size: 1280  # hidden_size // 4
+  output_size: 1  # Scalar energy prediction
+  dropout: 0.1
+  activation: gelu
+  loss_weight: 0.1  # L_EC weight
+
+### Learning Rate & Scheduler (WSD)
+learning_rate: 2.0e-5
+num_train_epochs: 10
+lr_scheduler_type: cosine_with_min_lr
+warmup_ratio: 0.03  # 3% warmup
+lr_scheduler_kwargs:
+  min_lr_ratio: 0.1  # End at 10% of peak LR
+
+### Training Efficiency
+per_device_train_batch_size: 2
+per_device_eval_batch_size: 4
+gradient_accumulation_steps: 16  # Effective batch = 2 × 16 = 32
+max_grad_norm: 1.0
+
+### Precision & Memory
+bf16: true
+fp16: false
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+
+### Optimizer
+optim: adamw_torch
+adam_beta1: 0.9
+adam_beta2: 0.95
+adam_epsilon: 1.0e-8
+weight_decay: 0.01
+
+### Data Loading
+dataloader_num_workers: 8
+dataloader_pin_memory: true
+packing: true  # Pack multiple samples per sequence
+
+### Logging & Checkpointing
+output_dir: ./checkpoints/sft_energy_wsd
+logging_dir: ./logs/sft_energy_wsd
+logging_steps: 10
+logging_first_step: true
+save_strategy: steps
+save_steps: 500
+save_total_limit: 5
+
+### Evaluation
+evaluation_strategy: steps
+eval_steps: 500
+eval_accumulation_steps: 4
+metric_for_best_model: eval_energy_mae
+greater_is_better: false
+load_best_model_at_end: true
+
+### Reproducibility
+seed: 42
+data_seed: 42
+
+### Distributed Training (DeepSpeed ZeRO-2)
+deepspeed: config/ds_zero2.json
+ddp_timeout: 3600
+ddp_find_unused_parameters: false
+
+### Custom Metrics
+custom_metrics:
+  - energy_mae  # Mean absolute error for energy prediction
+  - energy_r2   # R² score for energy prediction
+  - code_quality  # Pass@5 correctness

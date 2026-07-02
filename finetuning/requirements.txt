@@ -1,0 +1,22 @@
+# Energy-Efficient Code Generation - Requirements
+# unsloth/unsloth-zoo pinned to 2026.1.4: 2026.2.1 has GRPO vLLM shape mismatch regression
+# Install via: pip install --no-deps unsloth==2026.1.4 unsloth-zoo==2026.1.4 (GRPO scripts do this)
+
+datasets>=3.0.0
+accelerate>=1.0.0
+peft>=0.13.0
+trl>=0.12.0
+bitsandbytes>=0.44.0
+# vllm>=0.6.0  # Installing vllm pulls incompatible xformers. Install explicitly in GRPO script only.
+
+rich
+scipy
+numpy<2.0
+scikit-learn
+pandas
+tqdm
+tensorboard
+psutil
+python-dotenv
+wandb
+protobuf

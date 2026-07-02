@@ -1,0 +1,18 @@
+{
+  "task_id": 3,
+  "samples_processed": 65,
+  "compile_rate": 0.4,
+  "success_rate": 0.3384615384615385,
+  "correctness_rate": 0.23742969149480142,
+  "total_tests_passed": 1393,
+  "total_tests": 5867,
+  "mean_energy_reduction_pct": 17.025297262477917,
+  "median_energy_reduction_pct": -0.18292112032399088,
+  "mean_edp_reduction_pct": 17.67286332246563,
+  "median_edp_reduction_pct": -0.37090531047995107,
+  "num_improvements": 8,
+  "num_regressions": 0,
+  "mean_vs_gt_reduction_pct": -402.0502434193762,
+  "num_beats_gt": 4,
+  "num_vs_gt_compared": 22
+}
