@@ -2,7 +2,7 @@
 
 Replication package for the paper **"Beyond the Need for Speed: Energy-Aware Code Generation via Simulation-Guided Reinforcement Learning"** (Saurabhsingh Rajput and Tushar Sharma).
 
-![Green Tea: two-stage simulation-guided training pipeline for energy-aware code generation](overview.png)
+![Green Tea: two-stage simulation-guided training pipeline for energy-aware code generation](overview_white_bg.png)
 
 ## Abstract
 
