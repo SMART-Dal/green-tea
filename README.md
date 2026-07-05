@@ -21,7 +21,7 @@ We train code models to optimize a program's energy directly, using deterministi
 | Artifact | Location |
 |---|---|
 | Code, analysis scripts, pre-computed sim results, 143-problem benchmark | This repository |
-| Green Tea dataset (raw: 3,507,435 simulations, execution master, training pairs) | Zenodo: [10.5281/zenodo.21210100](https://doi.org/10.5281/zenodo.21210100) |
+| Green Tea dataset (raw: 3,507,435 simulations, execution master, training pairs) | Zenodo: [10.5281/zenodo.21210099](https://doi.org/10.5281/zenodo.21210099) |
 | Trained model checkpoints (Energy-SFT, GRPO, cross-family) | Hugging Face: [huggingface.co/saurabh-singh-rajput](https://huggingface.co/saurabh-singh-rajput/models) (see [Models](#models)) |
 
 The raw dataset and model weights are hosted externally because of their size; everything required to reproduce the paper's numbers and figures is included here.
