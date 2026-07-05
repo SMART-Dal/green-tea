@@ -2,6 +2,18 @@
 
 Replication package for the paper **"Beyond the Need for Speed: Energy-Aware Code Generation via Simulation-Guided Reinforcement Learning"** (Saurabhsingh Rajput and Tushar Sharma).
 
+![Green Tea: two-stage simulation-guided training pipeline for energy-aware code generation](overview.png)
+
+## Abstract
+
+Code models strictly prioritize functional correctness, leaving software energy efficiency as an unoptimized byproduct. Training models to generate energy-efficient code requires reproducible feedback at scale, which physical hardware measurement cannot reliably provide due to variance.
+
+In this paper, we replace hardware profiling with a deterministic architectural simulation harness to build **Green Tea**, a corpus of 3.5 million evaluations across 1,474 C++ problems. We train an energy-aware code model via supervised fine-tuning on energy-contrastive pairs, followed by closed-loop reinforcement learning (GRPO) using simulation-in-the-loop feedback. To rigorously evaluate deployment readiness, we introduce the **Correctness-Adjusted Reduction in Energy Total** (CARET), a metric that explicitly penalizes code that sacrifices functionality for efficiency.
+
+On 143 held-out problems, our simulation-in-the-loop pipeline achieves 12.63% CARET, nearly tripling the gain of fine-tuning alone, and beats the energy efficiency of human-expert references on 58.4% of its valid outputs. Our analysis also exposes the *IPC trap*: standard throughput proxies like Instructions-Per-Cycle (IPC) actively misrank true energy efficiency on 67.8% of problems, demonstrating the necessity of direct energy simulation. By releasing our dataset and infrastructure, we bypass the 263,000 CPU-hours required for reproduction, empowering the community to train energy-efficient code generation models.
+
+## Overview
+
 We train code models to optimize a program's energy directly, using deterministic architectural simulation (Sniper/McPAT) as a scalable, reproducible energy signal, in two stages: energy-contrastive supervised fine-tuning (Energy-SFT) followed by a simulation-in-the-loop reinforcement-learning stage (GRPO). This repository contains the training and evaluation code, the analysis scripts that regenerate every table and figure, the pre-computed simulation results needed for that analysis, and the held-out benchmark.
 
 ## Artifact locations
@@ -9,7 +21,7 @@ We train code models to optimize a program's energy directly, using deterministi
 | Artifact | Location |
 |---|---|
 | Code, analysis scripts, pre-computed sim results, 143-problem benchmark | This repository |
-| Green Tea dataset (raw: 3,507,435 simulations, execution master, training pairs) | Zenodo: `<ZENODO_DOI>` |
+| Green Tea dataset (raw: 3,507,435 simulations, execution master, training pairs) | Zenodo: [10.5281/zenodo.21210100](https://doi.org/10.5281/zenodo.21210100) |
 | Trained model checkpoints (Energy-SFT, GRPO, cross-family) | Hugging Face: `<HF_URL>` |
 
 The raw dataset and model weights are hosted externally because of their size; everything required to reproduce the paper's numbers and figures is included here.
