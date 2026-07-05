@@ -117,11 +117,11 @@ Scripts under `finetuning/slurm/`, `energy_data_collection/slurm_execution_maste
 ## Citation
 
 ```bibtex
-@article{rajput2026greentea,
-  title   = {Beyond the Need for Speed: Energy-Aware Code Generation via Simulation-Guided Reinforcement Learning},
-  author  = {Rajput, Saurabhsingh and Sharma, Tushar},
-  journal = {ACM Transactions on Software Engineering and Methodology},
-  year    = {2026}
+@misc{rajput2026greentea,
+  title  = {Beyond the Need for Speed: Energy-Aware Code Generation via Simulation-Guided Reinforcement Learning},
+  author = {Rajput, Saurabhsingh and Sharma, Tushar},
+  year   = {2026},
+  note   = {Preprint}
 }
 ```
 
