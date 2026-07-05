@@ -590,7 +590,7 @@ def plot_caderr_decomposition(sft_m: dict, grpo_m: dict):
         ("Valid sim.\nrate (%)",      sft_m["valid_rate"],                grpo_m["valid_rate"]),
         ("Test pass\nrate (%)",       sft_m["test_pass_rate"],            grpo_m["test_pass_rate"]),
         ("Mean ERR\n(valid, %)",      sft_m["mean_err"],                  grpo_m["mean_err"]),
-        ("CARAT\n(%)",                sft_m["caderr"],                     grpo_m["caderr"]),
+        ("CARET\n(%)",                sft_m["caderr"],                     grpo_m["caderr"]),
     ]
     labels = [m[0] for m in metrics]
     sft_vals  = [m[1] for m in metrics]

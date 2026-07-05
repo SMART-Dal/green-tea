@@ -52,23 +52,24 @@ def outcome_frac(recs):
 RC = {
     "font.family": "serif",
     "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
-    "font.size": 8, "axes.labelsize": 8, "axes.titlesize": 8.5,
-    "xtick.labelsize": 7.5, "ytick.labelsize": 7.5,
-    "legend.fontsize": 7.5,
+    "font.size": 11, "axes.labelsize": 12, "axes.titlesize": 13,
+    "xtick.labelsize": 11, "ytick.labelsize": 11,
+    "legend.fontsize": 11,
     "figure.dpi": 300, "savefig.dpi": 300, "savefig.bbox": "tight",
     "axes.spines.top": False, "axes.spines.right": False,
-    "axes.linewidth": 0.7, "xtick.major.width": 0.7, "ytick.major.width": 0.7,
+    "axes.linewidth": 0.9, "xtick.major.width": 0.9, "ytick.major.width": 0.9,
     "pdf.fonttype": 42, "ps.fonttype": 42,
 }
 
+# Modern, vibrant palette that avoids R-G confusion
 STAGES = [
-    ("Zero-shot",       "#9E9E9E", (4, 2),   1.2,
+    ("Zero-shot",       "#A0A0A0", (4, 2),   1.5,
      f"{BDIR}/zero_shot_instruct/test_comparison_chunk_*.jsonl"),
-    ("Green-prompt",    "#455A64", (2, 2),   1.2,
+    ("Green-prompt",    "#6C7A89", (2, 2),   1.5,
      f"{BDIR}/green_prompt_instruct/test_comparison_chunk_*.jsonl"),
-    ("SFT",             "#1565C0", "solid",  2.0,
+    ("PIE (baseline)",  "#2980B9", "solid",  2.4,
      f"{DATA}/sft_evaluation_results/second_run/test_comparison_chunk_*.jsonl"),
-    ("GRPO (ours)",     "#B71C1C", "solid",  2.8,
+    ("Green Tea (ours)", "#D35400", "solid",  3.0,
      f"{DATA}/grpo_sim_results/test_comparison_chunk_*.jsonl"),
 ]
 
@@ -82,11 +83,11 @@ def main():
             stage_data.append((label, color, ls, lw, recs))
             errs = err_all_valid(recs)
             oc   = outcome_frac(recs)
-            caerr = np.mean([r["energy_reduction"] * r.get("tests_passed", 0)
+            caderr = np.mean([r["energy_reduction"] * r.get("tests_passed", 0)
                              / max(r.get("num_inputs", 1), 1) for r in recs])
             print(f"{label:<20} n={len(recs)}  valid={len(errs)}  "
                   f"mean={np.mean(errs):.1f}%  median={np.median(errs):.1f}%  "
-                  f"CAERR={caerr:.2f}%  correct={oc['correct']:.1f}%")
+                  f"CADERR={caderr:.2f}%  correct={oc['correct']:.1f}%")
 
     with plt.rc_context(RC):
         fig = plt.figure(figsize=(5.2, 3.8))
@@ -96,12 +97,12 @@ def main():
 
         # --- Shading: positive-ERR region fills for SFT and GRPO ---
         for label, color, ls, lw, recs in stage_data:
-            if label not in ("SFT", "GRPO (ours)"):
+            if label not in ("PIE (baseline)", "Green Tea (ours)"):
                 continue
             errs = err_all_valid(recs)
             xs, ys = ecdf(errs)
-            alpha  = 0.20 if label == "SFT" else 0.18
-            fcolor = "#BBDEFB" if label == "SFT" else "#FFCDD2"
+            alpha  = 0.20 if label == "PIE (baseline)" else 0.18
+            fcolor = "#BBDEFB" if label == "PIE (baseline)" else "#FFCDD2"
             mask   = xs >= 0
             if mask.any():
                 ax.fill_betweenx(ys, np.where(mask, xs, 0), 0,
@@ -118,13 +119,16 @@ def main():
         # --- ERR=0 reference line ---
         ax.axvline(0, color="#424242", linewidth=0.65, linestyle="--",
                    alpha=0.55, zorder=1)
-        ax.text(0.3, 0.025, "no change", transform=ax.get_xaxis_transform(),
-                ha="left", va="bottom", fontsize=6, color="#616161", style="italic")
+        # Removed "no change" annotation that was overlapping the CADERR callout (agent review fix).
+        # The dashed vertical line at 0 is self-explanatory.
 
         # --- Median dots + clean annotations ---
+        # SFT median is essentially zero, displayed as ≈ 0% rather than "-0.0%" (cleaner).
+        # We add bbox to make text readable even if it crosses a line.
+        _abbox = dict(boxstyle="round,pad=0.2", fc="white", ec="none", alpha=0.85)
         annot_cfg = {
-            "SFT":       dict(dx=-4, dy=0.13, ha="right"),
-            "GRPO (ours)": dict(dx=4,  dy=-0.12, ha="left"),
+            "PIE (baseline)":   dict(dx=-4, dy=0.22,  ha="center", text="median $\\approx$ 0%"),
+            "Green Tea (ours)": dict(dx=12,  dy=-0.12, ha="left",  text=None),
         }
         for label, color, ls, lw, recs in stage_data:
             if label not in annot_cfg:
@@ -133,51 +137,52 @@ def main():
             med  = float(np.median(errs))
             frac = float(np.mean(errs <= med))
             cfg  = annot_cfg[label]
-            ax.plot(med, frac, "o", color=color, markersize=4, zorder=5)
-            ax.annotate(f"median = {med:.1f}%",
+            ax.plot(med, frac, "o", color=color, markersize=5, zorder=5)
+            text = cfg["text"] if cfg.get("text") else f"median = {med:.1f}%"
+            ax.annotate(text,
                         xy=(med, frac),
                         xytext=(med + cfg["dx"], frac + cfg["dy"]),
-                        fontsize=6.5, color=color, ha=cfg["ha"],
-                        arrowprops=dict(arrowstyle="-", color=color,
-                                        lw=0.7, shrinkA=3, shrinkB=3))
+                        fontsize=8.5, color=color, ha=cfg["ha"],
+                        bbox=_abbox, zorder=6,
+                        arrowprops=dict(arrowstyle="->", color=color,
+                                        lw=0.8, shrinkA=2, shrinkB=4,
+                                        connectionstyle="arc3,rad=0.1"))
 
         # --- Axes cosmetics ---
         ax.set_xlim(-28, 100)
         ax.set_ylim(0.0, 1.02)
-        ax.set_xlabel("Energy Reduction Rate, ERR  (%)\n"
-                      r"(positive $\Rightarrow$ energy saved; all compiled outputs with valid simulation)",
-                      labelpad=4)
+        # Caption-only narrative; title removed (user request: keep figure tight).
+        ax.set_xlabel("Energy reduction rate, ERR (%)", labelpad=4)
         ax.set_ylabel("Cumulative fraction of outputs", labelpad=4)
-        ax.set_title("Energy Optimization Across Training Stages",
-                     pad=6, fontsize=9, fontweight="bold")
         ax.xaxis.set_major_locator(ticker.MultipleLocator(20))
         ax.xaxis.set_minor_locator(ticker.MultipleLocator(10))
         ax.yaxis.set_major_locator(ticker.MultipleLocator(0.2))
         ax.grid(axis="y", color="#EEEEEE", linewidth=0.5, zorder=0)
 
-        # --- Legend (inside main axes, top-left) ---
+        # --- Legend (inside main axes, middle-left in the empty negative space) ---
         handles = [Line2D([0], [0], color=c,
                           linestyle=ls if isinstance(ls, str) else (0, ls),
                           linewidth=lw, label=lab)
                    for lab, c, ls, lw, _ in stage_data]
-        ax.legend(handles=handles, loc="upper left",
+        ax.legend(handles=handles, loc="lower right", bbox_to_anchor=(0.98, 0.02),
                   frameon=True, edgecolor="#CCCCCC", fancybox=False,
-                  borderpad=0.5, labelspacing=0.3)
+                  borderpad=0.6, labelspacing=0.5, fontsize=8.5)
 
         # ---- Inset: outcome stacked bar (right panel) ----
-        ax_in = fig.add_axes([0.73, 0.13, 0.24, 0.77])
-        ax_in.set_title("Outputs\nbreakdown", fontsize=7, pad=4)
+        # Title dropped (caption handles narrative). Pushed up to remove empty space.
+        ax_in = fig.add_axes([0.76, 0.12, 0.22, 0.70])
 
-        bar_labels = ["Zero-shot", "Green-\nprompt", "SFT", "GRPO"]
+        bar_labels = ["Zero-shot", "Green-prompt", "PIE (baseline)", "Green Tea (ours)"]
         segs = ["fail", "norun", "wrong", "correct"]
-        seg_colors = ["#EF9A9A", "#FFE082", "#FFCC80", "#A5D6A7"]
-        seg_names  = ["Compile\nfail", "No sim\nresult", "Failed\ntests", "ERR\nmeasured"]
+        # Lighter shades for in-bar text legibility (user request); each segment kept distinct.
+        seg_colors = ["#EF9A9A", "#FFCC80", "#FFF59D", "#A5D6A7"]
+        seg_names  = ["Compile fail", "No sim result", "Failed tests", "ERR measured"]
 
         oc_list = [outcome_frac(recs) for _, _, _, _, recs in stage_data]
         stage_colors = [c for _, c, *_ in stage_data]
 
         y   = np.arange(len(bar_labels))
-        h   = 0.6
+        h   = 0.45  # thinner bars give room for labels below each one
         left = np.zeros(len(bar_labels))
 
         for seg, col, sname in zip(segs, seg_colors, seg_names):
@@ -188,34 +193,39 @@ def main():
                 if v >= 8:
                     ax_in.text(l + v / 2, i, f"{v:.0f}",
                                ha="center", va="center",
-                               fontsize=5.5, color="#212121")
+                               fontsize=7, color="#212121")
             left += vals
 
-        ax_in.set_yticks(y)
-        ax_in.set_yticklabels(bar_labels, fontsize=6.5)
-        ax_in.set_xlabel("% of outputs", fontsize=6.5, labelpad=3)
+        ax_in.set_yticks([])
+        # Stage label BELOW each bar (user request) — sits in the whitespace between bars.
+        for i, lbl in enumerate(bar_labels):
+            ax_in.text(50, i + 0.35, lbl, ha="center", va="top",
+                       fontsize=8.5, color="#212121")
+        ax_in.set_xlabel("% of outputs", fontsize=8.5, labelpad=3)
         ax_in.set_xlim(0, 100)
+        ax_in.set_ylim(-0.6, len(bar_labels) - 0.2)
+        ax_in.invert_yaxis()  # Zero-shot at top, GRPO at bottom (story flows downward)
         ax_in.xaxis.set_major_locator(ticker.MultipleLocator(50))
-        ax_in.tick_params(axis="x", labelsize=6)
+        ax_in.tick_params(axis="x", labelsize=8)
         ax_in.spines["top"].set_visible(False)
         ax_in.spines["right"].set_visible(False)
         ax_in.spines["left"].set_visible(False)
         ax_in.tick_params(left=False)
 
-        # Inset legend at bottom
+        # Segment legend at TOP of the right column (user request: move up out of the bottom).
         patches = [mpatches.Patch(color=c, label=n)
                    for c, n in zip(seg_colors, seg_names)]
-        ax_in.legend(handles=patches, loc="lower center",
-                     bbox_to_anchor=(0.5, -0.38),
-                     fontsize=5.2, frameon=False, ncol=2,
-                     columnspacing=0.5, handlelength=0.9)
+        ax_in.legend(handles=patches, loc="upper right",
+                     bbox_to_anchor=(0.98, 0.98), bbox_transform=fig.transFigure,
+                     fontsize=7.5, frameon=False, ncol=1,
+                     handlelength=1.0, handletextpad=0.4)
 
-        # ---- CAERR headline annotation ----
-        ax.text(0.98, 0.04,
-                "CAERR: GRPO 12.6% vs SFT 4.5%  (2.84\u00d7)",
-                transform=ax.transAxes, fontsize=6.5, ha="right", va="bottom",
-                bbox=dict(boxstyle="round,pad=0.3", fc="#FFF8E1", ec="#FFC107",
-                          alpha=0.9, linewidth=0.8))
+        # ---- CARET headline annotation (moved to top-right) ----
+        ax.text(1.0, 1.03,
+                "CARET: Green Tea 12.6% vs PIE 4.5%  (2.84$\\times$)",
+                transform=ax.transAxes, ha="right", va="bottom",
+                fontsize=7.5, fontweight="bold", color="#1b5e20",
+                bbox=dict(facecolor="#e8f5e9", edgecolor="#81c784", boxstyle="round,pad=0.2", alpha=0.95))
 
         # ---- Divider line between panels ----
         fig.add_artist(
@@ -276,9 +286,9 @@ def training_dynamics():
     c_loss, c_compile, c_reward, c_ei, c_kl = "#37474F", "#1565C0", "#B71C1C", "#2E7D32", "#7B1FA2"
 
     with plt.rc_context(RC):
-        fig = plt.figure(figsize=(7.0, 5.4))
-        gs = fig.add_gridspec(4, 2, width_ratios=[1, 2.2], hspace=0.09,
-                              wspace=0.35, left=0.09, right=0.97, top=0.94, bottom=0.08)
+        fig = plt.figure(figsize=(10.0, 4.5))
+        gs = fig.add_gridspec(4, 2, width_ratios=[1.2, 1.8], hspace=0.6,
+                              wspace=0.45, left=0.08, right=0.96, top=0.94, bottom=0.08)
 
         # -- Panel (a): SFT loss (spans all 4 rows on left) --
         ax_sft = fig.add_subplot(gs[:, 0])
@@ -451,20 +461,19 @@ def wandb_training_dynamics():
     kl  = smooth(gd['train/kl'].values)
     emr = smooth(gd['train/energy/mean_reduction_pct'].values)
 
-    c_sft  = "#1565C0"  # blue for SFT
-    c_grpo = "#B71C1C"  # red for GRPO
-    c_rew  = "#B71C1C"
-    c_comp = "#1565C0"
-    c_ei   = "#2E7D32"
-    c_emr  = "#6A1B9A"
+    c_sft  = "#2980B9"  # blue for SFT
+    c_grpo = "#D35400"  # red-orange for GRPO
+    c_rew  = "#D35400"
+    c_comp = "#2980B9"
+    c_ei   = "#2CA02C"
+    c_emr  = "#8E44AD"
     _bg_sft  = "#E3F2FD"   # light blue
     _bg_grpo = "#FFF3E0"   # light orange
 
     with plt.rc_context(RC):
-        fig = plt.figure(figsize=(7.2, 5.0))
-        # 4 rows: SFT loss | GRPO reward / compile / energy-improvement / energy-mean
-        gs_layout = fig.add_gridspec(4, 2, width_ratios=[1, 2.0], hspace=0.10,
-                                     wspace=0.38, left=0.09, right=0.97, top=0.96, bottom=0.09)
+        # Increased width, adjusted layout to 2x3
+        fig = plt.figure(figsize=(12.0, 5.5))
+        gs_layout = fig.add_gridspec(2, 3, width_ratios=[1.2, 1.0, 1.0], hspace=0.45, wspace=0.35)
 
         # Shared background color fills to indicate phases
         def shade(ax, color, label=None, loc='left'):
@@ -472,112 +481,93 @@ def wandb_training_dynamics():
             if label:
                 xp = 0.05 if loc == 'left' else 0.95
                 ha = 'left' if loc == 'left' else 'right'
-                ax.text(xp, 0.96, label, transform=ax.transAxes, fontsize=6.5,
+                ax.text(xp, 0.88, label, transform=ax.transAxes, fontsize=10,
                         ha=ha, va='top', color='#37474F', style='italic', alpha=0.8)
 
-        # ---- SFT panel (left column, all 4 rows) ----
+        # ---- SFT panel (col 0, spans both rows) ----
         ax_sft = fig.add_subplot(gs_layout[:, 0])
-        shade(ax_sft, _bg_sft, 'SFT phase')
+        shade(ax_sft, _bg_sft)
         ax_sft.plot(sft_tr['train/global_step'], sft_tr['train/loss'],
                     color=c_sft, linewidth=1.6, label='Train loss', zorder=3)
         if len(sft_ev):
             ax_sft.scatter(sft_ev['train/global_step'], sft_ev['eval/loss'],
                            color=c_grpo, s=22, zorder=4, label='Eval loss', marker='D')
-        ax_sft.set_xlabel('Training step')
-        ax_sft.set_ylabel('Cross-entropy loss')
-        ax_sft.set_title('(a) SFT training', fontsize=8.5, fontweight='bold', pad=5)
+        ax_sft.set_xlabel('Training step', fontsize=12.5)
+        ax_sft.set_ylabel('Cross-entropy loss', fontsize=12.5)
+        ax_sft.set_title('(a) SFT training', fontsize=14, fontweight='bold', pad=8)
         ax_sft.set_xlim(0, sft_tr['train/global_step'].max())
         ax_sft.set_ylim(bottom=0)
-        ax_sft.legend(fontsize=6.5, frameon=True, edgecolor='#CCCCCC', fancybox=False)
+        ax_sft.legend(fontsize=11, frameon=True, edgecolor='#CCCCCC', fancybox=False, loc='upper right')
         ax_sft.grid(axis='y', color='#DDDDDD', linewidth=0.5)
-        # Annotate start/end loss
-        ax_sft.text(0.97, 0.95, f"start: {sft_tr['train/loss'].iloc[0]:.3f}",
-                    transform=ax_sft.transAxes, fontsize=6, ha='right', va='top', color=c_sft)
-        ax_sft.text(0.97, 0.08, f"end: {sft_tr['train/loss'].iloc[-1]:.4f}",
-                    transform=ax_sft.transAxes, fontsize=6, ha='right', va='bottom', color=c_sft)
+        _lbbox = dict(boxstyle='round,pad=0.2', fc='white', ec='none', alpha=0.85)
 
-        # Vertical divider between SFT and GRPO columns
-        fig.add_artist(plt.Line2D([0.52, 0.52], [0.09, 0.93], transform=fig.transFigure,
-                                  color='#BDBDBD', linewidth=0.7, linestyle='--'))
-        fig.text(0.52, 0.05, 'SFT init.', fontsize=5.5, ha='center', va='top',
-                 color='#546E7A', style='italic', transform=fig.transFigure)
+        ax_sft.text(0.05, 0.95, f"start: {sft_tr['train/loss'].iloc[0]:.3f}",
+                    transform=ax_sft.transAxes, fontsize=11, ha='left', va='top', color=c_sft, bbox=_lbbox)
+        ax_sft.text(0.97, 0.08, f"end: {sft_tr['train/loss'].iloc[-1]:.4f} (improves $\downarrow$)",
+                    transform=ax_sft.transAxes, fontsize=11, ha='right', va='bottom', color=c_sft, bbox=_lbbox)
 
-        _lbbox = dict(boxstyle='round,pad=0.18', fc='white', ec='none', alpha=0.85)
-
-        def annotate_ends(ax, xs, ys, color, fmt='{:.2f}', offset_y=0.05):
-            ax.annotate(fmt.format(ys[0]), xy=(xs[0], ys[0]),
-                        xytext=(xs[0] + (xs[-1]-xs[0])*0.08, ys[0]),
-                        fontsize=6, color=color, bbox=_lbbox, zorder=5,
-                        arrowprops=dict(arrowstyle='-', color=color, lw=0.5))
-            ax.annotate(fmt.format(ys[-1]), xy=(xs[-1], ys[-1]),
-                        xytext=(xs[-1] - (xs[-1]-xs[0])*0.08, ys[-1] + offset_y*(ax.get_ylim()[1]-ax.get_ylim()[0])),
-                        fontsize=6, color=color, bbox=_lbbox, zorder=5,
-                        arrowprops=dict(arrowstyle='-', color=color, lw=0.5))
-
-        # ---- GRPO: reward mean ----
+        # ---- GRPO: reward mean (col 1, row 0) ----
         ax_r = fig.add_subplot(gs_layout[0, 1])
         shade(ax_r, _bg_grpo)
         ax_r.fill_between(gs, rew, 0, alpha=0.12, color=c_rew)
         ax_r.plot(gs, rew, color=c_rew, linewidth=1.6, zorder=3)
         ax_r.axhline(0, color='#9E9E9E', linewidth=0.6, linestyle='--', alpha=0.6)
-        ax_r.set_ylabel('Reward')
-        ax_r.set_title('(b) GRPO training dynamics', fontsize=8.5, fontweight='bold', pad=5)
+        ax_r.set_ylabel('Reward', fontsize=12.5)
+        ax_r.set_title('(b) GRPO: Reward & Compile', fontsize=14, fontweight='bold', pad=8)
         ax_r.tick_params(labelbottom=False)
         ax_r.grid(axis='y', color='#DDDDDD', linewidth=0.5)
         ax_r.text(0.97, 0.08, 'higher = better', transform=ax_r.transAxes,
-                  fontsize=5.5, color='#757575', ha='right', va='bottom', style='italic')
+                  fontsize=11, color='#757575', ha='right', va='bottom', style='italic')
 
-        # ---- GRPO: compile success ----
+        # ---- GRPO: compile success (col 1, row 1) ----
         ax_c = fig.add_subplot(gs_layout[1, 1], sharex=ax_r)
         shade(ax_c, _bg_grpo)
         ax_c.fill_between(gs, cer, alpha=0.10, color=c_comp)
         ax_c.plot(gs, cer, color=c_comp, linewidth=1.6, zorder=3)
-        ax_c.set_ylabel('Compile (%)')
+        ax_c.set_ylabel('Compile (%)', fontsize=12.5)
+        ax_c.set_xlabel('Training step (x1,000)', fontsize=12.5)
         ax_c.yaxis.set_major_formatter(ticker.PercentFormatter(1.0, 0))
-        ax_c.tick_params(labelbottom=False)
         ax_c.set_ylim(0.70, 0.92)
         ax_c.grid(axis='y', color='#DDDDDD', linewidth=0.5)
         ax_c.text(0.50, 0.08, f"+{(cer[-1]-cer[0])*100:.0f}pp ({cer[0]:.0%} to {cer[-1]:.0%})",
-                  transform=ax_c.transAxes, fontsize=6, ha='center', va='bottom',
+                  transform=ax_c.transAxes, fontsize=10, ha='center', va='bottom',
                   color=c_comp, fontweight='bold', bbox=_lbbox)
 
-        # ---- GRPO: energy improvement rate ----
-        ax_e = fig.add_subplot(gs_layout[2, 1], sharex=ax_r)
+        # ---- GRPO: energy improvement rate (col 2, row 0) ----
+        ax_e = fig.add_subplot(gs_layout[0, 2], sharex=ax_r)
         shade(ax_e, _bg_grpo)
         ax_e.fill_between(gs, eir, alpha=0.10, color=c_ei)
         ax_e.plot(gs, eir, color=c_ei, linewidth=1.6, zorder=3)
-        ax_e.set_ylabel('Energy imp. (%)')
+        ax_e.set_ylabel('Energy imp. (%)', fontsize=12.5)
+        ax_e.set_title('(c) GRPO: Energy & KL', fontsize=14, fontweight='bold', pad=8)
         ax_e.yaxis.set_major_formatter(ticker.PercentFormatter(1.0, 0))
         ax_e.tick_params(labelbottom=False)
         ax_e.grid(axis='y', color='#DDDDDD', linewidth=0.5)
         ax_e.text(0.97, 0.08, f"{eir[0]:.0%}→{eir[-1]:.0%}",
-                  transform=ax_e.transAxes, fontsize=6, ha='right', va='bottom',
+                  transform=ax_e.transAxes, fontsize=10, ha='right', va='bottom',
                   color=c_ei, fontweight='bold', bbox=_lbbox)
 
-        # ---- GRPO: KL divergence ----
+        # ---- GRPO: KL divergence (col 2, row 1) ----
         c_kl = "#E65100"
-        ax_m = fig.add_subplot(gs_layout[3, 1], sharex=ax_r)
+        ax_m = fig.add_subplot(gs_layout[1, 2], sharex=ax_r)
         shade(ax_m, _bg_grpo)
         ax_m.fill_between(gs, kl, alpha=0.10, color=c_kl)
         ax_m.plot(gs, kl, color=c_kl, linewidth=1.6, zorder=3)
-        ax_m.set_ylabel('KL divergence')
-        ax_m.set_xlabel('Training step (x1,000)')
+        ax_m.set_ylabel('KL divergence', fontsize=12.5)
+        ax_m.set_xlabel('Training step (x1,000)', fontsize=12.5)
         ax_m.grid(axis='y', color='#DDDDDD', linewidth=0.5)
         ax_m.text(0.97, 0.92, f"{kl[0]:.2f} to {kl[-1]:.2f}",
-                  transform=ax_m.transAxes, fontsize=6, ha='right', va='top',
+                  transform=ax_m.transAxes, fontsize=10, ha='right', va='top',
                   color=c_kl, fontweight='bold', bbox=_lbbox)
 
-        # Remove top/right spines on all GRPO axes
         for ax in [ax_r, ax_c, ax_e, ax_m]:
             ax.spines['top'].set_visible(False)
             ax.spines['right'].set_visible(False)
 
-        # suptitle removed: panel titles (a)/(b) are sufficient for ICSE format
-
         os.makedirs(OUTDIR, exist_ok=True)
         for ext in ('pdf', 'png'):
             p = os.path.join(OUTDIR, f'fig_training_dynamics.{ext}')
-            fig.savefig(p, bbox_inches='tight')
+            fig.savefig(p, bbox_inches='tight', dpi=300)
             print(f'Saved: {p}')
         plt.close(fig)
 
