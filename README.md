@@ -22,9 +22,26 @@ We train code models to optimize a program's energy directly, using deterministi
 |---|---|
 | Code, analysis scripts, pre-computed sim results, 143-problem benchmark | This repository |
 | Green Tea dataset (raw: 3,507,435 simulations, execution master, training pairs) | Zenodo: [10.5281/zenodo.21210100](https://doi.org/10.5281/zenodo.21210100) |
-| Trained model checkpoints (Energy-SFT, GRPO, cross-family) | Hugging Face: `<HF_URL>` |
+| Trained model checkpoints (Energy-SFT, GRPO, cross-family) | Hugging Face: [huggingface.co/saurabh-singh-rajput](https://huggingface.co/saurabh-singh-rajput/models) (see [Models](#models)) |
 
 The raw dataset and model weights are hosted externally because of their size; everything required to reproduce the paper's numbers and figures is included here.
+
+## Models
+
+All trained checkpoints are on Hugging Face under [huggingface.co/saurabh-singh-rajput](https://huggingface.co/saurabh-singh-rajput/models). Merged models load directly with `transformers`; adapters are LoRA weights (`peft`) that reference the listed base.
+
+| Model | Kind | CARET |
+|---|---|---|
+| [green-tea-qwen2.5-coder-14b-grpo](https://huggingface.co/saurabh-singh-rajput/green-tea-qwen2.5-coder-14b-grpo) (headline) | GRPO adapter | 12.63% |
+| [green-tea-qwen2.5-coder-14b-energy-sft](https://huggingface.co/saurabh-singh-rajput/green-tea-qwen2.5-coder-14b-energy-sft) | merged | 4.45% |
+| [green-tea-qwen2.5-coder-14b-runtime-sft](https://huggingface.co/saurabh-singh-rajput/green-tea-qwen2.5-coder-14b-runtime-sft) | adapter | 7.64% |
+| [green-tea-qwen2.5-coder-14b-edp-sft](https://huggingface.co/saurabh-singh-rajput/green-tea-qwen2.5-coder-14b-edp-sft) | adapter | 11.02% |
+| [green-tea-qwen2.5-coder-7b-energy-sft](https://huggingface.co/saurabh-singh-rajput/green-tea-qwen2.5-coder-7b-energy-sft) | adapter | 8.71% |
+| [green-tea-qwen2.5-coder-0.5b-energy-sft](https://huggingface.co/saurabh-singh-rajput/green-tea-qwen2.5-coder-0.5b-energy-sft) | adapter | 4.07% |
+| [green-tea-llama-3.1-8b-energy-sft](https://huggingface.co/saurabh-singh-rajput/green-tea-llama-3.1-8b-energy-sft) | merged | 5.97% |
+| [green-tea-llama-3.1-8b-grpo](https://huggingface.co/saurabh-singh-rajput/green-tea-llama-3.1-8b-grpo) | GRPO adapter | cross-family |
+| [green-tea-deepseek-coder-6.7b-energy-sft](https://huggingface.co/saurabh-singh-rajput/green-tea-deepseek-coder-6.7b-energy-sft) | merged | 1.29% |
+| [green-tea-deepseek-coder-6.7b-grpo](https://huggingface.co/saurabh-singh-rajput/green-tea-deepseek-coder-6.7b-grpo) | GRPO adapter | 5.99% |
 
 ## Repository layout
 
