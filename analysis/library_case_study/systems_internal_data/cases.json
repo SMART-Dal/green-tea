@@ -1,0 +1,335 @@
+{
+ "leveldb_hash": {
+  "code": "// LevelDB util/hash.cc: leveldb::Hash (verbatim), DecodeFixed32 from util/coding.h.\n#include <cstdint>\n#include <cstdio>\n#include <cstring>\n#include <vector>\ninline uint32_t DecodeFixed32(const char* ptr) {\n  const uint8_t* const buffer = reinterpret_cast<const uint8_t*>(ptr);\n  return (static_cast<uint32_t>(buffer[0])) | (static_cast<uint32_t>(buffer[1]) << 8) |\n         (static_cast<uint32_t>(buffer[2]) << 16) | (static_cast<uint32_t>(buffer[3]) << 24);\n}\nuint32_t Hash(const char* data, size_t n, uint32_t seed) {\n  const uint32_t m = 0xc6a4a793;\n  const uint32_t r = 24;\n  const char* limit = data + n;\n  uint32_t h = seed ^ (n * m);\n  while (limit - data >= 4) {\n    uint32_t w = DecodeFixed32(data);\n    data += 4;\n    h += w;\n    h *= m;\n    h ^= (h >> 16);\n  }\n  switch (limit - data) {\n    case 3:\n      h += static_cast<uint8_t>(data[2]) << 16;\n      [[fallthrough]];\n    case 2:\n      h += static_cast<uint8_t>(data[1]) << 8;\n      [[fallthrough]];\n    case 1:\n      h += static_cast<uint8_t>(data[0]);\n      h *= m;\n      h ^= (h >> r);\n      break;\n  }\n  return h;\n}\nstatic uint64_t s;\nstatic inline uint64_t rnd() { s ^= s << 13; s ^= s >> 7; s ^= s << 17; return s; }\nint main() {\n  int n, k; unsigned long long seed;\n  if (scanf(\"%d %d %llu\", &n, &k, &seed) != 3) return 1;\n  s = seed | 1;\n  std::vector<char> buf(n + 64);\n  for (auto& c : buf) c = static_cast<char>(rnd());\n  uint32_t acc = 0;\n  for (int i = 0; i < k; i++) {\n    size_t len = n > 64 ? n - (i % 61) : n;\n    acc = acc * 31 + Hash(buf.data() + (i % 64), len, static_cast<uint32_t>(i));\n  }\n  printf(\"%u\\n\", acc);\n  return 0;\n}\n",
+  "test_inputs": [
+   "1 1 1",
+   "3 5 2",
+   "64 10 3",
+   "100 50 4",
+   "1000 100 5",
+   "4096 64 6",
+   "20000 100 7",
+   "50000 20 8",
+   "7 1000 9",
+   "130 300 10"
+  ],
+  "test_outputs": [
+   "4124551753",
+   "232434869",
+   "1316716655",
+   "3618781588",
+   "1511239621",
+   "2400308672",
+   "2243435634",
+   "2236768753",
+   "2268195385",
+   "4021086143"
+  ],
+  "energy_inputs": [
+   "50000 100 11",
+   "100000 60 12",
+   "20000 400 13"
+  ],
+  "project": "google/leveldb",
+  "github_stars": 39500,
+  "source_file": "util/hash.cc",
+  "function": "Hash",
+  "category": "hashing"
+ },
+ "zlib_adler32": {
+  "code": "// zlib adler32.c: adler32_z (verbatim; default MOD macros, zlib typedefs inlined).\n#include <cstdint>\n#include <cstdio>\n#include <cstddef>\n#include <vector>\ntypedef unsigned long uLong;\ntypedef unsigned char Bytef;\ntypedef size_t z_size_t;\n#define ZEXPORT\n#define Z_NULL 0\n#define BASE 65521U     /* largest prime smaller than 65536 */\n#define NMAX 5552\n/* NMAX is the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1 */\n\n#define DO1(buf,i)  {adler += (buf)[i]; sum2 += adler;}\n#define DO2(buf,i)  DO1(buf,i); DO1(buf,i+1);\n#define DO4(buf,i)  DO2(buf,i); DO2(buf,i+2);\n#define DO8(buf,i)  DO4(buf,i); DO4(buf,i+4);\n#define DO16(buf)   DO8(buf,0); DO8(buf,8);\n\n/* use NO_DIVIDE if your processor does not do division in hardware --\n   try it both ways to see which is faster */\n#  define MOD(a) a %= BASE\n#  define MOD28(a) a %= BASE\n#  define MOD63(a) a %= BASE\n\nuLong ZEXPORT adler32_z(uLong adler, const Bytef *buf, z_size_t len) {\n    unsigned long sum2;\n    unsigned n;\n\n    /* split Adler-32 into component sums */\n    sum2 = (adler >> 16) & 0xffff;\n    adler &= 0xffff;\n\n    /* in case user likes doing a byte at a time, keep it fast */\n    if (len == 1) {\n        adler += buf[0];\n        if (adler >= BASE)\n            adler -= BASE;\n        sum2 += adler;\n        if (sum2 >= BASE)\n            sum2 -= BASE;\n        return adler | (sum2 << 16);\n    }\n\n    /* initial Adler-32 value (deferred check for len == 1 speed) */\n    if (buf == Z_NULL)\n        return 1L;\n\n    /* in case short lengths are provided, keep it somewhat fast */\n    if (len < 16) {\n        while (len--) {\n            adler += *buf++;\n            sum2 += adler;\n        }\n        if (adler >= BASE)\n            adler -= BASE;\n        MOD28(sum2);            /* only added so many BASE's */\n        return adler | (sum2 << 16);\n    }\n\n    /* do length NMAX blocks -- requires just one modulo operation */\n    while (len >= NMAX) {\n        len -= NMAX;\n        n = NMAX / 16;          /* NMAX is divisible by 16 */\n        do {\n            DO16(buf);          /* 16 sums unrolled */\n            buf += 16;\n        } while (--n);\n        MOD(adler);\n        MOD(sum2);\n    }\n\n    /* do remaining bytes (less than NMAX, still just one modulo) */\n    if (len) {                  /* avoid modulos if none remaining */\n        while (len >= 16) {\n            len -= 16;\n            DO16(buf);\n            buf += 16;\n        }\n        while (len--) {\n            adler += *buf++;\n            sum2 += adler;\n        }\n        MOD(adler);\n        MOD(sum2);\n    }\n\n    /* return recombined sums */\n    return adler | (sum2 << 16);\n}\nstatic uint64_t s;\nstatic inline uint64_t rnd() { s ^= s << 13; s ^= s >> 7; s ^= s << 17; return s; }\nint main() {\n  int n, k; unsigned long long seed;\n  if (scanf(\"%d %d %llu\", &n, &k, &seed) != 3) return 1;\n  s = seed | 1;\n  std::vector<Bytef> buf(n + 64);\n  for (auto& c : buf) c = static_cast<Bytef>(rnd());\n  uLong acc = 1;\n  for (int i = 0; i < k; i++) acc = adler32_z(acc, buf.data() + (i % 64), n > 64 ? n - (i % 61) : n);\n  printf(\"%lu\\n\", acc);\n  return 0;\n}\n",
+  "test_inputs": [
+   "1 1 1",
+   "15 5 2",
+   "16 7 3",
+   "100 50 4",
+   "5552 10 5",
+   "5553 9 6",
+   "20000 100 7",
+   "50000 20 8",
+   "7 1000 9",
+   "11104 30 10"
+  ],
+  "test_outputs": [
+   "4325442",
+   "2523340304",
+   "4148046871",
+   "3797627601",
+   "970545772",
+   "1279688622",
+   "3303191255",
+   "287302775",
+   "3315993935",
+   "1165977076"
+  ],
+  "energy_inputs": [
+   "50000 100 11",
+   "100000 60 12",
+   "20000 400 13"
+  ],
+  "project": "madler/zlib",
+  "github_stars": 7151,
+  "source_file": "adler32.c",
+  "function": "adler32_z",
+  "category": "checksum"
+ },
+ "leveldb_varint": {
+  "code": "// LevelDB util/coding.cc and util/coding.h: varint encoding and decoding (verbatim).\n#include <cstdint>\n#include <cstdio>\n#include <string>\nconst char* GetVarint32PtrFallback(const char* p, const char* limit, uint32_t* value);\nchar* EncodeVarint32(char* dst, uint32_t v) {\n  // Operate on characters as unsigneds\n  uint8_t* ptr = reinterpret_cast<uint8_t*>(dst);\n  static const int B = 128;\n  if (v < (1 << 7)) {\n    *(ptr++) = v;\n  } else if (v < (1 << 14)) {\n    *(ptr++) = v | B;\n    *(ptr++) = v >> 7;\n  } else if (v < (1 << 21)) {\n    *(ptr++) = v | B;\n    *(ptr++) = (v >> 7) | B;\n    *(ptr++) = v >> 14;\n  } else if (v < (1 << 28)) {\n    *(ptr++) = v | B;\n    *(ptr++) = (v >> 7) | B;\n    *(ptr++) = (v >> 14) | B;\n    *(ptr++) = v >> 21;\n  } else {\n    *(ptr++) = v | B;\n    *(ptr++) = (v >> 7) | B;\n    *(ptr++) = (v >> 14) | B;\n    *(ptr++) = (v >> 21) | B;\n    *(ptr++) = v >> 28;\n  }\n  return reinterpret_cast<char*>(ptr);\n}\n\nvoid PutVarint32(std::string* dst, uint32_t v) {\n  char buf[5];\n  char* ptr = EncodeVarint32(buf, v);\n  dst->append(buf, ptr - buf);\n}\n\nchar* EncodeVarint64(char* dst, uint64_t v) {\n  static const int B = 128;\n  uint8_t* ptr = reinterpret_cast<uint8_t*>(dst);\n  while (v >= B) {\n    *(ptr++) = v | B;\n    v >>= 7;\n  }\n  *(ptr++) = static_cast<uint8_t>(v);\n  return reinterpret_cast<char*>(ptr);\n}\n\nvoid PutVarint64(std::string* dst, uint64_t v) {\n  char buf[10];\n  char* ptr = EncodeVarint64(buf, v);\n  dst->append(buf, ptr - buf);\n}\n\nconst char* GetVarint32PtrFallback(const char* p, const char* limit,\n                                   uint32_t* value) {\n  uint32_t result = 0;\n  for (uint32_t shift = 0; shift <= 28 && p < limit; shift += 7) {\n    uint32_t byte = *(reinterpret_cast<const uint8_t*>(p));\n    p++;\n    if (byte & 128) {\n      // More bytes are present\n      result |= ((byte & 127) << shift);\n    } else {\n      result |= (byte << shift);\n      *value = result;\n      return reinterpret_cast<const char*>(p);\n    }\n  }\n  return nullptr;\n}\n\nconst char* GetVarint64Ptr(const char* p, const char* limit, uint64_t* value) {\n  uint64_t result = 0;\n  for (uint32_t shift = 0; shift <= 63 && p < limit; shift += 7) {\n    uint64_t byte = *(reinterpret_cast<const uint8_t*>(p));\n    p++;\n    if (byte & 128) {\n      // More bytes are present\n      result |= ((byte & 127) << shift);\n    } else {\n      result |= (byte << shift);\n      *value = result;\n      return reinterpret_cast<const char*>(p);\n    }\n  }\n  return nullptr;\n}\n\ninline const char* GetVarint32Ptr(const char* p, const char* limit,\n                                  uint32_t* value) {\n  if (p < limit) {\n    uint32_t result = *(reinterpret_cast<const uint8_t*>(p));\n    if ((result & 128) == 0) {\n      *value = result;\n      return p + 1;\n    }\n  }\n  return GetVarint32PtrFallback(p, limit, value);\n}\nstatic uint64_t s;\nstatic inline uint64_t rnd() { s ^= s << 13; s ^= s >> 7; s ^= s << 17; return s; }\nint main() {\n  int n, k; unsigned long long seed;\n  if (scanf(\"%d %d %llu\", &n, &k, &seed) != 3) return 1;\n  s = seed | 1;\n  unsigned long long acc = 0;\n  for (int round = 0; round < k; round++) {\n    std::string buf;\n    for (int i = 0; i < n; i++) {\n      uint64_t v = rnd() >> (rnd() % 64);\n      if (i & 1) PutVarint64(&buf, v); else PutVarint32(&buf, static_cast<uint32_t>(v));\n    }\n    const char* p = buf.data(); const char* limit = p + buf.size();\n    for (int i = 0; i < n && p != nullptr; i++) {\n      if (i & 1) { uint64_t v; p = GetVarint64Ptr(p, limit, &v); acc = acc * 31 + v; }\n      else { uint32_t v; p = GetVarint32Ptr(p, limit, &v); acc = acc * 31 + v; }\n    }\n    acc ^= buf.size();\n  }\n  printf(\"%llu\\n\", acc);\n  return 0;\n}\n",
+  "test_inputs": [
+   "1 1 1",
+   "2 3 2",
+   "10 5 3",
+   "100 5 4",
+   "1000 4 5",
+   "5000 4 6",
+   "129 10 7",
+   "16384 2 8",
+   "3 100 9",
+   "20000 1 10"
+  ],
+  "test_outputs": [
+   "541134885",
+   "23351113288515326",
+   "15051498354052317790",
+   "15533675317892300692",
+   "8758887506588008870",
+   "17456940683898125222",
+   "1052804811781685094",
+   "10165937351654104370",
+   "14361062873473683952",
+   "4905872449379295082"
+  ],
+  "energy_inputs": [
+   "20000 4 11",
+   "10000 10 12",
+   "50000 2 13"
+  ],
+  "project": "google/leveldb",
+  "github_stars": 39500,
+  "source_file": "util/coding.cc, util/coding.h",
+  "function": "PutVarint32/64, GetVarint32Ptr, GetVarint64Ptr",
+  "category": "serialization"
+ },
+ "git_levenshtein": {
+  "code": "// git levenshtein.c: levenshtein() (verbatim; ALLOC_ARRAY expanded to malloc).\n#include <cstdio>\n#include <cstdlib>\n#include <cstring>\n#include <cstdint>\n#include <vector>\n#include <string>\n#define ALLOC_ARRAY(x, alloc) (x) = (int *)malloc(sizeof(*(x)) * (alloc))\nint levenshtein(const char *string1, const char *string2,\n\t\tint w, int s, int a, int d)\n{\n\tint len1 = strlen(string1), len2 = strlen(string2);\n\tint *row0, *row1, *row2;\n\tint i, j;\n\tALLOC_ARRAY(row0, len2 + 1);\n\tALLOC_ARRAY(row1, len2 + 1);\n\tALLOC_ARRAY(row2, len2 + 1);\n\tfor (j = 0; j <= len2; j++)\n\t\trow1[j] = j * a;\n\tfor (i = 0; i < len1; i++) {\n\t\tint *dummy;\n\t\trow2[0] = (i + 1) * d;\n\t\tfor (j = 0; j < len2; j++) {\n\t\t\t/* substitution */\n\t\t\trow2[j + 1] = row1[j] + s * (string1[i] != string2[j]);\n\t\t\t/* swap */\n\t\t\tif (i > 0 && j > 0 && string1[i - 1] == string2[j] &&\n\t\t\t\t\tstring1[i] == string2[j - 1] &&\n\t\t\t\t\trow2[j + 1] > row0[j - 1] + w)\n\t\t\t\trow2[j + 1] = row0[j - 1] + w;\n\t\t\t/* deletion */\n\t\t\tif (row2[j + 1] > row1[j + 1] + d)\n\t\t\t\trow2[j + 1] = row1[j + 1] + d;\n\t\t\t/* insertion */\n\t\t\tif (row2[j + 1] > row2[j] + a)\n\t\t\t\trow2[j + 1] = row2[j] + a;\n\t\t}\n\t\tdummy = row0;\n\t\trow0 = row1;\n\t\trow1 = row2;\n\t\trow2 = dummy;\n\t}\n\ti = row1[len2];\n\tfree(row0);\n\tfree(row1);\n\tfree(row2);\n\treturn i;\n}\nstatic uint64_t st;\nstatic inline uint64_t rnd() { st ^= st << 13; st ^= st >> 7; st ^= st << 17; return st; }\nint main() {\n  int m, len; unsigned long long seed;\n  if (scanf(\"%d %d %llu\", &m, &len, &seed) != 3) return 1;\n  st = seed | 1;\n  std::vector<std::string> words(m);\n  for (auto& w : words) { w.resize(len / 2 + rnd() % len); for (auto& c : w) c = 'a' + rnd() % 6; }\n  long long total = 0;\n  for (int i = 0; i + 1 < m; i++) total += levenshtein(words[i].c_str(), words[i + 1].c_str(), 0, 2, 1, 3);\n  printf(\"%lld\\n\", total);\n  return 0;\n}\n",
+  "test_inputs": [
+   "2 1 1",
+   "2 2 2",
+   "3 5 3",
+   "10 10 4",
+   "40 60 5",
+   "100 20 6",
+   "20 100 7",
+   "5 200 8",
+   "60 40 9",
+   "200 8 10"
+  ],
+  "test_outputs": [
+   "0",
+   "4",
+   "16",
+   "185",
+   "3466",
+   "2833",
+   "2447",
+   "1119",
+   "3551",
+   "2484"
+  ],
+  "energy_inputs": [
+   "80 80 11",
+   "40 160 12",
+   "200 40 13"
+  ],
+  "project": "git/git",
+  "github_stars": 63893,
+  "source_file": "levenshtein.c",
+  "function": "levenshtein",
+  "category": "string metric (DP)"
+ },
+ "llvm_edit_distance": {
+  "code": "// LLVM llvm/ADT/edit_distance.h: ComputeMappedEditDistance / ComputeEditDistance (verbatim;\n// ArrayRef<T> and SmallVector replaced by std::vector).\n#include <algorithm>\n#include <cstdint>\n#include <cstdio>\n#include <vector>\ntemplate <typename T> using ArrayRef = std::vector<T>;\ntemplate <typename T, typename Functor>\nunsigned ComputeMappedEditDistance(const ArrayRef<T> &FromArray, const ArrayRef<T> &ToArray,\n                                   Functor Map, bool AllowReplacements = true,\n                                   unsigned MaxEditDistance = 0) {\n  typename ArrayRef<T>::size_type m = FromArray.size();\n  typename ArrayRef<T>::size_type n = ToArray.size();\n  if (MaxEditDistance) {\n    typename ArrayRef<T>::size_type AbsDiff = m > n ? m - n : n - m;\n    if (AbsDiff > MaxEditDistance)\n      return MaxEditDistance + 1;\n  }\n  std::vector<unsigned> Row(n + 1);\n  for (unsigned i = 1; i < Row.size(); ++i)\n    Row[i] = i;\n  for (typename ArrayRef<T>::size_type y = 1; y <= m; ++y) {\n    Row[0] = y;\n    unsigned BestThisRow = Row[0];\n    unsigned Previous = y - 1;\n    const auto &CurItem = Map(FromArray[y - 1]);\n    for (typename ArrayRef<T>::size_type x = 1; x <= n; ++x) {\n      int OldRow = Row[x];\n      if (AllowReplacements) {\n        Row[x] = std::min(Previous + (CurItem == Map(ToArray[x - 1]) ? 0u : 1u),\n                          std::min(Row[x - 1], Row[x]) + 1);\n      }\n      else {\n        if (CurItem == Map(ToArray[x - 1]))\n          Row[x] = Previous;\n        else Row[x] = std::min(Row[x-1], Row[x]) + 1;\n      }\n      Previous = OldRow;\n      BestThisRow = std::min(BestThisRow, Row[x]);\n    }\n    if (MaxEditDistance && BestThisRow > MaxEditDistance)\n      return MaxEditDistance + 1;\n  }\n  unsigned Result = Row[n];\n  return Result;\n}\ntemplate <typename T>\nunsigned ComputeEditDistance(const ArrayRef<T> &FromArray, const ArrayRef<T> &ToArray,\n                             bool AllowReplacements = true,\n                             unsigned MaxEditDistance = 0) {\n  return ComputeMappedEditDistance(\n      FromArray, ToArray, [](const T &X) -> const T & { return X; },\n      AllowReplacements, MaxEditDistance);\n}\nstatic uint64_t s;\nstatic inline uint64_t rnd() { s ^= s << 13; s ^= s >> 7; s ^= s << 17; return s; }\nint main() {\n  int m, len, maxd; unsigned long long seed;\n  if (scanf(\"%d %d %d %llu\", &m, &len, &maxd, &seed) != 4) return 1;\n  s = seed | 1;\n  std::vector<std::vector<char>> words(m);\n  for (auto& w : words) { w.resize(len / 2 + rnd() % len); for (auto& c : w) c = 'a' + rnd() % 8; }\n  unsigned long long total = 0;\n  for (int i = 0; i + 1 < m; i++) total = total * 7 + ComputeEditDistance(words[i], words[i + 1], true, maxd);\n  printf(\"%llu\\n\", total);\n  return 0;\n}\n",
+  "test_inputs": [
+   "2 1 0 1",
+   "2 2 0 2",
+   "3 5 1 3",
+   "10 10 0 4",
+   "40 60 0 5",
+   "100 20 3 6",
+   "20 100 0 7",
+   "5 200 50 8",
+   "60 40 0 9",
+   "200 8 2 10"
+  ],
+  "test_outputs": [
+   "0",
+   "2",
+   "16",
+   "56818917",
+   "14593149239560406590",
+   "355090713398614756",
+   "125203218470299808",
+   "20400",
+   "17005257704355714131",
+   "8714907614534038132"
+  ],
+  "energy_inputs": [
+   "80 80 0 11",
+   "40 160 0 12",
+   "200 40 0 13"
+  ],
+  "project": "llvm/llvm-project",
+  "github_stars": 41112,
+  "source_file": "llvm/include/llvm/ADT/edit_distance.h",
+  "function": "ComputeEditDistance",
+  "category": "string metric (DP)"
+ },
+ "xxhash32": {
+  "code": "// xxHash xxhash.h: XXH32 and its helpers (verbatim; scalar configuration, XXH32_ENDJMP = 0, no streaming).\n#include <cstdint>\n#include <cstdio>\n#include <cstring>\n#include <vector>\ntypedef uint8_t xxh_u8;\ntypedef uint32_t xxh_u32;\ntypedef uint32_t XXH32_hash_t;\ntypedef enum { XXH_aligned, XXH_unaligned } XXH_alignment;\n#define XXH_FORCE_INLINE static inline\n#define XXH_PUREF\n#define XXH_RESTRICT __restrict\n#define XXH_PUBLIC_API\n#define XXH_ASSERT(c) ((void)0)\n#define XXH_FALLTHROUGH [[fallthrough]]\n#define XXH32_ENDJMP 0\n#define XXH_FORCE_ALIGN_CHECK 0\n#define XXH_rotl32(x,r) (((x) << (r)) | ((x) >> (32 - (r))))\nstatic xxh_u32 XXH_readLE32_align(const void* ptr, XXH_alignment align) { (void)align; xxh_u32 v; memcpy(&v, ptr, 4); return v; }\n#define XXH_PRIME32_1  0x9E3779B1U\n#define XXH_PRIME32_2  0x85EBCA77U\n#define XXH_PRIME32_3  0xC2B2AE3DU\n#define XXH_PRIME32_4  0x27D4EB2FU\n#define XXH_PRIME32_5  0x165667B1U\nstatic xxh_u32 XXH32_round(xxh_u32 acc, xxh_u32 input)\n{\n    acc += input * XXH_PRIME32_2;\n    acc  = XXH_rotl32(acc, 13);\n    acc *= XXH_PRIME32_1;\n    return acc;\n}\nstatic xxh_u32 XXH32_avalanche(xxh_u32 hash)\n{\n    hash ^= hash >> 15;\n    hash *= XXH_PRIME32_2;\n    hash ^= hash >> 13;\n    hash *= XXH_PRIME32_3;\n    hash ^= hash >> 16;\n    return hash;\n}\n#define XXH_get32bits(p) XXH_readLE32_align(p, align)\nXXH_FORCE_INLINE void\nXXH32_initAccs(xxh_u32 *acc, xxh_u32 seed)\n{\n    XXH_ASSERT(acc != NULL);\n    acc[0] = seed + XXH_PRIME32_1 + XXH_PRIME32_2;\n    acc[1] = seed + XXH_PRIME32_2;\n    acc[2] = seed + 0;\n    acc[3] = seed - XXH_PRIME32_1;\n}\nXXH_FORCE_INLINE const xxh_u8 *\nXXH32_consumeLong(\n    xxh_u32 *XXH_RESTRICT acc,\n    xxh_u8 const *XXH_RESTRICT input,\n    size_t len,\n    XXH_alignment align\n)\n{\n    const xxh_u8* const bEnd = input + len;\n    const xxh_u8* const limit = bEnd - 15;\n    XXH_ASSERT(acc != NULL);\n    XXH_ASSERT(input != NULL);\n    XXH_ASSERT(len >= 16);\n    do {\n        acc[0] = XXH32_round(acc[0], XXH_get32bits(input)); input += 4;\n        acc[1] = XXH32_round(acc[1], XXH_get32bits(input)); input += 4;\n        acc[2] = XXH32_round(acc[2], XXH_get32bits(input)); input += 4;\n        acc[3] = XXH32_round(acc[3], XXH_get32bits(input)); input += 4;\n    } while (input < limit);\n    return input;\n}\nXXH_FORCE_INLINE XXH_PUREF xxh_u32\nXXH32_mergeAccs(const xxh_u32 *acc)\n{\n    XXH_ASSERT(acc != NULL);\n    return XXH_rotl32(acc[0], 1)  + XXH_rotl32(acc[1], 7)\n         + XXH_rotl32(acc[2], 12) + XXH_rotl32(acc[3], 18);\n}\nstatic XXH_PUREF xxh_u32\nXXH32_finalize(xxh_u32 hash, const xxh_u8* ptr, size_t len, XXH_alignment align)\n{\n#define XXH_PROCESS1 do {                             \\\n    hash += (*ptr++) * XXH_PRIME32_5;                 \\\n    hash = XXH_rotl32(hash, 11) * XXH_PRIME32_1;      \\\n} while (0)\n#define XXH_PROCESS4 do {                             \\\n    hash += XXH_get32bits(ptr) * XXH_PRIME32_3;       \\\n    ptr += 4;                                         \\\n    hash  = XXH_rotl32(hash, 17) * XXH_PRIME32_4;     \\\n} while (0)\n    if (ptr==NULL) XXH_ASSERT(len == 0);\n    len &= 15;\n    while (len >= 4) {\n        XXH_PROCESS4;\n        len -= 4;\n    }\n    while (len > 0) {\n        XXH_PROCESS1;\n        --len;\n    }\n    return XXH32_avalanche(hash);\n}\nXXH_FORCE_INLINE XXH_PUREF xxh_u32\nXXH32_endian_align(const xxh_u8* input, size_t len, xxh_u32 seed, XXH_alignment align)\n{\n    xxh_u32 h32;\n    if (input==NULL) XXH_ASSERT(len == 0);\n    if (len>=16) {\n        xxh_u32 acc[4];\n        XXH32_initAccs(acc, seed);\n        input = XXH32_consumeLong(acc, input, len, align);\n        h32 = XXH32_mergeAccs(acc);\n    } else {\n        h32  = seed + XXH_PRIME32_5;\n    }\n    h32 += (xxh_u32)len;\n    return XXH32_finalize(h32, input, len&15, align);\n}\nXXH_PUBLIC_API XXH32_hash_t XXH32 (const void* input, size_t len, XXH32_hash_t seed)\n{\n    if (XXH_FORCE_ALIGN_CHECK) {\n        if ((((size_t)input) & 3) == 0) {\n            return XXH32_endian_align((const xxh_u8*)input, len, seed, XXH_aligned);\n    }   }\n    return XXH32_endian_align((const xxh_u8*)input, len, seed, XXH_unaligned);\n}\nstatic uint64_t s;\nstatic inline uint64_t rnd() { s ^= s << 13; s ^= s >> 7; s ^= s << 17; return s; }\nint main() {\n  int n, k; unsigned long long seed;\n  if (scanf(\"%d %d %llu\", &n, &k, &seed) != 3) return 1;\n  s = seed | 1;\n  std::vector<char> buf(n + 64);\n  for (auto& c : buf) c = static_cast<char>(rnd());\n  uint32_t acc = 0;\n  for (int i = 0; i < k; i++) acc = acc * 31 + XXH32(buf.data() + (i % 64), 1 + (i * 37) % n, i);\n  printf(\"%u\\n\", acc);\n  return 0;\n}\n",
+  "test_inputs": [
+   "1 1 1",
+   "16 50 2",
+   "32 50 3",
+   "15 50 4",
+   "17 100 5",
+   "1000 200 6",
+   "20000 400 7",
+   "5 1000 8",
+   "128 300 9",
+   "50000 100 10"
+  ],
+  "test_outputs": [
+   "275094093",
+   "4213950679",
+   "1814387468",
+   "910397310",
+   "4252420461",
+   "714706305",
+   "3934568277",
+   "1570005890",
+   "2118123290",
+   "1683727802"
+  ],
+  "energy_inputs": [
+   "50000 800 11",
+   "100000 400 12",
+   "20000 1600 13"
+  ],
+  "project": "Cyan4973/xxHash",
+  "github_stars": 11346,
+  "source_file": "xxhash.h",
+  "function": "XXH32",
+  "category": "hashing"
+ },
+ "redis_siphash": {
+  "code": "// Redis src/siphash.c: siphash (verbatim; x86 configuration as built by Redis).\n#include <cstdint>\n#include <cstdio>\n#include <cstring>\n#include <vector>\n#if defined(__X86_64__) || defined(__x86_64__) || defined (__i386__) \\\n\t|| defined (__aarch64__) || defined (__arm64__) \\\n    || (defined(__riscv) && defined(__riscv_zicclsm))\n#define UNALIGNED_LE_CPU\n#endif\n\n#define ROTL(x, b) (uint64_t)(((x) << (b)) | ((x) >> (64 - (b))))\n\n#define U32TO8_LE(p, v)                                                        \\\n    (p)[0] = (uint8_t)((v));                                                   \\\n    (p)[1] = (uint8_t)((v) >> 8);                                              \\\n    (p)[2] = (uint8_t)((v) >> 16);                                             \\\n    (p)[3] = (uint8_t)((v) >> 24);\n\n#define U64TO8_LE(p, v)                                                        \\\n    U32TO8_LE((p), (uint32_t)((v)));                                           \\\n    U32TO8_LE((p) + 4, (uint32_t)((v) >> 32));\n\n#ifdef UNALIGNED_LE_CPU\n#define U8TO64_LE(p) (*((uint64_t*)(p)))\n#else\n#define U8TO64_LE(p)                                                           \\\n    (((uint64_t)((p)[0])) | ((uint64_t)((p)[1]) << 8) |                        \\\n     ((uint64_t)((p)[2]) << 16) | ((uint64_t)((p)[3]) << 24) |                 \\\n     ((uint64_t)((p)[4]) << 32) | ((uint64_t)((p)[5]) << 40) |                 \\\n     ((uint64_t)((p)[6]) << 48) | ((uint64_t)((p)[7]) << 56))\n#endif\n\n#define U8TO64_LE_NOCASE(p)                                                    \\\n    (((uint64_t)(siptlw((p)[0]))) |                                           \\\n     ((uint64_t)(siptlw((p)[1])) << 8) |                                      \\\n     ((uint64_t)(siptlw((p)[2])) << 16) |                                     \\\n     ((uint64_t)(siptlw((p)[3])) << 24) |                                     \\\n     ((uint64_t)(siptlw((p)[4])) << 32) |                                              \\\n     ((uint64_t)(siptlw((p)[5])) << 40) |                                              \\\n     ((uint64_t)(siptlw((p)[6])) << 48) |                                              \\\n     ((uint64_t)(siptlw((p)[7])) << 56))\n\n#define SIPROUND                                                               \\\n    do {                                                                       \\\n        v0 += v1;                                                              \\\n        v1 = ROTL(v1, 13);                                                     \\\n        v1 ^= v0;                                                              \\\n        v0 = ROTL(v0, 32);                                                     \\\n        v2 += v3;                                                              \\\n        v3 = ROTL(v3, 16);                                                     \\\n        v3 ^= v2;                                                              \\\n        v0 += v3;                                                              \\\n        v3 = ROTL(v3, 21);                                                     \\\n        v3 ^= v0;                                                              \\\n        v2 += v1;                                                              \\\n        v1 = ROTL(v1, 17);                                                     \\\n        v1 ^= v2;                                                              \\\n        v2 = ROTL(v2, 32);                                                     \\\n    } while (0)\n\nuint64_t siphash(const uint8_t *in, const size_t inlen, const uint8_t *k) {\n#ifndef UNALIGNED_LE_CPU\n    uint64_t hash;\n    uint8_t *out = (uint8_t*) &hash;\n#endif\n    uint64_t v0 = 0x736f6d6570736575ULL;\n    uint64_t v1 = 0x646f72616e646f6dULL;\n    uint64_t v2 = 0x6c7967656e657261ULL;\n    uint64_t v3 = 0x7465646279746573ULL;\n    uint64_t k0 = U8TO64_LE(k);\n    uint64_t k1 = U8TO64_LE(k + 8);\n    uint64_t m;\n    const uint8_t *end = in + inlen - (inlen % sizeof(uint64_t));\n    const int left = inlen & 7;\n    uint64_t b = ((uint64_t)inlen) << 56;\n    v3 ^= k1;\n    v2 ^= k0;\n    v1 ^= k1;\n    v0 ^= k0;\n\n    for (; in != end; in += 8) {\n        m = U8TO64_LE(in);\n        v3 ^= m;\n\n        SIPROUND;\n\n        v0 ^= m;\n    }\n\n    switch (left) {\n    case 7: b |= ((uint64_t)in[6]) << 48; /* fall-thru */\n    case 6: b |= ((uint64_t)in[5]) << 40; /* fall-thru */\n    case 5: b |= ((uint64_t)in[4]) << 32; /* fall-thru */\n    case 4: b |= ((uint64_t)in[3]) << 24; /* fall-thru */\n    case 3: b |= ((uint64_t)in[2]) << 16; /* fall-thru */\n    case 2: b |= ((uint64_t)in[1]) << 8; /* fall-thru */\n    case 1: b |= ((uint64_t)in[0]); break;\n    case 0: break;\n    }\n\n    v3 ^= b;\n\n    SIPROUND;\n\n    v0 ^= b;\n    v2 ^= 0xff;\n\n    SIPROUND;\n    SIPROUND;\n\n    b = v0 ^ v1 ^ v2 ^ v3;\n#ifndef UNALIGNED_LE_CPU\n    U64TO8_LE(out, b);\n    return hash;\n#else\n    return b;\n#endif\n}\nstatic uint64_t st;\nstatic inline uint64_t rnd() { st ^= st << 13; st ^= st >> 7; st ^= st << 17; return st; }\nint main() {\n  int n, k; unsigned long long seed;\n  if (scanf(\"%d %d %llu\", &n, &k, &seed) != 3) return 1;\n  st = seed | 1;\n  std::vector<uint8_t> buf(n + 64); uint8_t key[16];\n  for (auto& c : buf) c = static_cast<uint8_t>(rnd());\n  for (auto& c : key) c = static_cast<uint8_t>(rnd());\n  uint64_t acc = 0;\n  for (int i = 0; i < k; i++) { key[i % 16] ^= static_cast<uint8_t>(i); acc = acc * 31 + siphash(buf.data() + (i % 64), 1 + (i * 37) % n, key); }\n  printf(\"%llu\\n\", (unsigned long long)acc);\n  return 0;\n}\n",
+  "test_inputs": [
+   "1 1 1",
+   "8 50 2",
+   "16 50 3",
+   "7 50 4",
+   "9 100 5",
+   "1000 200 6",
+   "20000 400 7",
+   "5 1000 8",
+   "128 300 9",
+   "50000 100 10"
+  ],
+  "test_outputs": [
+   "1939083065034221370",
+   "17871956559871447543",
+   "8039804102109827104",
+   "7222017162186301264",
+   "14911512695907315572",
+   "11073406391267270643",
+   "2159479475017770587",
+   "5469477558762392720",
+   "13217833879280275129",
+   "10862150240523533443"
+  ],
+  "energy_inputs": [
+   "50000 800 11",
+   "100000 400 12",
+   "20000 1600 13"
+  ],
+  "project": "redis/redis",
+  "github_stars": 76983,
+  "source_file": "src/siphash.c",
+  "function": "siphash (SipHash-1-2)",
+  "category": "hashing"
+ },
+ "ngx_murmurhash2": {
+  "code": "// nginx src/core/ngx_murmurhash.c: ngx_murmur_hash2 (verbatim; u_char typedef inlined).\n#include <cstdint>\n#include <cstdio>\n#include <cstddef>\n#include <vector>\ntypedef unsigned char u_char;\nuint32_t\nngx_murmur_hash2(u_char *data, size_t len)\n{\n    uint32_t  h, k;\n\n    h = 0 ^ len;\n\n    while (len >= 4) {\n        k  = data[0];\n        k |= data[1] << 8;\n        k |= data[2] << 16;\n        k |= data[3] << 24;\n\n        k *= 0x5bd1e995;\n        k ^= k >> 24;\n        k *= 0x5bd1e995;\n\n        h *= 0x5bd1e995;\n        h ^= k;\n\n        data += 4;\n        len -= 4;\n    }\n\n    switch (len) {\n    case 3:\n        h ^= data[2] << 16;\n        /* fall through */\n    case 2:\n        h ^= data[1] << 8;\n        /* fall through */\n    case 1:\n        h ^= data[0];\n        h *= 0x5bd1e995;\n    }\n\n    h ^= h >> 13;\n    h *= 0x5bd1e995;\n    h ^= h >> 15;\n\n    return h;\n}\nstatic uint64_t st;\nstatic inline uint64_t rnd() { st ^= st << 13; st ^= st >> 7; st ^= st << 17; return st; }\nint main() {\n  int n, k; unsigned long long seed;\n  if (scanf(\"%d %d %llu\", &n, &k, &seed) != 3) return 1;\n  st = seed | 1;\n  std::vector<u_char> buf(n + 64);\n  for (auto& c : buf) c = static_cast<u_char>(rnd());\n  uint32_t acc = 0;\n  for (int i = 0; i < k; i++) acc = acc * 31 + ngx_murmur_hash2(buf.data() + (i % 64), 1 + (i * 37) % n);\n  printf(\"%u\\n\", acc);\n  return 0;\n}\n",
+  "test_inputs": [
+   "1 1 1",
+   "4 50 2",
+   "3 50 3",
+   "7 50 4",
+   "9 100 5",
+   "1000 200 6",
+   "20000 400 7",
+   "5 1000 8",
+   "128 300 9",
+   "50000 100 10"
+  ],
+  "test_outputs": [
+   "636687721",
+   "3981453990",
+   "3480804733",
+   "3071583305",
+   "1536203789",
+   "1038233890",
+   "1781550136",
+   "3024270058",
+   "1181397294",
+   "2892719189"
+  ],
+  "energy_inputs": [
+   "50000 800 11",
+   "100000 400 12",
+   "20000 1600 13"
+  ],
+  "project": "nginx/nginx",
+  "github_stars": 31913,
+  "source_file": "src/core/ngx_murmurhash.c",
+  "function": "ngx_murmur_hash2",
+  "category": "hashing"
+ },
+ "redis_stringmatch": {
+  "code": "// Redis src/util.c: stringmatchlen glob matcher (verbatim; variable `not` renamed `negate`, a C++ keyword).\n#include <cctype>\n#include <cstdint>\n#include <cstdio>\n#include <string>\n#include <vector>\nstatic int stringmatchlen_impl(const char *pattern, int patternLen,\n        const char *string, int stringLen, int nocase, int *skipLongerMatches, int nesting)\n{\n    /* Protection against abusive patterns. */\n    if (nesting > 1000) return 0;\n\n    while(patternLen && stringLen) {\n        switch(pattern[0]) {\n        case '*':\n            while (patternLen && pattern[1] == '*') {\n                pattern++;\n                patternLen--;\n            }\n            if (patternLen == 1)\n                return 1; /* match */\n            while(stringLen) {\n                if (stringmatchlen_impl(pattern+1, patternLen-1,\n                            string, stringLen, nocase, skipLongerMatches, nesting+1))\n                    return 1; /* match */\n                if (*skipLongerMatches)\n                    return 0; /* no match */\n                string++;\n                stringLen--;\n            }\n            /* There was no match for the rest of the pattern starting\n             * from anywhere in the rest of the string. If there were\n             * any '*' earlier in the pattern, we can terminate the\n             * search early without trying to match them to longer\n             * substrings. This is because a longer match for the\n             * earlier part of the pattern would require the rest of the\n             * pattern to match starting later in the string, and we\n             * have just determined that there is no match for the rest\n             * of the pattern starting from anywhere in the current\n             * string. */\n            *skipLongerMatches = 1;\n            return 0; /* no match */\n            break;\n        case '?':\n            string++;\n            stringLen--;\n            break;\n        case '[':\n        {\n            int negate, match;\n\n            pattern++;\n            patternLen--;\n            negate = patternLen && pattern[0] == '^';\n            if (negate) {\n                pattern++;\n                patternLen--;\n            }\n            match = 0;\n            while(1) {\n                if (patternLen >= 2 && pattern[0] == '\\\\') {\n                    pattern++;\n                    patternLen--;\n                    if (pattern[0] == string[0])\n                        match = 1;\n                } else if (patternLen == 0) {\n                    pattern--;\n                    patternLen++;\n                    break;\n                } else if (pattern[0] == ']') {\n                    break;\n                } else if (patternLen >= 3 && pattern[1] == '-') {\n                    int start = pattern[0];\n                    int end = pattern[2];\n                    int c = string[0];\n                    if (start > end) {\n                        int t = start;\n                        start = end;\n                        end = t;\n                    }\n                    if (nocase) {\n                        start = tolower(start);\n                        end = tolower(end);\n                        c = tolower(c);\n                    }\n                    pattern += 2;\n                    patternLen -= 2;\n                    if (c >= start && c <= end)\n                        match = 1;\n                } else {\n                    if (!nocase) {\n                        if (pattern[0] == string[0])\n                            match = 1;\n                    } else {\n                        if (tolower((int)pattern[0]) == tolower((int)string[0]))\n                            match = 1;\n                    }\n                }\n                pattern++;\n                patternLen--;\n            }\n            if (negate)\n                match = !match;\n            if (!match)\n                return 0; /* no match */\n            string++;\n            stringLen--;\n            break;\n        }\n        case '\\\\':\n            if (patternLen >= 2) {\n                pattern++;\n                patternLen--;\n            }\n            /* fall through */\n        default:\n            if (!nocase) {\n                if (pattern[0] != string[0])\n                    return 0; /* no match */\n            } else {\n                if (tolower((int)pattern[0]) != tolower((int)string[0]))\n                    return 0; /* no match */\n            }\n            string++;\n            stringLen--;\n            break;\n        }\n        pattern++;\n        patternLen--;\n        if (stringLen == 0) {\n            while(patternLen && *pattern == '*') {\n                pattern++;\n                patternLen--;\n            }\n            break;\n        }\n    }\n    if (patternLen == 0 && stringLen == 0)\n        return 1;\n    return 0;\n}\n\nint stringmatchlen(const char *pattern, int patternLen,\n        const char *string, int stringLen, int nocase) {\n    int skipLongerMatches = 0;\n    return stringmatchlen_impl(pattern,patternLen,string,stringLen,nocase,&skipLongerMatches,0);\n}\nstatic uint64_t st;\nstatic inline uint64_t rnd() { st ^= st << 13; st ^= st >> 7; st ^= st << 17; return st; }\nint main() {\n  int m, len; unsigned long long seed;\n  if (scanf(\"%d %d %llu\", &m, &len, &seed) != 3) return 1;\n  st = seed | 1;\n  const char* alpha = \"abcab*?[]\";\n  std::vector<std::string> pats(m), strs(m);\n  for (int i = 0; i < m; i++) {\n    pats[i].resize(1 + rnd() % 12); for (auto& c : pats[i]) c = alpha[rnd() % 9];\n    strs[i].resize(len / 2 + rnd() % len); for (auto& c : strs[i]) c = 'a' + rnd() % 3;\n  }\n  long long hits = 0;\n  for (int i = 0; i < m; i++) for (int j = 0; j < m; j++)\n    hits = hits * 3 + stringmatchlen(pats[i].data(), (int)pats[i].size(), strs[j].data(), (int)strs[j].size(), (i + j) & 1);\n  printf(\"%lld\\n\", hits);\n  return 0;\n}\n",
+  "test_inputs": [
+   "1 1 1",
+   "2 3 2",
+   "5 5 3",
+   "10 10 4",
+   "30 20 5",
+   "60 40 6",
+   "20 100 7",
+   "100 8 8",
+   "3 200 9",
+   "80 16 10"
+  ],
+  "test_outputs": [
+   "0",
+   "0",
+   "3486785130",
+   "729",
+   "6846681812227594300",
+   "4685450922770779452",
+   "-6314282269715751196",
+   "8922035887605047962",
+   "0",
+   "-1806245660448141821"
+  ],
+  "energy_inputs": [
+   "80 60 11",
+   "120 40 12",
+   "60 120 13"
+  ],
+  "project": "redis/redis",
+  "github_stars": 76983,
+  "source_file": "src/util.c",
+  "function": "stringmatchlen",
+  "category": "pattern matching"
+ }
+}

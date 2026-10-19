@@ -53,7 +53,7 @@ import os
 CF_BASE = Path(os.environ.get("GREEN_TEA_DATA", str(REPO_ROOT / "data" / "cross_family_sim_results")))
 CROSS_FAMILY_DIRS = {
     "gemini25_flash_sft":           CF_BASE / "gemini25flash_v2",
-    "llama31_8b_sft":               CF_BASE / "llama31_8b_v3",
+    "llama31_8b_sft":               CF_BASE / "llama8b_sft_energy_local",  # local fine-tune reported in the paper (5.97%); llama31_8b_v3 is an earlier artifact
     "gemma3_12b_sft":               CF_BASE / "gemma3_12b_v3",
     "qwen05b_sft":                  CF_BASE / "qwen05b_sft",
     "qwen7b_sft":                   CF_BASE / "qwen7b_sft",
@@ -317,27 +317,32 @@ def main():
               f"{m['beat_gt_pct']:>7.1f}% {m['caderr']:>6.2f}% {m['mean_edp_red']:>10.2f}%")
 
     print_section("STATISTICAL COMPARISON (SFT vs GRPO)")
-    # Align by problem_id for paired test
-    sft_pid = {r["problem_id"]: r for r in sft["records"] if r.get("compiled") and r.get("generated_energy", 0) > 0}
-    grpo_pid = {r["problem_id"]: r for r in grpo["records"] if r.get("compiled") and r.get("generated_energy", 0) > 0}
-    common = sorted(set(sft_pid) & set(grpo_pid))
+    # Pair by distinct baseline program (test pairs share baselines and, hence, generations); resample by problem.
+    import hashlib
+    from collections import defaultdict
+    def by_base(records):
+        g = defaultdict(list)
+        for r in records:
+            if r.get("num_inputs", 0):
+                err = r["energy_reduction"] if (r.get("compiled") and r.get("generated_energy", 0) > 0) else 0.0
+                g[(r["problem_id"], hashlib.md5(r["baseline_code"].encode()).hexdigest())].append(err * r.get("tests_passed", 0) / r["num_inputs"])
+        return {k: np.mean(v) for k, v in g.items()}
+    sb, gb = by_base(sft["records"]), by_base(grpo["records"])
+    common = sorted(set(sb) & set(gb))
     if common:
-        sft_e = np.array([sft_pid[p]["energy_reduction"] for p in common])
-        grpo_e = np.array([grpo_pid[p]["energy_reduction"] for p in common])
-        diff = grpo_e - sft_e
-        print(f"Paired samples (shared problems): {len(common)}")
-        print(f"Mean improvement GRPO over SFT: {np.mean(diff):.2f}%")
-        try:
-            w_stat, w_p = wilcoxon(diff)
-            print(f"Wilcoxon: W={w_stat:.0f}, p={w_p:.4g}")
-            LIVE_PVALUES.append((f"Paired SFT-vs-GRPO Wilcoxon (W={int(w_stat)}, N={len(diff)})", float(w_p)))
-        except Exception as e:
-            print(f"Wilcoxon failed: {e}")
-        d = np.mean(diff) / np.std(diff) if np.std(diff) > 0 else 0
-        print(f"Cohen's d: {d:.3f}")
-        boot = [np.mean(np.random.choice(diff, len(diff), replace=True)) for _ in range(5000)]
+        diff = np.array([gb[k] - sb[k] for k in common])
+        from scipy.stats import rankdata
+        nz = diff[diff != 0]; rk = rankdata(np.abs(nz))
+        r_rb = (rk[nz > 0].sum() - rk[nz < 0].sum()) / rk.sum()
+        w_stat, w_p = wilcoxon(diff)
+        print(f"Paired per-baseline CARET contribution: n={len(common)}, mean diff={diff.mean():.2f}pp, W={w_stat:.0f}, p={w_p:.3g}, rank-biserial r={r_rb:.3f}")
+        LIVE_PVALUES.append((f"Paired SFT-vs-GRPO per-baseline Wilcoxon (N={len(diff)})", float(w_p)))
+        by_pid = defaultdict(list)
+        for k, d in zip(common, diff): by_pid[k[0]].append(d)
+        pids = list(by_pid); rng = np.random.default_rng(0)
+        boot = [np.mean(np.concatenate([by_pid[pids[i]] for i in rng.integers(0, len(pids), len(pids))])) for _ in range(5000)]
         ci_lo, ci_hi = np.percentile(boot, [2.5, 97.5])
-        print(f"Bootstrap 95% CI for improvement: [{ci_lo:.2f}%, {ci_hi:.2f}%]")
+        print(f"Problem-cluster bootstrap 95% CI for mean per-baseline difference: [{ci_lo:.2f}, {ci_hi:.2f}] pp")
     else:
         print("No common problem_ids for paired test.")
 
@@ -376,16 +381,21 @@ def main():
             clo, chi = np.percentile(cb, [2.5, 97.5])
             print(f"Bootstrap 95% CI on mean ERR (problem-clustered, n={len(pids)} problems): [{clo:.2f}%, {chi:.2f}%]")
 
-    print_section("CROSS-METHOD PAIRED WILCOXON (SFT vs baseline by problem_id)")
+    print_section("CROSS-METHOD PAIRED WILCOXON (SFT vs baseline, paired by distinct baseline program)")
     for bname, bdir in BASELINE_DIRS.items():
         if not bdir.exists() or not any(bdir.glob("test_comparison_chunk_*.jsonl")):
             print(f"  {bname}: [no sim chunks]"); continue
         brecs = load_eval_records(bdir)
-        b_valid = {r["problem_id"]: r for r in brecs if r.get("compiled") and r.get("generated_energy", 0) > 0}
-        sft_valid = {r["problem_id"]: r for r in sft_records if r.get("compiled") and r.get("generated_energy", 0) > 0}
+        def base_err(records):  # mean ERR over valid outputs, keyed by distinct baseline program
+            g = defaultdict(list)
+            for r in records:
+                if r.get("compiled") and r.get("generated_energy", 0) > 0:
+                    g[(r["problem_id"], hashlib.md5(r["baseline_code"].encode()).hexdigest())].append(r["energy_reduction"])
+            return {k: np.mean(v) for k, v in g.items()}
+        b_valid, sft_valid = base_err(brecs), base_err(sft_records)
         common = sorted(set(sft_valid) & set(b_valid))
-        if not common: print(f"  {bname}: no shared problem_ids"); continue
-        diffs = np.array([sft_valid[p]["energy_reduction"] - b_valid[p]["energy_reduction"] for p in common])
+        if not common: print(f"  {bname}: no shared baselines"); continue
+        diffs = np.array([sft_valid[k] - b_valid[k] for k in common])
         try:
             w, p = wilcoxon(diffs)
             print(f"  SFT vs {bname:25s}: W={w:.0f}, p={p:.4g}, n={len(common)} paired, mean_diff={np.mean(diffs):.2f}%")

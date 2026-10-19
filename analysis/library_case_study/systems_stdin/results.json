@@ -1,0 +1,966 @@
+{
+ "results": [
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_hash",
+   "sample": 0,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nconst int N = 1e5 + 10;\n\nchar s[N];\n\nint main()\n\n{\n\n    int T;\n\n    scanf(\"%d\", &T);\n\n    while (T--)\n\n    {\n\n        scanf(\"%s\", s);\n\n        int len = strlen(s);\n\n        long long ans = 0;\n\n        for (int i = 0; i < len; i++)\n\n            ans = (ans * 101 + s[i]) % 1000000007;\n\n        printf(\"%lld\\n\", ans);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_hash",
+   "sample": 1,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nconst int N = 1e5 + 10;\n\nchar s[N];\n\nint main()\n\n{\n\n    int T;\n\n    scanf(\"%d\", &T);\n\n    while (T--)\n\n    {\n\n        scanf(\"%s\", s);\n\n        int len = strlen(s);\n\n        long long ans = 0;\n\n        for (int i = 0; i < len; i++)\n\n            ans = (ans * 101 + s[i]) % 1000000007;\n\n        printf(\"%lld\\n\", ans);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_hash",
+   "sample": 2,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nconst int N = 1e5 + 10;\n\nchar s[N];\n\nint main()\n\n{\n\n    int q;\n\n    scanf(\"%d\", &q);\n\n    while (q--)\n\n    {\n\n        scanf(\"%s\", s);\n\n        int len = strlen(s);\n\n        long long ans = 0;\n\n        for (int i = 0; i < len; i++)\n\n            ans = (ans * 11 + s[i]) % 1000000007;\n\n        printf(\"%lld\\n\", ans);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_hash",
+   "sample": 3,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar s[1<<20];\n\nint main()\n\n{\n\n\tint q;\n\n\tscanf(\"%d\",&q);\n\n\twhile(q--)\n\n\t{\n\n\t\tscanf(\"%s\",s);\n\n\t\tint len=strlen(s);\n\n\t\tunsigned int ans=0xbc9f1d34;\n\n\t\tfor(int i=0;i<len;i++)\n\n\t\t\tans=(ans^((unsigned int)s[i]<<i))%1000000007;\n\n\t\tprintf(\"%u\\n\",ans);\n\n\t}\n\n\treturn 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_hash",
+   "sample": 4,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar s[1<<20];\n\nint main()\n\n{\n\n\tint q;\n\n\tscanf(\"%d\",&q);\n\n\twhile(q--)\n\n\t{\n\n\t\tscanf(\"%s\",s);\n\n\t\tint len=strlen(s);\n\n\t\tlong long ans=0;\n\n\t\tfor(int i=0;i<len;i++)\n\n\t\t\tans=(ans*11+\ts[i])%1000000007;\n\n\t\tprintf(\"%lld\\n\",ans);\n\n\t}\n\n\treturn 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "zlib_adler32",
+   "sample": 0,
+   "prompt_tokens": 907,
+   "generated_code": "#include <cstdio>\n\nunsigned long adler32(unsigned long adler, const char* data, size_t len) {\n  unsigned long s1 = adler & 0xFFFF;\n  unsigned long s2 = adler >> 16;\n\n  for (size_t i = 0; i < len; ++i) {\n    s1 = (s1 + data[i]) % 65521;\n    s2 = (s2 + s1) % 65521;\n  }\n\n  return (s2 << 16) | s1;\n}\n\nint main() {\n  int q;\n  scanf(\"%d\", &q);\n\n  for (int i = 0; i < q; ++i) {\n    char str[100001];\n    scanf(\"%s\", str);\n    printf(\"%lu\\n\", adler32(1, str, strlen(str)));\n  }\n\n  return 0;\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "zlib_adler32",
+   "sample": 1,
+   "prompt_tokens": 907,
+   "generated_code": "#include <iostream>\n#include <string>\n\nusing namespace std;\n\nunsigned long adler32(const string& s) {\n\tunsigned long a = 1, b = 0;\n\tfor (char c : s) {\n\t\ta = (a + c) % 65521;\n\t\tb = (b + a) % 65521;\n\t}\n\treturn (b << 16) | a;\n}\n\nint main() {\n\tint q;\n\tcin >> q;\n\twhile (q--) {\n\t\tstring s;\n\t\tcin >> s;\n\t\tcout << adler32(s) << endl;\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -751.099861763473,
+   "cycle_ratio": 8.995817745464812
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "zlib_adler32",
+   "sample": 2,
+   "prompt_tokens": 907,
+   "generated_code": "#include <cstdio>\n\nunsigned long adler32(unsigned long adler, const char* data, size_t len) {\n  unsigned long s1 = adler & 0xFFFF;\n  unsigned long s2 = adler >> 16;\n\n  for (size_t i = 0; i < len; ++i) {\n    s1 = (s1 + data[i]) % 65521;\n    s2 = (s2 + s1) % 65521;\n  }\n\n  return (s2 << 16) | s1;\n}\n\nint main() {\n  int q;\n  scanf(\"%d\", &q);\n\n  for (int i = 0; i < q; ++i) {\n    char str[100001];\n    scanf(\"%s\", str);\n    printf(\"%lu\\n\", adler32(1, str, strlen(str)));\n  }\n\n  return 0;\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "zlib_adler32",
+   "sample": 3,
+   "prompt_tokens": 907,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(x) (x).begin(), (x).end()\n\n#define pb push_back\n\n#define mp make_pair\n\n#defineIGETI(a) int a; scanf(\"%d\", &a)\n\n#defineIGETS(a, b) int a, b; scanf(\"%d %d\", &a, &b)\n\n#defineIGETT(a, b, c) int a, b, c; scanf(\"%d %d %d\", &a, &b, &c)\n\n#definePNTI(a) printf(\"%d\\n\", a)\n\n#definePNTS(a, b) printf(\"%d %d\\n\", a, b)\n\n#definePNTT(a, b, c) printf(\"%d %d %d\\n\", a, b, c)\n\n#definePNTR(a) printf(\"%.10f\\n\", a)\n\n#defineDUMP(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) cout << *item << \" \"; cout << endl;\n\n#defineDUMPI(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) cout << *item << \" \"; cout << endl;\n\n#defineDUMPS(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) cout << *item << \" \"; cout << endl;\n\n#defineDUMPT(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) cout << *item << \" \"; cout << endl;\n\n#defineDUMPVV(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVI(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVP(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVS(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVT(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVC(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVR(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVD(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVL(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVM(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVO(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVB(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVF(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVG(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVK(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVN(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVP(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVS(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVT(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVC(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVR(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVD(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVL(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVM(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVO(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVB(list) cout << \"# \" << #list << \": \"; for(auto item = list.begin(); item != list.end(); ++item) {for(auto elem = item->begin(); elem != item->end(); ++elem) cout << *elem << \" \"; cout << endl;}\n\n#defineDUMPVVF(list) cout << \"# \" << #list << \": \"; for(auto item =",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "zlib_adler32",
+   "sample": 4,
+   "prompt_tokens": 907,
+   "generated_code": "#include <iostream>\n#include <string>\n\nusing namespace std;\n\nunsigned long adler32(const string& s) {\n\tunsigned long a = 1, b = 0;\n\tfor (char c : s) {\n\t\ta = (a + c) % 65521;\n\t\tb = (b + a) % 65521;\n\t}\n\treturn (b << 16) | a;\n}\n\nint main() {\n\tint q;\n\tcin >> q;\n\twhile (q--) {\n\t\tstring s;\n\t\tcin >> s;\n\t\tcout << adler32(s) << endl;\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -751.0950542698556,
+   "cycle_ratio": 8.995764805533987
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_varint",
+   "sample": 0,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\tint n;\n\tscanf(\"%d\", &n);\n\tfor (int i = 0; i < n; i++) {\n\t\tunsigned long long x;\n\t\tscanf(\"%llu\", &x);\n\t\tif (x < (1ll << 32)) {\n\t\t\tprintf(\"%u\\n\", (unsigned int)x);\n\t\t} else {\n\t\t\tprintf(\"%llu\\n\", x);\n\t\t}\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_varint",
+   "sample": 1,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <iostream>\n#include <vector>\n\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    vector<int> a(n);\n    for (int i = 0; i < n; i++) {\n        cin >> a[i];\n    }\n    int ans = 0;\n    for (int i = 0; i < n; i++) {\n        if (a[i] % 2 == 0) {\n            ans++;\n        }\n    }\n    cout << ans << endl;\n    return 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_varint",
+   "sample": 2,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\tint n;\n\tscanf(\"%d\", &n);\n\tfor (int i = 0; i < n; i++) {\n\t\tunsigned long long x;\n\t\tscanf(\"%llu\", &x);\n\t\tif (x < (1ll << 32)) {\n\t\t\tprintf(\"%u\\n\", (unsigned int)x);\n\t\t} else {\n\t\t\tprintf(\"%llu\\n\", x);\n\t\t}\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_varint",
+   "sample": 3,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <iostream>\n#include <vector>\n\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    vector<long long> a(n);\n    for (int i = 0; i < n; i++) {\n        cin >> a[i];\n    }\n\n    long long ans = 0;\n    for (int i = 0; i < n; i++) {\n        if (i % 2 == 0) {\n            ans += a[i];\n        } else {\n            ans -= a[i];\n        }\n    }\n\n    cout << ans << endl;\n\n    return 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "leveldb_varint",
+   "sample": 4,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <iostream>\n#include <vector>\n\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    vector<int> a(n);\n    for (int i = 0; i < n; i++) {\n        cin >> a[i];\n    }\n    int ans = 0;\n    for (int i = 0; i < n; i++) {\n        if (a[i] % 2 == 0) {\n            ans++;\n        }\n    }\n    cout << ans << endl;\n    return 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "git_levenshtein",
+   "sample": 0,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar a[100005],b[100005];\n\nint dp[100005][2];\n\nint main()\n\n{\n\n    int q;\n\n    scanf(\"%d\",&q);\n\n    while(q--)\n\n    {\n\n        scanf(\"%s%s\",a,b);\n\n        int la=strlen(a),lb=strlen(b);\n\n        memset(dp,0,sizeof(dp));\n\n        for(int i=0;i<=la;i++)\n\n            dp[i][0]=i*3;\n\n        for(int i=0;i<=lb;i++)\n\n            dp[0][i%2]=i*2;\n\n        for(int i=1;i<=la;i++)\n\n        {\n\n            for(int j=1;j<=lb;j++)\n\n            {\n\n                dp[i][j%2]=min(dp[i-1][j%2]+3,dp[i][(j-1)%2]+2);\n\n                if(a[i-1]==b[j-1])\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]);\n\n                else\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]+2);\n\n            }\n\n        }\n\n        printf(\"%d\\n\",dp[la][lb%2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 3
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "git_levenshtein",
+   "sample": 1,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar a[100005],b[100005];\n\nint dp[100005][2];\n\nint main()\n\n{\n\n    int q;\n\n    scanf(\"%d\",&q);\n\n    while(q--)\n\n    {\n\n        scanf(\"%s%s\",a,b);\n\n        int la=strlen(a),lb=strlen(b);\n\n        memset(dp,0,sizeof(dp));\n\n        for(int i=0;i<=la;i++)\n\n            dp[i][0]=i*3;\n\n        for(int i=0;i<=lb;i++)\n\n            dp[0][i%2]=i*2;\n\n        for(int i=1;i<=la;i++)\n\n        {\n\n            for(int j=1;j<=lb;j++)\n\n            {\n\n                dp[i][j%2]=min(dp[i-1][j%2]+3,dp[i][(j-1)%2]+2);\n\n                if(a[i-1]==b[j-1])\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]);\n\n                else\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]+2);\n\n            }\n\n        }\n\n        printf(\"%d\\n\",dp[la][lb%2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 3
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "git_levenshtein",
+   "sample": 2,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar a[100005],b[100005];\n\nint dp[100005][2];\n\nint main()\n\n{\n\n    int q;\n\n    scanf(\"%d\",&q);\n\n    while(q--)\n\n    {\n\n        scanf(\"%s%s\",a,b);\n\n        int la=strlen(a),lb=strlen(b);\n\n        memset(dp,0,sizeof(dp));\n\n        for(int i=0;i<=la;i++)\n\n            dp[i][0]=i*3;\n\n        for(int i=0;i<=lb;i++)\n\n            dp[0][i%2]=i*2;\n\n        for(int i=1;i<=la;i++)\n\n        {\n\n            for(int j=1;j<=lb;j++)\n\n            {\n\n                dp[i][j%2]=min(dp[i-1][j%2]+3,dp[i][(j-1)%2]+2);\n\n                if(a[i-1]==b[j-1])\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]);\n\n                else\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]+2);\n\n            }\n\n        }\n\n        printf(\"%d\\n\",dp[la][lb%2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 3
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "git_levenshtein",
+   "sample": 3,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar a[100005],b[100005];\n\nint dp[100005][2];\n\nint main()\n\n{\n\n    int q;\n\n    scanf(\"%d\",&q);\n\n    while(q--)\n\n    {\n\n        scanf(\"%s%s\",a,b);\n\n        int la=strlen(a),lb=strlen(b);\n\n        memset(dp,0,sizeof(dp));\n\n        for(int i=0;i<=la;i++)\n\n            dp[i][0]=i*3;\n\n        for(int i=0;i<=lb;i++)\n\n            dp[0][i%2]=i*2;\n\n        for(int i=1;i<=la;i++)\n\n        {\n\n            for(int j=1;j<=lb;j++)\n\n            {\n\n                dp[i][j%2]=min(dp[i-1][j%2]+3,dp[i][(j-1)%2]+2);\n\n                if(a[i-1]==b[j-1])\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]);\n\n                else\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]+2);\n\n            }\n\n        }\n\n        printf(\"%d\\n\",dp[la][lb%2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 3
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "git_levenshtein",
+   "sample": 4,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar a[100005],b[100005];\n\nint dp[100005][2];\n\nint main()\n\n{\n\n    int q;\n\n    scanf(\"%d\",&q);\n\n    while(q--)\n\n    {\n\n        scanf(\"%s%s\",a,b);\n\n        int la=strlen(a),lb=strlen(b);\n\n        memset(dp,0,sizeof(dp));\n\n        for(int i=0;i<=la;i++)\n\n            dp[i][0]=i*3;\n\n        for(int i=0;i<=lb;i++)\n\n            dp[0][i%2]=i*2;\n\n        for(int i=1;i<=la;i++)\n\n        {\n\n            for(int j=1;j<=lb;j++)\n\n            {\n\n                dp[i][j%2]=min(dp[i-1][j%2]+3,dp[i][(j-1)%2]+2);\n\n                if(a[i-1]==b[j-1])\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]);\n\n                else\n\n                    dp[i][j%2]=min(dp[i][j%2],dp[i-1][(j-1)%2]+2);\n\n            }\n\n        }\n\n        printf(\"%d\\n\",dp[la][lb%2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 3
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "llvm_edit_distance",
+   "sample": 0,
+   "prompt_tokens": 725,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(A) A.begin(),A.end()\n\n#define LLA(A) sizeof(A)/sizeof(A[0])\n\n#define pb push_back\n\n#define mp make_pair\n\ntemplate <class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return 1; } return 0; }\n\ntemplate <class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return 1; } return 0; }\n\ntemplate<class T> inline int sz(const T& x){ return x.size(); }\n\n\nconst int MOD = 1000000007;\n\n// const int MOD = 998244353;\n\nconst int INF = 1e9;\n\nconst ll LINF = 1e18;\n\n\nint main(){\n\n    cin.tie(0);\n\n    ios::sync_with_stdio(false);\n\n    int Q;\n\n    cin >> Q;\n\n    while(Q--){\n\n        string s, t;\n\n        cin >> s >> t;\n\n        int n = s.size();\n\n        int m = t.size();\n\n        vector<vector<int>> dp(n+1, vector<int>(m+1, INF));\n\n        dp[0][0] = 0;\n\n        rep(i, n+1) rep(j, m+1){\n\n            if(i > 0) chmin(dp[i][j], dp[i-1][j]+1);\n\n            if(j > 0) chmin(dp[i][j], dp[i][j-1]+1);\n\n            if(i > 0 && j > 0) chmin(dp[i][j], dp[i-1][j-1]+(s[i-1] != t[j-1]));\n\n        }\n\n        cout << dp[n][m] << endl;\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -154.28298403332494,
+   "cycle_ratio": 2.5492944841488
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "llvm_edit_distance",
+   "sample": 1,
+   "prompt_tokens": 725,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(A) A.begin(),A.end()\n\n#define LINF ((ll)1e18)\n\n#define INF ((1<<30)-1)\n\n#define MOD 1000000007\n\n\n\ntemplate<class T> inline bool chmax(T& a, T b) {\n\n\tif (a < b) {\n\n\t\ta = b;\n\n\t\treturn 1;\n\n\t}\n\n\treturn 0;\n\n}\n\n\n\ntemplate<class T> inline bool chmin(T& a, T b) {\n\n\tif (a > b) {\n\n\t\ta = b;\n\n\t\treturn 1;\n\n\t}\n\n\treturn 0;\n\n}\n\n\n\nint main() {\n\n\tcin.tie(nullptr);\n\n ios::sync_with_stdio(false);\n\n\n\n\tint q;\n\n\tcin >> q;\n\n\n\n\twhile (q--) {\n\n\t\tstring s, t;\n\n\t\tcin >> s >> t;\n\n\n\n\t\tint n = s.size();\n\n\t\tint m = t.size();\n\n\n\n\t\tvector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));\n\n\n\n\t\trep(i, n + 1) dp[i][0] = i;\n\n\t\trep(i, m + 1) dp[0][i] = i;\n\n\n\n\t\trep(i, n) {\n\n\t\t\trep(j, m) {\n\n\t\t\t\tif (s[i] == t[j]) {\n\n\t\t\t\t\tdp[i + 1][j + 1] = dp[i][j];\n\n\t\t\t\t}\n\n\t\t\t\telse {\n\n\t\t\t\t\tdp[i + 1][j + 1] = min(dp[i][j + 1], dp[i + 1][j]) + 1;\n\n\t\t\t\t}\n\n\t\t\t}\n\n\t\t}\n\n\n\n\t\tcout << dp[n][m] << endl;\n\n\t}\n\n\n\n\treturn 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "llvm_edit_distance",
+   "sample": 2,
+   "prompt_tokens": 725,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define ALL(x) (x).begin(), (x).end()\n\n#define SZ(x) (int)(x).size()\n\n#define pb push_back\n\n#define eb emplace_back\n\n#define mp make_pair\n\n#define fi first\n\n#define se second\n\n#define MOD 1000000007\n\n#define INF 1000000000\n\n#define MAX_N 100000\n\n#define MAX_M 100000\n\n#define MAX_K 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 10",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "llvm_edit_distance",
+   "sample": 3,
+   "prompt_tokens": 725,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(A) A.begin(),A.end()\n\n#define LLA(A) sizeof(A)/sizeof(A[0])\n\n#define pb push_back\n\n#define mp make_pair\n\ntemplate <class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return 1; } return 0; }\n\ntemplate <class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return 1; } return 0; }\n\ntemplate<class T> inline int sz(const T& x){ return x.size(); }\n\n\nconst int MOD = 1000000007;\n\n// const int MOD = 998244353;\n\nconst int INF = 1e9;\n\nconst ll LINF = 1e18;\n\n\nint main(){\n\n    cin.tie(0);\n\n    ios::sync_with_stdio(false);\n\n    int Q;\n\n    cin >> Q;\n\n    while(Q--){\n\n        string s, t;\n\n        cin >> s >> t;\n\n        int n = s.size();\n\n        int m = t.size();\n\n        vector<vector<int>> dp(n+1, vector<int>(m+1, INF));\n\n        dp[0][0] = 0;\n\n        rep(i, n+1) rep(j, m+1){\n\n            if(i > 0) chmin(dp[i][j], dp[i-1][j]+1);\n\n            if(j > 0) chmin(dp[i][j], dp[i][j-1]+1);\n\n            if(i > 0 && j > 0) chmin(dp[i][j], dp[i-1][j-1]+(s[i-1] != t[j-1]));\n\n        }\n\n        cout << dp[n][m] << endl;\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -154.28870519326696,
+   "cycle_ratio": 2.54935556777228
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "llvm_edit_distance",
+   "sample": 4,
+   "prompt_tokens": 725,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(A) A.begin(),A.end()\n\n#define itr(A,B) find((A).begin(),(A).end(),(B))\n\n#define pb push_back\n\n#define mp make_pair\n\n#define fst first\n\n#define snd second\n\n#define INF 1000000000\n\n#define MOD 1000000007\n\n#define MAX 1000000000\n\n#define ZL pair<int,int>\n\n#define YL pair<ll,ll>\n\n#define VI vector<int>\n\n#define VL vector<ll>\n\n#define VVI vector<VI>\n\n#define VVL vector<VL>\n\n#define VVVI vector<VVI>\n\n#define VVVL vector<VVL>\n\n#define PII pair<int,int>\n\n#define PLL pair<ll,ll>\n\n#define PSI pair<string,int>\n\n#define PSS pair<string,string>\n\n#define PIS pair<int,string>\n\n#define PSL pair<string,ll>\n\n#define PLS pair<ll,string>\n\n#define VS vector<string>\n\n#define VVS vector<VS>\n\n#define VVVS vector<VVS>\n\n#define VVVVS vector<VVVS>\n\n#define VVVVVS vector<VVVVS>\n\n#define VVVVVVS vector<VVVVVS>\n\n#define VVVVVVVS vector<VVVVVVS>\n\n#define VVVVVVVVS vector<VVVVVVVS>\n\n#define VVVVVVVVVS vector<VVVVVVVVS>\n\n#define VVVVVVVVVVS vector<VVVVVVVVVS>\n\n#define VVVVVVVVVVVS vector<VVVVVVVVVVS>\n\n#define VVVVVVVVVVVVS vector<VVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVS vector<VVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS>\n\n#define VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVS vector<VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "xxhash32",
+   "sample": 0,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\n    int q;\n\n    scanf(\"%d\", &q);\n\n    for (int i = 0; i < q; i++) {\n\n        char s[100001];\n\n        scanf(\"%s\", s);\n\n        int len = strlen(s);\n\n        unsigned int hash = 0;\n\n        for (int j = 0; j < len; j++) {\n\n            hash = hash * 31 + s[j];\n\n        }\n\n        printf(\"%u\\n\", hash);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "xxhash32",
+   "sample": 1,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\n    int q;\n\n    scanf(\"%d\", &q);\n\n    for (int i = 0; i < q; i++) {\n\n        char s[100000];\n\n        scanf(\"%s\", s);\n\n        unsigned int hash = 0;\n\n        for (int j = 0; s[j]; j++) {\n\n            hash = hash * 31 + s[j];\n\n        }\n\n        printf(\"%u\\n\", hash);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "xxhash32",
+   "sample": 2,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\n    int q;\n\n    scanf(\"%d\", &q);\n\n    for (int i = 0; i < q; i++) {\n\n        char s[100001];\n\n        scanf(\"%s\", s);\n\n        unsigned int hash = 0;\n\n        for (int j = 0; s[j]; j++) {\n\n            hash = hash * 31 + s[j];\n\n        }\n\n        printf(\"%u\\n\", hash);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "xxhash32",
+   "sample": 3,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\n    int q;\n\n    scanf(\"%d\", &q);\n\n    for (int i = 0; i < q; i++) {\n\n        char s[100001];\n\n        scanf(\"%s\", s);\n\n        int ans = 0;\n\n        for (int j = 0; s[j]; j++) {\n\n            ans = (ans * 31 + s[j]) % 1000000007;\n\n        }\n\n        printf(\"%d\\n\", ans);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "xxhash32",
+   "sample": 4,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\n    int q;\n\n    scanf(\"%d\", &q);\n\n    for (int i = 0; i < q; i++) {\n\n        char s[100001];\n\n        scanf(\"%s\", s);\n\n        unsigned int hash = 0;\n\n        for (int j = 0; s[j]; j++) {\n\n            hash = hash * 31 + s[j];\n\n        }\n\n        printf(\"%u\\n\", hash);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_siphash",
+   "sample": 0,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\ntypedef pair<int, int> pii;\n\ntypedef pair<ll, ll> pll;\n\ntypedef pair<string, string> pss;\n\ntypedef vector<int> vi;\n\ntypedef vector<vi> vvi;\n\ntypedef vector<pii> vii;\n\ntypedef vector<ll> vl;\n\ntypedef vector<vl> vvl;\n\n#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))\n\n#define FORE(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))\n\n#define ROF(a, b, c) for (int(a) = (c)-1; (a) >= (b); --(a))\n\n#define TC(t) while (t--)\n\n#define FL(i, x) for (typeof((x).begin()) (i) = (x).begin(); (i) != (x).end(); (i)++)\n\n#define ALL(x) (x).begin(), (x).end()\n\n#define SORT(v) sort(ALL(v))\n\n#define REVERSE(v) reverse(ALL(v))\n\n#define MP make_pair\n\n#define PB push_back\n\n#define EB emplace_back\n\n#define X first\n\n#define Y second\n\n#define EPS 1e-9\n\n#define INF 1000000000\n\n#define MOD 1000000007\n\n#define PI 3.14159265358979323\n\n#define debug(x) cout << #x << \" = \" << x << endl;\n\n#define debug2(x, y) cout << #x << \" = \" << x << \", \" << #y << \" = \" << y << endl;\n\n#define debug3(x, y, z) cout << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug4(w, x, y, z) cout << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug5(v, w, x, y, z) cout << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug6(u, v, w, x, y, z) cout << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug7(t, u, v, w, x, y, z) cout << #t << \" = \" << t << \", \" << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug8(s, t, u, v, w, x, y, z) cout << #s << \" = \" << s << \", \" << #t << \" = \" << t << \", \" << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug9(r, s, t, u, v, w, x, y, z) cout << #r << \" = \" << r << \", \" << #s << \" = \" << s << \", \" << #t << \" = \" << t << \", \" << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug10(q, r, s, t, u, v, w, x, y, z) cout << #q << \" = \" << q << \", \" << #r << \" = \" << r << \", \" << #s << \" = \" << s << \", \" << #t << \" = \" << t << \", \" << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug11(p, q, r, s, t, u, v, w, x, y, z) cout << #p << \" = \" << p << \", \" << #q << \" = \" << q << \", \" << #r << \" = \" << r << \", \" << #s << \" = \" << s << \", \" << #t << \" = \" << t << \", \" << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug12(o, p, q, r, s, t, u, v, w, x, y, z) cout << #o << \" = \" << o << \", \" << #p << \" = \" << p << \", \" << #q << \" = \" << q << \", \" << #r << \" = \" << r << \", \" << #s << \" = \" << s << \", \" << #t << \" = \" << t << \", \" << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug13(n, o, p, q, r, s, t, u, v, w, x, y, z) cout << #n << \" = \" << n << \", \" << #o << \" = \" << o << \", \" << #p << \" = \" << p << \", \" << #q << \" = \" << q << \", \" << #r << \" = \" << r << \", \" << #s << \" = \" << s << \", \" << #t << \" = \" << t << \", \" << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug14(m, n, o, p, q, r, s, t, u, v, w, x, y, z) cout << #m << \" = \" << m << \", \" << #n << \" = \" << n << \", \" << #o << \" = \" << o << \", \" << #p << \" = \" << p << \", \" << #q << \" = \" << q << \", \" << #r << \" = \" << r << \", \" << #s << \" = \" << s << \", \" << #t << \" = \" << t << \", \" << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" << #y << \" = \" << y << \", \" << #z << \" = \" << z << endl;\n\n#define debug15(l, m, n, o, p, q, r, s, t, u, v, w, x, y, z) cout << #l << \" = \" << l << \", \" << #m << \" = \" << m << \", \" << #n << \" = \" << n << \", \" << #o << \" = \" << o << \", \" << #p << \" = \" << p << \", \" << #q << \" = \" << q << \", \" << #r << \" = \" << r << \", \" << #s << \" = \" << s << \", \" << #t << \" = \" << t << \", \" << #u << \" = \" << u << \", \" << #v << \" = \" << v << \", \" << #w << \" = \" << w << \", \" << #x << \" = \" << x << \", \" <<",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_siphash",
+   "sample": 1,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\nconst int N = 1e5 + 10;\n\nchar s[N];\n\nll x[N], y[N];\n\nll ans[N];\n\nint main() {\n\n  int n;\n\n  scanf(\"%d\", &n);\n\n  for (int i = 1; i <= n; i++) {\n\n    scanf(\"%lld%lld\", x + i, y + i);\n\n  }\n\n  int q;\n\n  scanf(\"%d\", &q);\n\n  for (int i = 1; i <= q; i++) {\n\n    scanf(\"%s\", s + 1);\n\n    int len = strlen(s + 1);\n\n    ll sum = 0;\n\n    for (int j = 1; j <= n; j++) {\n\n      sum += abs(x[j] - s[1]) + abs(y[j] - s[len]);\n\n    }\n\n    ans[i] = sum;\n\n  }\n\n  for (int i = 1; i <= q; i++) {\n\n    printf(\"%lld\\n\", ans[i]);\n\n  }\n\n  return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_siphash",
+   "sample": 2,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\nconst int N = 1e5 + 10;\n\nchar s[N];\n\nll x[N], y[N];\n\nll ans[N];\n\nint main() {\n\n  int n;\n\n  scanf(\"%d\", &n);\n\n  for (int i = 1; i <= n; i++) {\n\n    scanf(\"%lld%lld\", x + i, y + i);\n\n  }\n\n  int q;\n\n  scanf(\"%d\", &q);\n\n  for (int i = 1; i <= q; i++) {\n\n    scanf(\"%s\", s + 1);\n\n    int len = strlen(s + 1);\n\n    ll sum = 0;\n\n    for (int j = 1; j <= n; j++) {\n\n      sum += abs(x[j] - s[1]) + abs(y[j] - s[len]);\n\n    }\n\n    ans[i] = sum;\n\n  }\n\n  for (int i = 1; i <= q; i++) {\n\n    printf(\"%lld\\n\", ans[i]);\n\n  }\n\n  return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_siphash",
+   "sample": 3,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(a) (a).begin(), (a).end()\n\n#define pb push_back\n\n#define mp make_pair\n\n#define eb emplace_back\n\n#define x first\n\n#define y second\n\n#define sz(a) (int)(a).size()\n\n#define ALL(a) (a).begin(), (a).end()\n\n#define RALL(a) (a).rbegin(), (a).rend()\n\n#define UNIQUE(a) sort(ALL(a)), (a).erase(unique(ALL(a)), (a).end())\n\n#define EACH(i, a) for(auto& i: a)\n\n#define OPTIMIZATION ios::sync_with_stdio(false); cin.tie(nullptr);\n\n#define DEBUG(x) cout << #x << \": \" << x << endl;\n\n#define DEBUG_VEC(v) cout << #v << \": \"; for(auto &i : v) cout << i << \", \"; cout << endl;\n\n#define DEBUG_MAT(mat) cout << #mat << \":\" << endl; for(auto &v1 : mat) { for(auto &i : v1) cout << i << \", \"; cout << endl; }\n\n#define YES cout << \"YES\" << endl;\n\n#define NO cout << \"NO\" << endl;\n\n#define Yes cout << \"Yes\" << endl;\n\n#define No cout << \"No\" << endl;\n\n#define yes cout << \"yes\" << endl;\n\n#define no cout << \"no\" << endl;\n\n#define OK cout << \"OK\" << endl;\n\n#define Ok cout << \"Ok\" << endl;\n\n#define ok cout << \"ok\" << endl;\n\n#define NG cout << \"NG\" << endl;\n\n#define Ng cout << \"Ng\" << endl;\n\n#define ng cout << \"ng\" << endl;\n\n#define INF 1e18\n\n#define MOD 1000000007\n\n#define PI acos(-1)\n\n#define EPS 1e-10\n\n#define MAXN 100000\n\n#define MAXM 100000\n\n#define MAXV 100000\n\n#define MAXE 100000\n\n#define MAXN2 100000\n\n#define MAXM2 100000\n\n#define MAXV2 100000\n\n#define MAXE2 100000\n\n#define MAXN3 100000\n\n#define MAXM3 100000\n\n#define MAXV3 100000\n\n#define MAXE3 100000\n\n#define MAXN4 100000\n\n#define MAXM4 100000\n\n#define MAXV4 100000\n\n#define MAXE4 100000\n\n#define MAXN5 100000\n\n#define MAXM5 100000\n\n#define MAXV5 100000\n\n#define MAXE5 100000\n\n#define MAXN6 100000\n\n#define MAXM6 100000\n\n#define MAXV6 100000\n\n#define MAXE6 100000\n\n#define MAXN7 100000\n\n#define MAXM7 100000\n\n#define MAXV7 100000\n\n#define MAXE7 100000\n\n#define MAXN8 100000\n\n#define MAXM8 100000\n\n#define MAXV8 100000\n\n#define MAXE8 100000\n\n#define MAXN9 100000\n\n#define MAXM9 100000\n\n#define MAXV9 100000\n\n#define MAXE9 100000\n\n#define MAXN10 100000\n\n#define MAXM10 100000\n\n#define MAXV10 100000\n\n#define MAXE10 100000\n\n#define MAXN11 100000\n\n#define MAXM11 100000\n\n#define MAXV11 100000\n\n#define MAXE11 100000\n\n#define MAXN12 100000\n\n#define MAXM12 100000\n\n#define MAXV12 100000\n\n#define MAXE12 100000\n\n#define MAXN13 100000\n\n#define MAXM13 100000\n\n#define MAXV13 100000\n\n#define MAXE13 100000\n\n#define MAXN14 100000\n\n#define MAXM14 100000\n\n#define MAXV14 100000\n\n#define MAXE14 100000\n\n#define MAXN15 100000\n\n#define MAXM15 100000\n\n#define MAXV15 100000\n\n#define MAXE15 100000\n\n#define MAXN16 100000\n\n#define MAXM16 100000\n\n#define MAXV16 100000\n\n#define MAXE16 100000\n\n#define MAXN17 100000\n\n#define MAXM17 100000\n\n#define MAXV17 100000\n\n#define MAXE17 100000\n\n#define MAXN18 100000\n\n#define MAXM18 100000\n\n#define MAXV18 100000\n\n#define MAXE18 100000\n\n#define MAXN19 100000\n\n#define MAXM19 100000\n\n#define MAXV19 100000\n\n#define MAXE19 100000\n\n#define MAXN20 100000\n\n#define MAXM20 100000\n\n#define MAXV20 100000\n\n#define MAXE20 100000\n\n#define MAXN21 100000\n\n#define MAXM21 100000\n\n#define MAXV21 100000\n\n#define MAXE21 100000\n\n#define MAXN22 100000\n\n#define MAXM22 100000\n\n#define MAXV22 100000\n\n#define MAXE22 100000\n\n#define MAXN23 100000\n\n#define MAXM23 100000\n\n#define MAXV23 100000\n\n#define MAXE23 100000\n\n#define MAXN24 100000\n\n#define MAXM24 100000\n\n#define MAXV24 100000\n\n#define MAXE24 100000\n\n#define MAXN25 100000\n\n#define MAXM25 100000\n\n#define MAXV25 100000\n\n#define MAXE25 100000\n\n#define MAXN26 100000\n\n#define MAXM26 100000\n\n#define MAXV26 100000\n\n#define MAXE26 100000\n\n#define MAXN27 100000\n\n#define MAXM27 100000\n\n#define MAXV27 100000\n\n#define MAXE27 100000\n\n#define MAXN28 100000\n\n#define MAXM28 100000\n\n#define MAXV28 100000\n\n#define MAXE28 100000\n\n#define MAXN29 100000\n\n#define MAXM29 100000\n\n#define MAXV29 100000\n\n#define MAXE29 100000\n\n#define MAXN30 100000\n\n#define MAXM30 100000\n\n#define MAXV30 100000\n\n#define MAXE30 100000\n\n#define MAXN31 100000\n\n#define MAXM31 100000\n\n#define MAXV31 100000\n\n#define MAXE31 1",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_siphash",
+   "sample": 4,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\ntypedef pair<int, int> pii;\n\ntypedef pair<ll, ll> pll;\n\ntypedef pair<string, string> pss;\n\ntypedef vector<int> vi;\n\ntypedef vector<vi> vvi;\n\ntypedef vector<pii> vii;\n\ntypedef vector<ll> vl;\n\ntypedef vector<vl> vvl;\n\n#define FOR(a, b, c) for (int(a) = (b); (a) < (c); ++(a))\n\n#define FORE(a, b, c) for (int(a) = (b); (a) <= (c); ++(a))\n\n#define ROF(a, b, c) for (int(a) = (c)-1; (a) >= (b); --(a))\n\n#define TC(t) while (t--)\n\n#define FL(i, x) for (typeof((x).begin()) (i) = (x).begin(); (i) != (x).end(); (i)++)\n\n#define ALL(x) (x).begin(), (x).end()\n\n#define SORT(v) sort(ALL(v))\n\n#define REVERSE(v) reverse(ALL(v))\n\n#define MP make_pair\n\n#define PB push_back\n\n#define EB emplace_back\n\n#define INF 1000000000\n\n#define MOD 1000000007\n\n#define PI 3.1415926535897932384626433832795\n\n#define EPS 1e-9\n\n#define EXPR(expr) cout << #expr \" = \" << (expr) << endl\n\n#define PRECISION(x) cout << fixed << setprecision(x)\n\n#define DEBUG(x) cerr << #x << \" = \" << (x) << endl\n\n#define DEBUGP(x) cerr << #x \" = (\" << (x).first << \", \" << (x).second << \")\" << endl\n\n#define DEBUGV(x)          \\\n\n  cerr << #x \" = [\";       \\\n\n  for (auto& e : (x))      \\\n\n    cerr << e << \" \";      \\\n\n  cerr << \"]\" << endl;\n\n#define DEBUGM(x)                               \\\n\n  cerr << #x \" = [[\";                           \\\n\n  for (auto& e : (x)) {                         \\\n\n    for (auto& f : e) cerr << f << \" \";         \\\n\n    cerr << \",\";                                \\\n\n  }                                             \\\n\n  cerr << \"]]\" << endl;\n\n#define MAXN 100005\n\n#define MAXM 100005\n\n#define MAXLOGN 20\n\n#define MAXLOGM 20\n\n#define MAXK 100005\n\n#define MAXW 100005\n\n#define MAXH 100005\n\n#define MAXD 100005\n\n#define MAXC 100005\n\n#define MAXB 100005\n\n#define MAXA 100005\n\n#define MAXE 100005\n\n#define MAXF 100005\n\n#define MAXG 100005\n\n#define MAXI 100005\n\n#define MAXJ 100005\n\n#define MAXK 100005\n\n#define MAXL 100005\n\n#define MAXM 100005\n\n#define MAXN 100005\n\n#define MAXO 100005\n\n#define MAXP 100005\n\n#define MAXQ 100005\n\n#define MAXR 100005\n\n#define MAXS 100005\n\n#define MAXT 100005\n\n#define MAXU 100005\n\n#define MAXV 100005\n\n#define MAXW 100005\n\n#define MAXX 100005\n\n#define MAXY 100005\n\n#define MAXZ 100005\n\n#define MAXA 100005\n\n#define MAXB 100005\n\n#define MAXC 100005\n\n#define MAXD 100005\n\n#define MAXE 100005\n\n#define MAXF 100005\n\n#define MAXG 100005\n\n#define MAXH 100005\n\n#define MAXI 100005\n\n#define MAXJ 100005\n\n#define MAXK 100005\n\n#define MAXL 100005\n\n#define MAXM 100005\n\n#define MAXN 100005\n\n#define MAXO 100005\n\n#define MAXP 100005\n\n#define MAXQ 100005\n\n#define MAXR 100005\n\n#define MAXS 100005\n\n#define MAXT 100005\n\n#define MAXU 100005\n\n#define MAXV 100005\n\n#define MAXW 100005\n\n#define MAXX 100005\n\n#define MAXY 100005\n\n#define MAXZ 100005\n\n#define MAXA 100005\n\n#define MAXB 100005\n\n#define MAXC 100005\n\n#define MAXD 100005\n\n#define MAXE 100005\n\n#define MAXF 100005\n\n#define MAXG 100005\n\n#define MAXH 100005\n\n#define MAXI 100005\n\n#define MAXJ 100005\n\n#define MAXK 100005\n\n#define MAXL 100005\n\n#define MAXM 100005\n\n#define MAXN 100005\n\n#define MAXO 100005\n\n#define MAXP 100005\n\n#define MAXQ 100005\n\n#define MAXR 100005\n\n#define MAXS 100005\n\n#define MAXT 100005\n\n#define MAXU 100005\n\n#define MAXV 100005\n\n#define MAXW 100005\n\n#define MAXX 100005\n\n#define MAXY 100005\n\n#define MAXZ 100005\n\n#define MAXA 100005\n\n#define MAXB 100005\n\n#define MAXC 100005\n\n#define MAXD 100005\n\n#define MAXE 100005\n\n#define MAXF 100005\n\n#define MAXG 100005\n\n#define MAXH 100005\n\n#define MAXI 100005\n\n#define MAXJ 100005\n\n#define MAXK 100005\n\n#define MAXL 100005\n\n#define MAXM 100005\n\n#define MAXN 100005\n\n#define MAXO 100005\n\n#define MAXP 100005\n\n#define MAXQ 100005\n\n#define MAXR 100005\n\n#define MAXS 100005\n\n#define MAXT 100005\n\n#define MAXU 100005\n\n#define MAXV 100005\n\n#define MAXW 100005\n\n#define MAXX 100005\n\n#define MAXY 100005\n\n#define MAXZ 100005\n\n#define MAXA 100005\n\n#define MAXB 100005\n\n#define MAXC 100005\n\n#define MAXD 100005\n\n#define MAXE 100005\n\n#define MAXF 100005\n\n#define MAXG 100005\n\n#define MAXH 100005\n\n#define MAXI 100005\n\n#define MAXJ 100005\n\n#define MAXK 100005\n\n#define MAXL 100005\n\n#define MAXM 100005\n\n#define MAXN 100005\n\n#define MAXO 100005\n\n#define MAXP 100005\n\n#define MAXQ 100005\n\n#define MAXR 100005\n\n#define MAXS 100005\n\n#define MAXT 100005\n\n#define MAXU 100005\n\n#define MAXV 100005\n\n#define MAXW 100005\n\n#define MAXX 100005\n\n#define MAXY 100005\n\n#define MAXZ 100005\n\n#define MAXA 100005\n\n#define MAXB 100005\n\n#define MAXC 10000",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "ngx_murmurhash2",
+   "sample": 0,
+   "prompt_tokens": 436,
+   "generated_code": "#include <cstdio>\n\nunsigned int murmurhash2(const void *key, int len, unsigned int seed) {\n\n  const unsigned int m = 0x5bd1e995;\n  const int r = 24;\n\n  unsigned int h = seed ^ len;\n\n  const unsigned char *data = (const unsigned char *)key;\n\n  while(len >= 4) {\n\n    unsigned int k = *(unsigned int *)data;\n\n    k *= m;\n    k ^= k >> r;\n    k *= m;\n\n    h *= m;\n    h ^= k;\n\n    data += 4;\n    len -= 4;\n\n  }\n\n  switch(len) {\n\n    case 3: h ^= data[2] << 16;\n    case 2: h ^= data[1] << 8;\n    case 1: h ^= data[0];\n            h *= m;\n\n  };\n\n  h ^= h >> 13;\n  h *= m;\n  h ^= h >> 15;\n\n  return h;\n\n}\n\nchar s[100000];\n\nint main() {\n\n  int q;\n\n  scanf(\"%d\", &q);\n\n  while(q--) {\n\n    scanf(\"%s\", s);\n\n    printf(\"%u\\n\", murmurhash2(s, strlen(s), 0));\n\n  }\n\n  return 0;\n\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "ngx_murmurhash2",
+   "sample": 1,
+   "prompt_tokens": 436,
+   "generated_code": "#include <iostream>\n#include <string>\n\nusing namespace std;\n\nunsigned int murmurhash2(const void *key, int len, unsigned int seed) {\n\n\tconst unsigned int m = 0x5bd1e995;\n\tconst int r = 24;\n\n\tunsigned int h = seed ^ len;\n\n\tconst unsigned char *data = (const unsigned char *)key;\n\n\twhile(len >= 4) {\n\t\tunsigned int k = *(unsigned int *)data;\n\n\t\tk *= m;\n\t\tk ^= k >> r;\n\t\tk *= m;\n\n\t\th *= m;\n\t\th ^= k;\n\n\t\tdata += 4;\n\t\tlen -= 4;\n\t}\n\n\tswitch(len) {\n\tcase 3: h ^= data[2] << 16;\n\tcase 2: h ^= data[1] << 8;\n\tcase 1: h ^= data[0];\n\t\t\th *= m;\n\t};\n\n\th ^= h >> 13;\n\th *= m;\n\th ^= h >> 15;\n\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tcin >> q;\n\tfor(int i = 0; i < q; i++) {\n\t\tstring s;\n\t\tcin >> s;\n\t\tcout << murmurhash2(s.c_str(), s.size(), 0) << endl;\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -685.4541852384257,
+   "cycle_ratio": 7.929347432461794
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "ngx_murmurhash2",
+   "sample": 2,
+   "prompt_tokens": 436,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(a) (a).begin(), (a).end()\n\n#define dist(p, q) sqrt(sqr(p.first - q.first) + sqr(p.second - q.second))\n\n#define EPS 1e-10\n\n#define EQ0(x) (abs(x) < EPS)\n\n#define EQ(a, b) (EQ0(abs((a) - (b))))\n\n#define MOD 1000000007\n\n\n\ntemplate<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return 1; } return 0; }\n\ntemplate<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return 1; } return 0; }\n\n\n\ntypedef long long ll;\n\ntypedef pair<int, int> P;\n\n\n\nconst int dx[] = { 1, 0, -1, 0 },\n\n          dy[] = { 0, 1, 0, -1 };\n\n\n\nint main() {\n\n    cin.tie(0);\n\n    ios::sync_with_stdio(false);\n\n\n\n    int q;\n\n    cin >> q;\n\n    while(q--) {\n\n        string s;\n\n        cin >> s;\n\n        uint32_t h = 0;\n\n        for(char c : s) {\n\n            h = h * 31 + c;\n\n        }\n\n        cout << h << endl;\n\n    }\n\n\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "ngx_murmurhash2",
+   "sample": 3,
+   "prompt_tokens": 436,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(a) (a).begin(), (a).end()\n\n#define dist(p, q) sqrt(sqr(p.first - q.first) + sqr(p.second - q.second))\n\n#define EPS 1e-10\n\n#define EQ0(x) (abs(x) < EPS)\n\n#define EQ(a, b) (EQ0(abs((a) - (b))))\n\n#define LT(a, b) (((a) - (b)) < -EPS)\n\n#define GT(a, b) (((a) - (b)) > EPS)\n\n#define LE(a, b) (((a) - (b)) <-EPS)\n\n#define GE(a, b) (((a) - (b)) >-EPS)\n\n#define pb push_back\n\n#define mp make_pair\n\n#define fi first\n\n#define se second\n\n#define sz(size) (int((size).size()))\n\n#define YES cout << \"YES\" << endl\n\n#define NO cout << \"NO\" << endl\n\n#define Yes cout << \"Yes\" << endl\n\n#define No cout << \"No\" << endl\n\n#define yes cout << \"yes\" << endl\n\n#define no cout << \"no\" << endl\n\n#define ALL(a) (a).begin(), (a).end()\n\n#define SORT(a) sort(ALL(a))\n\n#define RSORT(a) sort(ALL(a), greater<int>())\n\n#define UNIQ(a) (a).erase(unique(ALL(a)), (a).end())\n\n#define OUT(a) cout << (a) << endl\n\n#define OUTX(a) cout << (a) << \" \"\n\n#define OUTY(a) cout << (a) << endl\n\n#define OUTXY(a) cout << (a) << \" \"\n\n#define OUTXYZ(a) cout << (a) << endl\n\n#define OUTW(a) cout << (a) << \" \"\n\n#define OUTV(a) outv((a))\n\n#define OUTM(a) outm((a))\n\n#define OUTA(a, n) outa((a), (n))\n\n#define OUTC(a) outc((a))\n\n#define OUTP(a) outp((a))\n\n#define OUTN(a, n) outn((a), (n))\n\n#define OUTT(a, b) outt((a), (b))\n\n#define OUTTT(a, b, c) outtt((a), (b), (c))\n\n#define OUTTTT(a, b, c, d) outttt((a), (b), (c), (d))\n\n#define OUTTTTT(a, b, c, d, e) outtttt((a), (b), (c), (d), (e))\n\n#define OUTTTTTT(a, b, c, d, e, f) outttttt((a), (b), (c), (d), (e), (f))\n\n#define OUTTTTTTT(a, b, c, d, e, f, g) outtttttt((a), (b), (c), (d), (e), (f), (g))\n\n#define OUTTTTTTTT(a, b, c, d, e, f, g, h) outttttttt((a), (b), (c), (d), (e), (f), (g), (h))\n\n#define OUTTTTTTTTT(a, b, c, d, e, f, g, h, i) outtttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i))\n\n#define OUTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j) outttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j))\n\n#define OUTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k) outtttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k))\n\n#define OUTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l) outttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l))\n\n#define OUTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m) outtttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m))\n\n#define OUTTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m, n) outttttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n))\n\n#define OUTTTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o) outtttttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n), (o))\n\n#define OUTTTTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) outttttttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n), (o), (p))\n\n#define OUTTTTTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q) outtttttttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n), (o), (p), (q))\n\n#define OUTTTTTTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r) outttttttttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n), (o), (p), (q), (r))\n\n#define OUTTTTTTTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s) outtttttttttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n), (o), (p), (q), (r), (s))\n\n#define OUTTTTTTTTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t) outttttttttttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n), (o), (p), (q), (r), (s), (t))\n\n#define OUTTTTTTTTTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u) outtttttttttttttttttttt((a), (b), (c), (d), (e), (f), (g), (h), (i), (j), (k), (l), (m), (n), (o), (p), (q), (r), (s), (t), (u))\n\n#define OUTTTTTTTTTTTTTTTTTTTTTT(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v) outttttttttttttttttttttt((a), (b), (c), (d), (e),",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "ngx_murmurhash2",
+   "sample": 4,
+   "prompt_tokens": 436,
+   "generated_code": "#include <iostream>\n#include <string>\n\nusing namespace std;\n\nunsigned int murmurhash2(const void *key, int len, unsigned int seed) {\n\n\tconst unsigned int m = 0x5bd1e995;\n\tconst int r = 24;\n\n\tunsigned int h = seed ^ len;\n\n\tconst unsigned char *data = (const unsigned char *)key;\n\n\twhile(len >= 4) {\n\t\tunsigned int k = *(unsigned int *)data;\n\n\t\tk *= m;\n\t\tk ^= k >> r;\n\t\tk *= m;\n\n\t\th *= m;\n\t\th ^= k;\n\n\t\tdata += 4;\n\t\tlen -= 4;\n\t}\n\n\tswitch(len) {\n\tcase 3: h ^= data[2] << 16;\n\tcase 2: h ^= data[1] << 8;\n\tcase 1: h ^= data[0];\n\t\t\th *= m;\n\t};\n\n\th ^= h >> 13;\n\th *= m;\n\th ^= h >> 15;\n\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tcin >> q;\n\tfor(int i = 0; i < q; i++) {\n\t\tstring s;\n\t\tcin >> s;\n\t\tcout << murmurhash2(s.c_str(), s.size(), 0) << endl;\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -685.4613319920355,
+   "cycle_ratio": 7.929419859491563
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_stringmatch",
+   "sample": 0,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(x) (x).begin(), (x).end()\n\n#define pb push_back\n\n#define mp make_pair\n\n#define mod 1000000007\n\n#define INF 1000000000\n\n\n\nint main()\n\n{\n\n    int q;\n\n    cin >> q;\n\n    rep(i, q) {\n\n        string p, s;\n\n        cin >> p >> s;\n\n        int nocase;\n\n        cin >> nocase;\n\n        if(nocase) {\n\n            transform(all(p), p.begin(), ::tolower);\n\n            transform(all(s), s.begin(), ::tolower);\n\n        }\n\n        bool flag = true;\n\n        rep(j, p.size()) {\n\n            if(p[j] == '*') continue;\n\n            if(p[j] != s[j]) {\n\n                flag = false;\n\n                break;\n\n            }\n\n        }\n\n        if(flag) cout << \"Yes\" << endl;\n\n        else cout << \"No\" << endl;\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_stringmatch",
+   "sample": 1,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(x) (x).begin(), (x).end()\n\n#define pb push_back\n\n#define mp make_pair\n\n#define mod 1000000007\n\n#define INF 1000000000\n\n\n\nint main()\n\n{\n\n    int q;\n\n    cin >> q;\n\n    rep(i, q) {\n\n        string p, s;\n\n        cin >> p >> s;\n\n        int nocase;\n\n        cin >> nocase;\n\n        if(nocase) {\n\n            transform(all(p), p.begin(), ::tolower);\n\n            transform(all(s), s.begin(), ::tolower);\n\n        }\n\n        bool flag = true;\n\n        rep(j, p.size()) {\n\n            if(p[j] == '*') continue;\n\n            if(p[j] != s[j]) {\n\n                flag = false;\n\n                break;\n\n            }\n\n        }\n\n        if(flag) cout << 1 << endl;\n\n        else cout << 0 << endl;\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 3
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_stringmatch",
+   "sample": 2,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(x) (x).begin(), (x).end()\n\n#define pb push_back\n\n#define mp make_pair\n\n#define mod 1000000007\n\n#define INF 1000000000\n\n\n\nint main()\n\n{\n\n    int q;\n\n    cin >> q;\n\n    rep(i, q) {\n\n        string p, s;\n\n        cin >> p >> s;\n\n        int nocase;\n\n        cin >> nocase;\n\n        if(nocase) {\n\n            transform(all(p), p.begin(), ::tolower);\n\n            transform(all(s), s.begin(), ::tolower);\n\n        }\n\n        bool flag = true;\n\n        rep(j, p.size()) {\n\n            if(p[j] == '*') continue;\n\n            if(p[j] != s[j]) {\n\n                flag = false;\n\n                break;\n\n            }\n\n        }\n\n        if(flag) cout << \"Yes\" << endl;\n\n        else cout << \"No\" << endl;\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_stringmatch",
+   "sample": 3,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(x) (x).begin(), (x).end()\n\n#define pb push_back\n\n#define mp make_pair\n\n#define mod 1000000007\n\n#define INF 1000000000\n\n\n\nint main()\n\n{\n\n    int q;\n\n    cin >> q;\n\n    rep(i, q){\n\n        string p, s;\n\n        cin >> p >> s;\n\n        int nocase;\n\n        cin >> nocase;\n\n        if(nocase == 1){\n\n            transform(all(p), p.begin(), ::tolower);\n\n            transform(all(s), s.begin(), ::tolower);\n\n        }\n\n        int j = 0;\n\n        rep(k, s.size()){\n\n            if(p[j] == s[k]) j++;\n\n            else if(p[j] == '*') j++;\n\n            else if(p[j] == '?') j++;\n\n            else if(p[j] == '['){\n\n                int l = k;\n\n                while(s[l] != ']') l++;\n\n                if(l - k == 1) j++;\n\n                else{\n\n                    bool flag = false;\n\n                    for(int m = k + 1; m < l; m++){\n\n                        if(s[m] == p[j + 1]) flag = true;\n\n                    }\n\n                    if(flag) j++;\n\n                    else j++;\n\n                }\n\n            }\n\n            else if(p[j] == '\\\\'){\n\n                if(p[j + 1] == s[k]) j += 2;\n\n                else j++;\n\n            }\n\n            else{\n\n                j++;\n\n            }\n\n            if(j == p.size()) break;\n\n        }\n\n        if(j == p.size()) cout << \"Yes\" << endl;\n\n        else cout << \"No\" << endl;\n\n    }\n\n    return 0;\n\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "Energy-SFT",
+   "case": "redis_stringmatch",
+   "sample": 4,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <bits/stdc++.h>\n\nusing namespace std;\n\ntypedef long long ll;\n\n#define rep(i, n) for(int i = 0; i < (n); i++)\n\n#define rep1(i, n) for(int i = 1; i <= (n); i++)\n\n#define rrep(i, n) for(int i = (n)-1; i >= 0; i--)\n\n#define rrep1(i, n) for(int i = (n); i > 0; i--)\n\n#define all(A) A.begin(),A.end()\n\n#define itr(A,B) find(all(A),B)\n\n#define pb push_back\n\n#define mp make_pair\n\n#define fst first\n\n#define snd second\n\n#define INF 1000000000\n\n#define MOD 1000000007\n\n#define MAX_N 100000\n\n#define MAX_M 100000\n\n#define MAX_K 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 100000\n\n#define MAX_M 100000\n\n#define MAX_N 100000\n\n#define MAX_O 100000\n\n#define MAX_P 100000\n\n#define MAX_Q 100000\n\n#define MAX_R 100000\n\n#define MAX_S 100000\n\n#define MAX_T 100000\n\n#define MAX_U 100000\n\n#define MAX_V 100000\n\n#define MAX_W 100000\n\n#define MAX_X 100000\n\n#define MAX_Y 100000\n\n#define MAX_Z 100000\n\n#define MAX_A 100000\n\n#define MAX_B 100000\n\n#define MAX_C 100000\n\n#define MAX_D 100000\n\n#define MAX_E 100000\n\n#define MAX_F 100000\n\n#define MAX_G 100000\n\n#define MAX_H 100000\n\n#define MAX_I 100000\n\n#define MAX_J 100000\n\n#define MAX_K 100000\n\n#define MAX_L 1",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_hash",
+   "sample": 0,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned hash(char *s, unsigned len, unsigned seed) {\n\tunsigned m = 0xc6a4a793;\n\tunsigned r = 24;\n\tunsigned h = seed ^ (len * m);\n\n\twhile (len >= 4) {\n\t\th += *(unsigned *)s;\n\t\ts += 4;\n\t\tlen -= 4;\n\n\t\th *= m;\n\t\th ^= h >> 16;\n\t}\n\n\tswitch (len) {\n\tcase 3: h += s[2] << 16;\n\tcase 2: h += s[1] << 8;\n\tcase 1: h += s[0];\n\t\th *= m;\n\t\th ^= h >> r;\n\t}\n\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\n\tstatic char buf[1 << 20];\n\n\tfor (int i = 0; i < q; i++) {\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%u\\n\", hash(buf, strlen(buf), 0xbc9f1d34));\n\t}\n\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 3.431176478701481,
+   "cycle_ratio": 1.0089288734061623
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_hash",
+   "sample": 1,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned hash(char *s, unsigned len, unsigned seed) {\n\tunsigned m = 0xc6a4a793;\n\tunsigned r = 24;\n\tunsigned h = seed ^ (len * m);\n\n\twhile (len >= 4) {\n\t\th += *(unsigned *)s;\n\t\ts += 4;\n\t\tlen -= 4;\n\n\t\th *= m;\n\t\th ^= h >> 16;\n\t}\n\n\tswitch (len) {\n\tcase 3: h += s[2] << 16;\n\tcase 2: h += s[1] << 8;\n\tcase 1: h += s[0];\n\t\th *= m;\n\t\th ^= h >> r;\n\t}\n\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\n\tchar buf[1 << 20];\n\n\tfor (int i = 0; i < q; i++) {\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%u\\n\", hash(buf, strlen(buf), 0xbc9f1d34));\n\t}\n\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 2.7604537256470607,
+   "cycle_ratio": 1.0161497615584942
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_hash",
+   "sample": 2,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned hash(char *s, unsigned len, unsigned seed) {\n\tunsigned m = 0xc6a4a793;\n\tunsigned r = 24;\n\tunsigned h = seed ^ (len * m);\n\n\twhile (len >= 4) {\n\t\th += *(unsigned *)s;\n\t\ts += 4;\n\t\tlen -= 4;\n\n\t\th *= m;\n\t\th ^= h >> 16;\n\t}\n\n\tswitch (len) {\n\tcase 3: h += s[2] << 16;\n\tcase 2: h += s[1] << 8;\n\tcase 1: h += s[0];\n\t\th *= m;\n\t\th ^= h >> r;\n\t}\n\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\n\tchar buf[1 << 20];\n\n\tfor (int i = 0; i < q; i++) {\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%u\\n\", hash(buf, strlen(buf), 0xbc9f1d34));\n\t}\n\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 2.7275139122032277,
+   "cycle_ratio": 1.0165048872053302
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_hash",
+   "sample": 3,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned hash(char *s, unsigned len, unsigned seed) {\n\tunsigned m = 0xc6a4a793;\n\tunsigned r = 24;\n\tunsigned h = seed ^ (len * m);\n\n\twhile (len >= 4) {\n\t\th += *(unsigned *)s;\n\t\ts += 4;\n\t\tlen -= 4;\n\n\t\th *= m;\n\t\th ^= h >> 16;\n\t}\n\n\tswitch (len) {\n\tcase 3: h += s[2] << 16;\n\tcase 2: h += s[1] << 8;\n\tcase 1: h += s[0];\n\t\th *= m;\n\t\th ^= h >> r;\n\t}\n\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\n\tstatic char buf[1 << 20];\n\n\tfor (int i = 0; i < q; i++) {\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%u\\n\", hash(buf, strlen(buf), 0xbc9f1d34));\n\t}\n\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 3.4421293723342683,
+   "cycle_ratio": 1.0088104981905504
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_hash",
+   "sample": 4,
+   "prompt_tokens": 485,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned hash(char *s, unsigned len, unsigned seed) {\n\tunsigned m = 0xc6a4a793;\n\tunsigned r = 24;\n\tunsigned h = seed ^ (len * m);\n\n\twhile (len >= 4) {\n\t\th += *(unsigned *)s;\n\t\ts += 4;\n\t\tlen -= 4;\n\n\t\th *= m;\n\t\th ^= h >> 16;\n\t}\n\n\tswitch (len) {\n\tcase 3: h += s[2] << 16;\n\tcase 2: h += s[1] << 8;\n\tcase 1: h += s[0];\n\t\th *= m;\n\t\th ^= h >> r;\n\t}\n\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\n\tstatic char buf[1 << 20];\n\n\tfor (int i = 0; i < q; i++) {\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%u\\n\", hash(buf, strlen(buf), 0xbc9f1d34));\n\t}\n\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 3.446835059969111,
+   "cycle_ratio": 1.008759765955288
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "zlib_adler32",
+   "sample": 0,
+   "prompt_tokens": 907,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned long adler32(unsigned long adler, const unsigned char* buf, size_t len) {\n\tunsigned long s1 = adler & 0xFFFF;\n\tunsigned long s2 = adler >> 16;\n\tfor (size_t i = 0; i < len; ++i) {\n\t\ts1 = (s1 + buf[i]) % 65521;\n\t\ts2 = (s2 + s1) % 65521;\n\t}\n\treturn (s2 << 16) | s1;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\twhile (q--) {\n\t\tchar buf[100001];\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%lu\\n\", adler32(1, (const unsigned char*)buf, strlen(buf)));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -110.72981970212092,
+   "cycle_ratio": 2.228047575351168
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "zlib_adler32",
+   "sample": 1,
+   "prompt_tokens": 907,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned long adler32(unsigned long adler, const unsigned char* buf, size_t len) {\n\tunsigned long s1 = adler & 0xFFFF;\n\tunsigned long s2 = adler >> 16;\n\tfor (size_t i = 0; i < len; ++i) {\n\t\ts1 = (s1 + buf[i]) % 65521;\n\t\ts2 = (s2 + s1) % 65521;\n\t}\n\treturn (s2 << 16) | s1;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\twhile (q--) {\n\t\tchar buf[100001];\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%lu\\n\", adler32(1, (const unsigned char*)buf, strlen(buf)));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -110.72340971063106,
+   "cycle_ratio": 2.2279769887767347
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "zlib_adler32",
+   "sample": 2,
+   "prompt_tokens": 907,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned long adler32(unsigned long adler, const unsigned char* buf, size_t len) {\n\tunsigned long s1 = adler & 0xFFFF;\n\tunsigned long s2 = adler >> 16;\n\tfor (size_t i = 0; i < len; ++i) {\n\t\ts1 = (s1 + buf[i]) % 65521;\n\t\ts2 = (s2 + s1) % 65521;\n\t}\n\treturn (s2 << 16) | s1;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\twhile (q--) {\n\t\tchar buf[100001];\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%lu\\n\", adler32(1, (const unsigned char*)buf, strlen(buf)));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -110.74955572855036,
+   "cycle_ratio": 2.228259335074469
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "zlib_adler32",
+   "sample": 3,
+   "prompt_tokens": 907,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned long adler32(const char* data, size_t len) {\n  unsigned long s1 = 1, s2 = 0;\n  for (size_t i = 0; i < len; ++i) {\n    s1 = (s1 + data[i]) % 65521;\n    s2 = (s2 + s1) % 65521;\n  }\n  return (s2 << 16) | s1;\n}\n\nint main() {\n  int q;\n  scanf(\"%d\", &q);\n  char buf[1 << 20];\n  for (int i = 0; i < q; ++i) {\n    scanf(\"%s\", buf);\n    printf(\"%lu\\n\", adler32(buf, strlen(buf)));\n  }\n  return 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -110.4193568248276,
+   "cycle_ratio": 2.224606479847533
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "zlib_adler32",
+   "sample": 4,
+   "prompt_tokens": 907,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned long adler32(unsigned long adler, const unsigned char* buf, size_t len) {\n\tunsigned long s1 = adler & 0xFFFF;\n\tunsigned long s2 = adler >> 16;\n\tfor (size_t i = 0; i < len; ++i) {\n\t\ts1 = (s1 + buf[i]) % 65521;\n\t\ts2 = (s2 + s1) % 65521;\n\t}\n\treturn (s2 << 16) | s1;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\twhile (q--) {\n\t\tchar buf[100001];\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%lu\\n\", adler32(1, (const unsigned char*)buf, strlen(buf)));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": -110.71834919103378,
+   "cycle_ratio": 2.2279240488459093
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_varint",
+   "sample": 0,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\tint n;\n\tscanf(\"%d\", &n);\n\tfor (int i = 0; i < n; i++) {\n\t\tunsigned long long x;\n\t\tscanf(\"%llu\", &x);\n\t\tif (i % 2 == 0) {\n\t\t\tprintf(\"%u\\n\", (unsigned int)x);\n\t\t} else {\n\t\t\tprintf(\"%llu\\n\", x);\n\t\t}\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_varint",
+   "sample": 1,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\tint n;\n\tscanf(\"%d\", &n);\n\tlong long a[n];\n\tfor (int i = 0; i < n; i++) scanf(\"%lld\", &a[i]);\n\tint len = 0;\n\tfor (int i = 0; i < n; i++) {\n\t\tif (i % 2 == 0) {\n\t\t\tlen += 1;\n\t\t\twhile (a[i] > 127) {\n\t\t\t\ta[i] -= 128;\n\t\t\t\tlen += 1;\n\t\t\t}\n\t\t}\n\t\telse {\n\t\t\tlen += 1;\n\t\t\twhile (a[i] > 127) {\n\t\t\t\ta[i] -= 128;\n\t\t\t\tlen += 1;\n\t\t\t}\n\t\t}\n\t}\n\tprintf(\"%d\\n\", len);\n\tfor (int i = 0; i < n; i++) {\n\t\tif (i % 2 == 0) {\n\t\t\twhile (a[i] > 127) {\n\t\t\t\tputchar(128 + a[i] % 128);\n\t\t\t\ta[i] /= 128;\n\t\t\t}\n\t\t\tputchar(a[i]);\n\t\t}\n\t\telse {\n\t\t\twhile (a[i] > 127) {\n\t\t\t\tputchar(128 + a[i] % 128);\n\t\t\t\ta[i] /= 128;\n\t\t\t}\n\t\t\tputchar(a[i]);\n\t\t}\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_varint",
+   "sample": 2,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\tint n;\n\tscanf(\"%d\", &n);\n\tfor (int i = 0; i < n; i++) {\n\t\tunsigned long long x;\n\t\tscanf(\"%llu\", &x);\n\t\tif (i % 2 == 0) {\n\t\t\tprintf(\"%u\\n\", (unsigned int)x);\n\t\t} else {\n\t\t\tprintf(\"%llu\\n\", x);\n\t\t}\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_varint",
+   "sample": 3,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\tint n;\n\tscanf(\"%d\", &n);\n\tfor (int i = 0; i < n; i++) {\n\t\tunsigned long long x;\n\t\tscanf(\"%llu\", &x);\n\t\tif (i % 2 == 0) {\n\t\t\tprintf(\"%u\\n\", (unsigned)x);\n\t\t} else {\n\t\t\tprintf(\"%llu\\n\", x);\n\t\t}\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "leveldb_varint",
+   "sample": 4,
+   "prompt_tokens": 1216,
+   "generated_code": "#include <cstdio>\n\nint main() {\n\tint n;\n\tscanf(\"%d\", &n);\n\tfor (int i = 0; i < n; i++) {\n\t\tunsigned long long x;\n\t\tscanf(\"%llu\", &x);\n\t\tif (i % 2 == 0) {\n\t\t\tprintf(\"%u\\n\", (unsigned int)x);\n\t\t} else {\n\t\t\tprintf(\"%llu\\n\", x);\n\t\t}\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "git_levenshtein",
+   "sample": 0,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nint min(int a, int b) {\n    return a < b ? a : b;\n}\n\nint main() {\n    int q;\n    scanf(\"%d\", &q);\n    while (q--) {\n        char a[100001], b[100001];\n        scanf(\"%s%s\", a, b);\n        int n = strlen(a), m = strlen(b);\n        int dp[n+1][m+1];\n        memset(dp, 0, sizeof(dp));\n        for (int i = 0; i <= n; i++) dp[i][0] = i*3;\n        for (int j = 0; j <= m; j++) dp[0][j] = j*2;\n        for (int i = 1; i <= n; i++) {\n            for (int j = 1; j <= m; j++) {\n                dp[i][j] = min(min(dp[i-1][j]+3, dp[i][j-1]+2), dp[i-1][j-1]+(a[i-1]!=b[j-1])*2);\n                if (i >= 2 && j >= 2 && a[i-1]==b[j-2] && a[i-2]==b[j-1]) {\n                    dp[i][j] = min(dp[i][j], dp[i-2][j-2]+1);\n                }\n            }\n        }\n        printf(\"%d\\n\", dp[n][m]);\n    }\n    return 0;\n}",
+   "compiled": true,
+   "passed": 3
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "git_levenshtein",
+   "sample": 1,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nint min(int a, int b) {\n    return a < b ? a : b;\n}\n\nint main() {\n    int q;\n    scanf(\"%d\", &q);\n    while (q--) {\n        char a[100001], b[100001];\n        scanf(\"%s%s\", a, b);\n        int n = strlen(a), m = strlen(b);\n        int dp[n+1][m+1];\n        memset(dp, 0, sizeof(dp));\n        for (int i = 0; i <= n; i++) dp[i][0] = i;\n        for (int j = 0; j <= m; j++) dp[0][j] = j;\n        for (int i = 1; i <= n; i++) {\n            for (int j = 1; j <= m; j++) {\n                if (a[i-1] == b[j-1]) dp[i][j] = dp[i-1][j-1];\n                else dp[i][j] = min(min(dp[i-1][j]+3, dp[i][j-1]+1), dp[i-1][j-1]+2);\n            }\n        }\n        printf(\"%d\\n\", dp[n][m]);\n    }\n    return 0;\n}",
+   "compiled": true,
+   "passed": 3
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "git_levenshtein",
+   "sample": 2,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nint min(int a, int b) {\n    return a < b ? a : b;\n}\n\nint main() {\n    int q;\n    scanf(\"%d\", &q);\n    while (q--) {\n        char a[100005], b[100005];\n        scanf(\"%s%s\", a, b);\n        int la = strlen(a), lb = strlen(b);\n        int dp[100005][100005];\n        memset(dp, 0, sizeof(dp));\n        for (int i = 0; i <= la; i++) {\n            dp[i][0] = i * 3;\n        }\n        for (int i = 0; i <= lb; i++) {\n            dp[0][i] = i * 2;\n        }\n        for (int i = 1; i <= la; i++) {\n            for (int j = 1; j <= lb; j++) {\n                dp[i][j] = min(min(dp[i - 1][j] + 3, dp[i][j - 1] + 2), dp[i - 1][j - 1] + (a[i - 1] == b[j - 1] ? 0 : 2));\n                if (i >= 2 && j >= 2 && a[i - 1] == b[j - 2] && a[i - 2] == b[j - 1]) {\n                    dp[i][j] = min(dp[i][j], dp[i - 2][j - 2] + 1);\n                }\n            }\n        }\n        printf(\"%d\\n\", dp[la][lb]);\n    }\n    return 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "git_levenshtein",
+   "sample": 3,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nint min(int a, int b) {\n    return a < b ? a : b;\n}\n\nint max(int a, int b) {\n    return a > b ? a : b;\n}\n\nint abs(int a) {\n    return a < 0 ? -a : a;\n}\n\nint main() {\n    int q;\n    scanf(\"%d\", &q);\n    while (q--) {\n        char a[100005], b[100005];\n        scanf(\"%s%s\", a, b);\n        int n = strlen(a), m = strlen(b);\n        int dp[n+1][m+1];\n        memset(dp, 0, sizeof(dp));\n        for (int i = 0; i <= n; i++) dp[i][0] = i;\n        for (int j = 0; j <= m; j++) dp[0][j] = j;\n        for (int i = 1; i <= n; i++) {\n            for (int j = 1; j <= m; j++) {\n                if (a[i-1] == b[j-1]) dp[i][j] = dp[i-1][j-1];\n                else dp[i][j] = min(min(dp[i-1][j]+3, dp[i][j-1]+1), dp[i-1][j-1]+2);\n                if (i > 1 && j > 1 && a[i-1] == b[j-2] && a[i-2] == b[j-1])\n                    dp[i][j] = min(dp[i][j], dp[i-2][j-2]+1);\n            }\n        }\n        printf(\"%d\\n\", dp[n][m]);\n    }\n    return 0;\n}",
+   "compiled": true,
+   "passed": 3
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "git_levenshtein",
+   "sample": 4,
+   "prompt_tokens": 628,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nint min(int a, int b) {\n    return a < b ? a : b;\n}\n\nint main() {\n    int q;\n    scanf(\"%d\", &q);\n    while (q--) {\n        char a[100005], b[100005];\n        scanf(\"%s%s\", a, b);\n        int la = strlen(a), lb = strlen(b);\n        int dp[100005][100005];\n        memset(dp, 0, sizeof(dp));\n        for (int i = 0; i <= la; i++) {\n            dp[i][0] = i * 3;\n        }\n        for (int i = 0; i <= lb; i++) {\n            dp[0][i] = i * 2;\n        }\n        for (int i = 1; i <= la; i++) {\n            for (int j = 1; j <= lb; j++) {\n                dp[i][j] = min(min(dp[i - 1][j] + 3, dp[i][j - 1] + 2), dp[i - 1][j - 1] + (a[i - 1] != b[j - 1]) * 2);\n                if (i >= 2 && j >= 2 && a[i - 1] == b[j - 2] && a[i - 2] == b[j - 1]) {\n                    dp[i][j] = min(dp[i][j], dp[i - 2][j - 2] + 1);\n                }\n            }\n        }\n        printf(\"%d\\n\", dp[la][lb]);\n    }\n    return 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "llvm_edit_distance",
+   "sample": 0,
+   "prompt_tokens": 725,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar a[100005],b[100005];\n\nint dp[100005][100005];\n\nint main()\n\n{\n\n    int t;\n\n    scanf(\"%d\",&t);\n\n    while(t--)\n\n    {\n\n        scanf(\"%s%s\",a+1,b+1);\n\n        int len1=strlen(a+1),len2=strlen(b+1);\n\n        for(int i=0;i<=len1;i++)\n\n            dp[i][0]=i;\n\n        for(int i=0;i<=len2;i++)\n\n            dp[0][i]=i;\n\n        for(int i=1;i<=len1;i++)\n\n            for(int j=1;j<=len2;j++)\n\n                if(a[i]==b[j])\n\n                    dp[i][j]=dp[i-1][j-1];\n\n                else\n\n                    dp[i][j]=min(dp[i-1][j-1]+1,min(dp[i-1][j]+1,dp[i][j-1]+1));\n\n        printf(\"%d\\n\",dp[len1][len2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "llvm_edit_distance",
+   "sample": 1,
+   "prompt_tokens": 725,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar a[100005],b[100005];\n\nint dp[100005][100005];\n\nint main()\n\n{\n\n    int t;\n\n    scanf(\"%d\",&t);\n\n    while(t--)\n\n    {\n\n        scanf(\"%s%s\",a+1,b+1);\n\n        int len1=strlen(a+1),len2=strlen(b+1);\n\n        for(int i=0;i<=len1;i++)\n\n            dp[i][0]=i;\n\n        for(int i=0;i<=len2;i++)\n\n            dp[0][i]=i;\n\n        for(int i=1;i<=len1;i++)\n\n            for(int j=1;j<=len2;j++)\n\n                if(a[i]==b[j])\n\n                    dp[i][j]=dp[i-1][j-1];\n\n                else\n\n                    dp[i][j]=min(dp[i-1][j-1]+1,min(dp[i-1][j]+1,dp[i][j-1]+1));\n\n        printf(\"%d\\n\",dp[len1][len2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "llvm_edit_distance",
+   "sample": 2,
+   "prompt_tokens": 725,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar a[100005],b[100005];\n\nint dp[100005][100005];\n\nint main()\n\n{\n\n    int t;\n\n    scanf(\"%d\",&t);\n\n    while(t--)\n\n    {\n\n        scanf(\"%s%s\",a+1,b+1);\n\n        int len1=strlen(a+1),len2=strlen(b+1);\n\n        for(int i=0;i<=len1;i++)\n\n            dp[i][0]=i;\n\n        for(int i=0;i<=len2;i++)\n\n            dp[0][i]=i;\n\n        for(int i=1;i<=len1;i++)\n\n            for(int j=1;j<=len2;j++)\n\n                if(a[i]==b[j])\n\n                    dp[i][j]=dp[i-1][j-1];\n\n                else\n\n                    dp[i][j]=min(dp[i-1][j-1]+1,min(dp[i-1][j]+1,dp[i][j-1]+1));\n\n        printf(\"%d\\n\",dp[len1][len2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "llvm_edit_distance",
+   "sample": 3,
+   "prompt_tokens": 725,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar s1[100005], s2[100005];\n\nint dp[100005][100005];\n\nint main()\n\n{\n\n    int t;\n\n    scanf(\"%d\",&t);\n\n    while(t--)\n\n    {\n\n        scanf(\"%s%s\",s1+1,s2+1);\n\n        int len1=strlen(s1+1),len2=strlen(s2+1);\n\n        for(int i=0;i<=len1;i++)\n\n            dp[i][0]=i;\n\n        for(int i=0;i<=len2;i++)\n\n            dp[0][i]=i;\n\n        for(int i=1;i<=len1;i++)\n\n            for(int j=1;j<=len2;j++)\n\n                if(s1[i]==s2[j])\n\n                    dp[i][j]=dp[i-1][j-1];\n\n                else\n\n                    dp[i][j]=min(dp[i-1][j-1]+1,min(dp[i-1][j]+1,dp[i][j-1]+1));\n\n        printf(\"%d\\n\",dp[len1][len2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "llvm_edit_distance",
+   "sample": 4,
+   "prompt_tokens": 725,
+   "generated_code": "#include <cstdio>\n\n#include <cstring>\n\n#include <algorithm>\n\nusing namespace std;\n\nchar a[100005],b[100005];\n\nint dp[100005][100005];\n\nint main()\n\n{\n\n    int t;\n\n    scanf(\"%d\",&t);\n\n    while(t--)\n\n    {\n\n        scanf(\"%s%s\",a+1,b+1);\n\n        int len1=strlen(a+1),len2=strlen(b+1);\n\n        for(int i=0;i<=len1;i++)\n\n            dp[i][0]=i;\n\n        for(int i=0;i<=len2;i++)\n\n            dp[0][i]=i;\n\n        for(int i=1;i<=len1;i++)\n\n            for(int j=1;j<=len2;j++)\n\n                if(a[i]==b[j])\n\n                    dp[i][j]=dp[i-1][j-1];\n\n                else\n\n                    dp[i][j]=min(dp[i-1][j-1]+1,min(dp[i-1][j]+1,dp[i][j-1]+1));\n\n        printf(\"%d\\n\",dp[len1][len2]);\n\n    }\n\n    return 0;\n\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "xxhash32",
+   "sample": 0,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned int hash(char *str) {\n\tunsigned int h = 0;\n\tfor (; *str; str++)\n\t\th = h * 131 + *str;\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\tchar s[100001];\n\twhile (q--) {\n\t\tscanf(\"%s\", s);\n\t\tprintf(\"%u\\n\", hash(s));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "xxhash32",
+   "sample": 1,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned int hash(char *str) {\n\tunsigned int h = 0;\n\tfor (; *str; str++)\n\t\th = h * 131 + *str;\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\tchar s[100001];\n\twhile (q--) {\n\t\tscanf(\"%s\", s);\n\t\tprintf(\"%u\\n\", hash(s));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "xxhash32",
+   "sample": 2,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned int hash(unsigned int x) {\n  x = (x ^ 61) ^ (x >> 16);\n  x = x + (x << 3);\n  x = x ^ (x >> 4);\n  x = x * 0x27d4eb2d;\n  x = x ^ (x >> 15);\n  return x;\n}\n\nint main() {\n  int q;\n  scanf(\"%d\", &q);\n  char s[100000];\n  for (int i = 0; i < q; i++) {\n    scanf(\"%s\", s);\n    unsigned int h = 0;\n    for (int j = 0; j < strlen(s); j++) {\n      h = hash(h + s[j]);\n    }\n    printf(\"%u\\n\", h);\n  }\n  return 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "xxhash32",
+   "sample": 3,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <stdio.h>\n#include <string.h>\n\nunsigned int hash(char *str) {\n\tunsigned int h = 0;\n\tfor (; *str; str++)\n\t\th = (h << 5) - h + *str;\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\tchar s[100000];\n\twhile (q--) {\n\t\tscanf(\"%s\", s);\n\t\tprintf(\"%u\\n\", hash(s));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "xxhash32",
+   "sample": 4,
+   "prompt_tokens": 1636,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned int hash(char *str) {\n\tunsigned int h = 0;\n\tfor (; *str; str++)\n\t\th = h * 131 + *str;\n\treturn h;\n}\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\twhile (q--) {\n\t\tchar s[100001];\n\t\tscanf(\"%s\", s);\n\t\tprintf(\"%u\\n\", hash(s));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_siphash",
+   "sample": 0,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\ntypedef unsigned long long ull;\n\null rotl(ull x, int n) {\n\treturn (x << n) | (x >> (64 - n));\n}\n\nvoid u32to8_le(char* p, ull v) {\n\tp[0] = (char)v;\n\tp[1] = (char)(v >> 8);\n\tp[2] = (char)(v >> 16);\n\tp[3] = (char)(v >> 24);\n}\n\nvoid u64to8_le(char* p, ull v) {\n\tu32to8_le(p, v);\n\tu32to8_le(p + 4, v >> 32);\n}\n\null u8to64_le(const char* p) {\n\treturn (ull)p[0] | ((ull)p[1] << 8) | ((ull)p[2] << 16) | ((ull)p[3] << 24)\n\t\t\t| ((ull)p[4] << 32) | ((ull)p[5] << 40) | ((ull)p[6] << 48)\n\t\t\t| ((ull)p[7] << 56);\n}\n\n#define SIPROUND \\\n\tdo { \\\n\t\tv0 += v1; \\\n\t\tv1 = rotl(v1, 13); \\\n\t\tv1 ^= v0; \\\n\t\tv0 = rotl(v0, 32); \\\n\t\tv2 += v3; \\\n\t\tv3 = rotl(v3, 16); \\\n\t\tv3 ^= v2; \\\n\t\tv0 += v3; \\\n\t\tv3 = rotl(v3, 21); \\\n\t\tv3 ^= v0; \\\n\t\tv2 += v1; \\\n\t\tv1 = rotl(v1, 17); \\\n\t\tv1 ^= v2; \\\n\t\tv2 = rotl(v2, 32); \\\n\t} while (0)\n\null siphash(const char* in, size_t inlen, const char* k) {\n\tull v0 = 0x736f6d6570736575ULL;\n\tull v1 = 0x646f72616e646f6dULL;\n\tull v2 = 0x6c7967656e657261ULL;\n\tull v3 = 0x7465646279746573ULL;\n\tull k0 = u8to64_le(k);\n\tull k1 = u8to64_le(k + 8);\n\tull m;\n\tconst char* end = in + inlen - (inlen % sizeof(ull));\n\tconst int left = inlen & 7;\n\tull b = ((ull)inlen) << 56;\n\tv3 ^= k1;\n\tv2 ^= k0;\n\tv1 ^= k1;\n\tv0 ^= k0;\n\n\tfor (; in != end; in += 8) {\n\t\tm = u8to64_le(in);\n\t\tv3 ^= m;\n\n\t\tSIPROUND;\n\n\t\tv0 ^= m;\n\t}\n\n\tswitch (left) {\n\tcase 7:\n\t\tb |= ((ull)in[6]) << 48; // fall-through\n\tcase 6:\n\t\tb |= ((ull)in[5]) << 40; // fall-through\n\tcase 5:\n\t\tb |= ((ull)in[4]) << 32; // fall-through\n\tcase 4:\n\t\tb |= ((ull)in[3]) << 24; // fall-through\n\tcase 3:\n\t\tb |= ((ull)in[2]) << 16; // fall-through\n\tcase 2:\n\t\tb |= ((ull)in[1]) << 8; // fall-through\n\tcase 1:\n\t\tb |= ((ull)in[0]); break;\n\tcase 0:\n\t\tbreak;\n\t}\n\n\tv3 ^= b;\n\n\tSIPROUND;\n\n\tv0 ^= b;\n\tv2 ^= 0xff;\n\n\tSIPROUND;\n\tSIPROUND;\n\n\tb = v0 ^ v1 ^ v2 ^ v3;\n\treturn b;\n}\n\nint main() {\n\tchar key[16];\n\tfor (int i = 0; i < 16; i++) {\n\t\tint v;\n\t\tif (scanf(\"%d\", &v) != 1)\n\t\t\treturn 1;\n\t\tkey[i] = (char)v;\n\t}\n\tint q;\n\tif (scanf(\"%d\", &q) != 1)\n\t\treturn 1;\n\tstatic char buf[1 << 20];\n\tfor (int i = 0; i < q; i++) {\n\t\tif (scanf(\"%s\", buf) != 1)\n\t\t\treturn 1;\n\t\tprintf(\"%llu\\n\", siphash(buf, strlen(buf), key));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_siphash",
+   "sample": 1,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\ntypedef unsigned long long ull;\n\null rotl(ull x, int n) {\n\treturn (x << n) | (x >> (64 - n));\n}\n\nvoid u32to8_le(char* p, ull v) {\n\tp[0] = (char)v;\n\tp[1] = (char)(v >> 8);\n\tp[2] = (char)(v >> 16);\n\tp[3] = (char)(v >> 24);\n}\n\nvoid u64to8_le(char* p, ull v) {\n\tu32to8_le(p, v);\n\tu32to8_le(p + 4, v >> 32);\n}\n\null u8to64_le(const char* p) {\n\treturn (ull)p[0] | ((ull)p[1] << 8) | ((ull)p[2] << 16) | ((ull)p[3] << 24)\n\t\t\t| ((ull)p[4] << 32) | ((ull)p[5] << 40) | ((ull)p[6] << 48)\n\t\t\t| ((ull)p[7] << 56);\n}\n\n#define SIPROUND \\\n\tdo { \\\n\t\tv0 += v1; \\\n\t\tv1 = rotl(v1, 13); \\\n\t\tv1 ^= v0; \\\n\t\tv0 = rotl(v0, 32); \\\n\t\tv2 += v3; \\\n\t\tv3 = rotl(v3, 16); \\\n\t\tv3 ^= v2; \\\n\t\tv0 += v3; \\\n\t\tv3 = rotl(v3, 21); \\\n\t\tv3 ^= v0; \\\n\t\tv2 += v1; \\\n\t\tv1 = rotl(v1, 17); \\\n\t\tv1 ^= v2; \\\n\t\tv2 = rotl(v2, 32); \\\n\t} while (0)\n\null siphash(const char* in, size_t inlen, const char* k) {\n\tull v0 = 0x736f6d6570736575ULL;\n\tull v1 = 0x646f72616e646f6dULL;\n\tull v2 = 0x6c7967656e657261ULL;\n\tull v3 = 0x7465646279746573ULL;\n\tull k0 = u8to64_le(k);\n\tull k1 = u8to64_le(k + 8);\n\tull m;\n\tconst char* end = in + inlen - (inlen % sizeof(ull));\n\tconst int left = inlen & 7;\n\tull b = ((ull)inlen) << 56;\n\tv3 ^= k1;\n\tv2 ^= k0;\n\tv1 ^= k1;\n\tv0 ^= k0;\n\n\tfor (; in != end; in += 8) {\n\t\tm = u8to64_le(in);\n\t\tv3 ^= m;\n\n\t\tSIPROUND;\n\n\t\tv0 ^= m;\n\t}\n\n\tswitch (left) {\n\tcase 7:\n\t\tb |= ((ull)in[6]) << 48; // fall-through\n\tcase 6:\n\t\tb |= ((ull)in[5]) << 40; // fall-through\n\tcase 5:\n\t\tb |= ((ull)in[4]) << 32; // fall-through\n\tcase 4:\n\t\tb |= ((ull)in[3]) << 24; // fall-through\n\tcase 3:\n\t\tb |= ((ull)in[2]) << 16; // fall-through\n\tcase 2:\n\t\tb |= ((ull)in[1]) << 8; // fall-through\n\tcase 1:\n\t\tb |= ((ull)in[0]); break;\n\tcase 0:\n\t\tbreak;\n\t}\n\n\tv3 ^= b;\n\n\tSIPROUND;\n\n\tv0 ^= b;\n\tv2 ^= 0xff;\n\n\tSIPROUND;\n\tSIPROUND;\n\n\tb = v0 ^ v1 ^ v2 ^ v3;\n\treturn b;\n}\n\nint main() {\n\tchar key[16];\n\tfor (int i = 0; i < 16; i++) {\n\t\tint v;\n\t\tif (scanf(\"%d\", &v) != 1)\n\t\t\treturn 1;\n\t\tkey[i] = (char)v;\n\t}\n\tint q;\n\tif (scanf(\"%d\", &q) != 1)\n\t\treturn 1;\n\tstatic char buf[1 << 20];\n\tfor (int i = 0; i < q; i++) {\n\t\tif (scanf(\"%s\", buf) != 1)\n\t\t\treturn 1;\n\t\tprintf(\"%llu\\n\", siphash(buf, strlen(buf), key));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_siphash",
+   "sample": 2,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\ntypedef unsigned long long ull;\n\null rotl(ull x, int n) {\n\treturn (x << n) | (x >> (64 - n));\n}\n\nvoid u32to8_le(char* p, ull v) {\n\tp[0] = (char)v;\n\tp[1] = (char)(v >> 8);\n\tp[2] = (char)(v >> 16);\n\tp[3] = (char)(v >> 24);\n}\n\nvoid u64to8_le(char* p, ull v) {\n\tu32to8_le(p, v);\n\tu32to8_le(p + 4, v >> 32);\n}\n\null u8to64_le(const char* p) {\n\treturn (ull)p[0] | ((ull)p[1] << 8) | ((ull)p[2] << 16) | ((ull)p[3] << 24) |\n\t\t   ((ull)p[4] << 32) | ((ull)p[5] << 40) | ((ull)p[6] << 48) | ((ull)p[7] << 56);\n}\n\n#define SIPROUND \\\n\tdo { \\\n\t\tv0 += v1; \\\n\t\tv1 = rotl(v1, 13); \\\n\t\tv1 ^= v0; \\\n\t\tv0 = rotl(v0, 32); \\\n\t\tv2 += v3; \\\n\t\tv3 = rotl(v3, 16); \\\n\t\tv3 ^= v2; \\\n\t\tv0 += v3; \\\n\t\tv3 = rotl(v3, 21); \\\n\t\tv3 ^= v0; \\\n\t\tv2 += v1; \\\n\t\tv1 = rotl(v1, 17); \\\n\t\tv1 ^= v2; \\\n\t\tv2 = rotl(v2, 32); \\\n\t} while (0)\n\null siphash(const char* in, size_t inlen, const char* k) {\n\tull v0 = 0x736f6d6570736575ULL;\n\tull v1 = 0x646f72616e646f6dULL;\n\tull v2 = 0x6c7967656e657261ULL;\n\tull v3 = 0x7465646279746573ULL;\n\tull k0 = u8to64_le(k);\n\tull k1 = u8to64_le(k + 8);\n\tull m;\n\tconst char* end = in + inlen - (inlen % sizeof(ull));\n\tconst int left = inlen & 7;\n\tull b = ((ull)inlen) << 56;\n\tv3 ^= k1;\n\tv2 ^= k0;\n\tv1 ^= k1;\n\tv0 ^= k0;\n\n\tfor (; in != end; in += 8) {\n\t\tm = u8to64_le(in);\n\t\tv3 ^= m;\n\n\t\tSIPROUND;\n\n\t\tv0 ^= m;\n\t}\n\n\tswitch (left) {\n\tcase 7: b |= ((ull)in[6]) << 48; // fall-through\n\tcase 6: b |= ((ull)in[5]) << 40; // fall-through\n\tcase 5: b |= ((ull)in[4]) << 32; // fall-through\n\tcase 4: b |= ((ull)in[3]) << 24; // fall-through\n\tcase 3: b |= ((ull)in[2]) << 16; // fall-through\n\tcase 2: b |= ((ull)in[1]) << 8; // fall-through\n\tcase 1: b |= ((ull)in[0]); break;\n\tcase 0: break;\n\t}\n\n\tv3 ^= b;\n\n\tSIPROUND;\n\n\tv0 ^= b;\n\tv2 ^= 0xff;\n\n\tSIPROUND;\n\tSIPROUND;\n\n\tb = v0 ^ v1 ^ v2 ^ v3;\n\tchar out[8];\n\tu64to8_le(out, b);\n\treturn *(ull*)out;\n}\n\nint main() {\n\tchar key[16];\n\tfor (int i = 0; i < 16; i++) {\n\t\tint v;\n\t\tif (scanf(\"%d\", &v) != 1) return 1;\n\t\tkey[i] = (char)v;\n\t}\n\tint q;\n\tif (scanf(\"%d\", &q) != 1) return 1;\n\tstatic char buf[1 << 20];\n\tfor (int i = 0; i < q; i++) {\n\t\tif (scanf(\"%s\", buf) != 1) return 1;\n\t\tprintf(\"%llu\\n\", siphash(buf, strlen(buf), key));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_siphash",
+   "sample": 3,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\ntypedef unsigned long long ull;\n\null rotl(ull x, int n) {\n\treturn (x << n) | (x >> (64 - n));\n}\n\nvoid u32to8_le(char* p, ull v) {\n\tp[0] = (char)v;\n\tp[1] = (char)(v >> 8);\n\tp[2] = (char)(v >> 16);\n\tp[3] = (char)(v >> 24);\n}\n\nvoid u64to8_le(char* p, ull v) {\n\tu32to8_le(p, v);\n\tu32to8_le(p + 4, v >> 32);\n}\n\null u8to64_le(const char* p) {\n\treturn (ull)p[0] | ((ull)p[1] << 8) | ((ull)p[2] << 16) | ((ull)p[3] << 24)\n\t\t\t| ((ull)p[4] << 32) | ((ull)p[5] << 40) | ((ull)p[6] << 48)\n\t\t\t| ((ull)p[7] << 56);\n}\n\n#define SIPROUND \\\n\tdo { \\\n\t\tv0 += v1; \\\n\t\tv1 = rotl(v1, 13); \\\n\t\tv1 ^= v0; \\\n\t\tv0 = rotl(v0, 32); \\\n\t\tv2 += v3; \\\n\t\tv3 = rotl(v3, 16); \\\n\t\tv3 ^= v2; \\\n\t\tv0 += v3; \\\n\t\tv3 = rotl(v3, 21); \\\n\t\tv3 ^= v0; \\\n\t\tv2 += v1; \\\n\t\tv1 = rotl(v1, 17); \\\n\t\tv1 ^= v2; \\\n\t\tv2 = rotl(v2, 32); \\\n\t} while (0)\n\null siphash(const char* in, size_t inlen, const char* k) {\n\tull v0 = 0x736f6d6570736575ULL;\n\tull v1 = 0x646f72616e646f6dULL;\n\tull v2 = 0x6c7967656e657261ULL;\n\tull v3 = 0x7465646279746573ULL;\n\tull k0 = u8to64_le(k);\n\tull k1 = u8to64_le(k + 8);\n\tull m;\n\tconst char* end = in + inlen - (inlen % sizeof(ull));\n\tconst int left = inlen & 7;\n\tull b = ((ull)inlen) << 56;\n\tv3 ^= k1;\n\tv2 ^= k0;\n\tv1 ^= k1;\n\tv0 ^= k0;\n\n\tfor (; in != end; in += 8) {\n\t\tm = u8to64_le(in);\n\t\tv3 ^= m;\n\n\t\tSIPROUND;\n\n\t\tv0 ^= m;\n\t}\n\n\tswitch (left) {\n\tcase 7:\n\t\tb |= ((ull)in[6]) << 48; // fall-through\n\tcase 6:\n\t\tb |= ((ull)in[5]) << 40; // fall-through\n\tcase 5:\n\t\tb |= ((ull)in[4]) << 32; // fall-through\n\tcase 4:\n\t\tb |= ((ull)in[3]) << 24; // fall-through\n\tcase 3:\n\t\tb |= ((ull)in[2]) << 16; // fall-through\n\tcase 2:\n\t\tb |= ((ull)in[1]) << 8; // fall-through\n\tcase 1:\n\t\tb |= ((ull)in[0]); break;\n\tcase 0:\n\t\tbreak;\n\t}\n\n\tv3 ^= b;\n\n\tSIPROUND;\n\n\tv0 ^= b;\n\tv2 ^= 0xff;\n\n\tSIPROUND;\n\tSIPROUND;\n\n\tb = v0 ^ v1 ^ v2 ^ v3;\n\treturn b;\n}\n\nint main() {\n\tchar key[16];\n\tfor (int i = 0; i < 16; i++) {\n\t\tint v;\n\t\tif (scanf(\"%d\", &v) != 1)\n\t\t\treturn 1;\n\t\tkey[i] = (char)v;\n\t}\n\tint q;\n\tif (scanf(\"%d\", &q) != 1)\n\t\treturn 1;\n\tstatic char buf[1 << 20];\n\tfor (int i = 0; i < q; i++) {\n\t\tif (scanf(\"%s\", buf) != 1)\n\t\t\treturn 1;\n\t\tprintf(\"%llu\\n\", siphash(buf, strlen(buf), key));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_siphash",
+   "sample": 4,
+   "prompt_tokens": 1618,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\ntypedef unsigned long long ull;\n\null rotl(ull x, int n) {\n\treturn (x << n) | (x >> (64 - n));\n}\n\nvoid u32to8_le(char* p, ull v) {\n\tp[0] = (char)v;\n\tp[1] = (char)(v >> 8);\n\tp[2] = (char)(v >> 16);\n\tp[3] = (char)(v >> 24);\n}\n\nvoid u64to8_le(char* p, ull v) {\n\tu32to8_le(p, v);\n\tu32to8_le(p + 4, v >> 32);\n}\n\null u8to64_le(const char* p) {\n\treturn (ull)p[0] | ((ull)p[1] << 8) | ((ull)p[2] << 16) | ((ull)p[3] << 24) |\n\t\t   ((ull)p[4] << 32) | ((ull)p[5] << 40) | ((ull)p[6] << 48) | ((ull)p[7] << 56);\n}\n\n#define SIPROUND \\\n\tdo { \\\n\t\tv0 += v1; \\\n\t\tv1 = rotl(v1, 13); \\\n\t\tv1 ^= v0; \\\n\t\tv0 = rotl(v0, 32); \\\n\t\tv2 += v3; \\\n\t\tv3 = rotl(v3, 16); \\\n\t\tv3 ^= v2; \\\n\t\tv0 += v3; \\\n\t\tv3 = rotl(v3, 21); \\\n\t\tv3 ^= v0; \\\n\t\tv2 += v1; \\\n\t\tv1 = rotl(v1, 17); \\\n\t\tv1 ^= v2; \\\n\t\tv2 = rotl(v2, 32); \\\n\t} while (0)\n\null siphash(const char* in, size_t inlen, const char* k) {\n\tull v0 = 0x736f6d6570736575ULL;\n\tull v1 = 0x646f72616e646f6dULL;\n\tull v2 = 0x6c7967656e657261ULL;\n\tull v3 = 0x7465646279746573ULL;\n\tull k0 = u8to64_le(k);\n\tull k1 = u8to64_le(k + 8);\n\tull m;\n\tconst char* end = in + inlen - (inlen % sizeof(ull));\n\tconst int left = inlen & 7;\n\tull b = ((ull)inlen) << 56;\n\tv3 ^= k1;\n\tv2 ^= k0;\n\tv1 ^= k1;\n\tv0 ^= k0;\n\n\tfor (; in != end; in += 8) {\n\t\tm = u8to64_le(in);\n\t\tv3 ^= m;\n\n\t\tSIPROUND;\n\n\t\tv0 ^= m;\n\t}\n\n\tswitch (left) {\n\tcase 7: b |= ((ull)in[6]) << 48; // fall-through\n\tcase 6: b |= ((ull)in[5]) << 40; // fall-through\n\tcase 5: b |= ((ull)in[4]) << 32; // fall-through\n\tcase 4: b |= ((ull)in[3]) << 24; // fall-through\n\tcase 3: b |= ((ull)in[2]) << 16; // fall-through\n\tcase 2: b |= ((ull)in[1]) << 8; // fall-through\n\tcase 1: b |= ((ull)in[0]); break;\n\tcase 0: break;\n\t}\n\n\tv3 ^= b;\n\n\tSIPROUND;\n\n\tv0 ^= b;\n\tv2 ^= 0xff;\n\n\tSIPROUND;\n\tSIPROUND;\n\n\tb = v0 ^ v1 ^ v2 ^ v3;\n\tchar out[8];\n\tu64to8_le(out, b);\n\treturn *(ull*)out;\n}\n\nint main() {\n\tchar key[16];\n\tfor (int i = 0; i < 16; i++) {\n\t\tint v;\n\t\tif (scanf(\"%d\", &v) != 1) return 1;\n\t\tkey[i] = (char)v;\n\t}\n\tint q;\n\tif (scanf(\"%d\", &q) != 1) return 1;\n\tstatic char buf[1 << 20];\n\tfor (int i = 0; i < q; i++) {\n\t\tif (scanf(\"%s\", buf) != 1) return 1;\n\t\tprintf(\"%llu\\n\", siphash(buf, strlen(buf), key));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "ngx_murmurhash2",
+   "sample": 0,
+   "prompt_tokens": 436,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned int murmurhash2(const void *key, int len, unsigned int seed) {\n\n  const unsigned int m = 0x5bd1e995;\n  const int r = 24;\n\n  unsigned int h = seed ^ len;\n\n  const unsigned char *data = (const unsigned char *)key;\n\n  while(len >= 4) {\n    unsigned int k = *(unsigned int *)data;\n\n    k *= m;\n    k ^= k >> r;\n    k *= m;\n\n    h *= m;\n    h ^= k;\n\n    data += 4;\n    len -= 4;\n  }\n\n  switch(len) {\n  case 3: h ^= data[2] << 16;\n  case 2: h ^= data[1] << 8;\n  case 1: h ^= data[0];\n      h *= m;\n  };\n\n  h ^= h >> 13;\n  h *= m;\n  h ^= h >> 15;\n\n  return h;\n}\n\nchar s[100000];\n\nint main() {\n  int Q;\n  scanf(\"%d\", &Q);\n  for(int i = 0; i < Q; i++) {\n    scanf(\"%s\", s);\n    printf(\"%u\\n\", murmurhash2(s, strlen(s), 0));\n  }\n  return 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 0.9228358680184567,
+   "cycle_ratio": 0.9903672050409212
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "ngx_murmurhash2",
+   "sample": 1,
+   "prompt_tokens": 436,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned int murmurhash(const char* key, int len) {\n\tunsigned int seed = 0;\n\tconst int m = 0x5bd1e995;\n\tconst int r = 24;\n\tunsigned int h = seed ^ len;\n\twhile(len >= 4) {\n\t\tunsigned int k = *(unsigned int*)key;\n\t\tk *= m;\n\t\tk ^= k >> r;\n\t\tk *= m;\n\t\th *= m;\n\t\th ^= k;\n\t\tkey += 4;\n\t\tlen -= 4;\n\t}\n\tswitch(len) {\n\tcase 3: h ^= ((unsigned char*)key)[2] << 16;\n\tcase 2: h ^= ((unsigned char*)key)[1] << 8;\n\tcase 1: h ^= ((unsigned char*)key)[0];\n\t\t\th *= m;\n\t}\n\th ^= h >> 13;\n\th *= m;\n\th ^= h >> 15;\n\treturn h;\n}\n\nchar buf[100000];\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\tfor(int i = 0; i < q; i++) {\n\t\tscanf(\"%s\", buf);\n\t\tprintf(\"%u\\n\", murmurhash(buf, strlen(buf)));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 0.9263640122055716,
+   "cycle_ratio": 0.9903309915260375
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "ngx_murmurhash2",
+   "sample": 2,
+   "prompt_tokens": 436,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned int murmurhash2(const void* key, int len, unsigned int seed) {\n\n\tconst unsigned int m = 0x5bd1e995;\n\tconst int r = 24;\n\n\tunsigned int h = seed ^ len;\n\n\tconst unsigned char* data = (const unsigned char*)key;\n\n\twhile(len >= 4) {\n\t\tunsigned int k = *(unsigned int*)data;\n\n\t\tk *= m;\n\t\tk ^= k >> r;\n\t\tk *= m;\n\n\t\th *= m;\n\t\th ^= k;\n\n\t\tdata += 4;\n\t\tlen -= 4;\n\t}\n\n\tswitch(len) {\n\tcase 3: h ^= data[2] << 16;\n\tcase 2: h ^= data[1] << 8;\n\tcase 1: h ^= data[0];\n\t\t\th *= m;\n\t};\n\n\th ^= h >> 13;\n\th *= m;\n\th ^= h >> 15;\n\n\treturn h;\n}\n\nchar s[100000];\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\tfor(int i = 0; i < q; i++) {\n\t\tscanf(\"%s\", s);\n\t\tprintf(\"%u\\n\", murmurhash2(s, strlen(s), 0));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 0.9210265633071146,
+   "cycle_ratio": 0.9903853117983632
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "ngx_murmurhash2",
+   "sample": 3,
+   "prompt_tokens": 436,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned int murmurhash2(const void* key, int len, unsigned int seed) {\n\n\tconst unsigned int m = 0x5bd1e995;\n\tconst int r = 24;\n\n\tunsigned int h = seed ^ len;\n\n\tconst unsigned char* data = (const unsigned char*)key;\n\n\twhile(len >= 4) {\n\t\tunsigned int k = *(unsigned int*)data;\n\n\t\tk *= m;\n\t\tk ^= k >> r;\n\t\tk *= m;\n\n\t\th *= m;\n\t\th ^= k;\n\n\t\tdata += 4;\n\t\tlen -= 4;\n\t}\n\n\tswitch(len) {\n\tcase 3: h ^= data[2] << 16;\n\tcase 2: h ^= data[1] << 8;\n\tcase 1: h ^= data[0];\n\t\t\th *= m;\n\t};\n\n\th ^= h >> 13;\n\th *= m;\n\th ^= h >> 15;\n\n\treturn h;\n}\n\nchar s[100000];\n\nint main() {\n\tint q;\n\tscanf(\"%d\", &q);\n\tfor(int i = 0; i < q; i++) {\n\t\tscanf(\"%s\", s);\n\t\tprintf(\"%u\\n\", murmurhash2(s, strlen(s), 0));\n\t}\n\treturn 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 0.9228358680184456,
+   "cycle_ratio": 0.9903672050409212
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "ngx_murmurhash2",
+   "sample": 4,
+   "prompt_tokens": 436,
+   "generated_code": "#include <cstdio>\n#include <cstring>\n\nunsigned int murmurhash2(const void *key, int len, unsigned int seed) {\n\n  const unsigned int m = 0x5bd1e995;\n  const int r = 24;\n\n  unsigned int h = seed ^ len;\n\n  const unsigned char *data = (const unsigned char *)key;\n\n  while(len >= 4) {\n    unsigned int k = *(unsigned int *)data;\n\n    k *= m;\n    k ^= k >> r;\n    k *= m;\n\n    h *= m;\n    h ^= k;\n\n    data += 4;\n    len -= 4;\n  }\n\n  switch(len) {\n  case 3: h ^= data[2] << 16;\n  case 2: h ^= data[1] << 8;\n  case 1: h ^= data[0];\n      h *= m;\n  };\n\n  h ^= h >> 13;\n  h *= m;\n  h ^= h >> 15;\n\n  return h;\n}\n\nchar s[100000];\n\nint main() {\n  int q;\n  scanf(\"%d\", &q);\n  while(q--) {\n    scanf(\"%s\", s);\n    printf(\"%u\\n\", murmurhash2(s, strlen(s), 0));\n  }\n  return 0;\n}",
+   "compiled": true,
+   "passed": 10,
+   "err": 1.3406947911021816,
+   "cycle_ratio": 0.9860215832548708
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_stringmatch",
+   "sample": 0,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <cctype>\n#include <cstdio>\n#include <cstring>\n\n#define MAXN 1 << 16\n\nchar p[MAXN], s[MAXN];\n\nint main() {\n  int q; scanf(\"%d\", &q);\n  for (int i = 0; i < q; i++) {\n    int nocase; scanf(\"%s %s %d\", p, s, &nocase);\n    int plen = strlen(p), slen = strlen(s);\n    int pi = 0, si = 0;\n    while (pi < plen && si < slen) {\n      if (p[pi] == '*') {\n        while (pi < plen && p[pi] == '*') pi++;\n        if (pi == plen) break;\n        while (si < slen && (nocase ? tolower(p[pi]) : p[pi]) != (nocase ? tolower(s[si]) : s[si])) si++;\n      } else if (p[pi] == '?') {\n        pi++; si++;\n      } else if (p[pi] == '[') {\n        pi++;\n        int neg = 0;\n        if (p[pi] == '^') {\n          neg = 1;\n          pi++;\n        }\n        int match = 0;\n        while (pi < plen && p[pi] != ']') {\n          if (p[pi] == '\\\\' && pi + 1 < plen) {\n            pi++;\n            if ((nocase ? tolower(p[pi]) : p[pi]) == (nocase ? tolower(s[si]) : s[si])) match = 1;\n          } else if (pi + 2 < plen && p[pi + 1] == '-' && p[pi + 2] != ']') {\n            int start = (nocase ? tolower(p[pi]) : p[pi]);\n            int end = (nocase ? tolower(p[pi + 2]) : p[pi + 2]);\n            int c = (nocase ? tolower(s[si]) : s[si]);\n            if (start > end) std::swap(start, end);\n            if (c >= start && c <= end) match = 1;\n            pi += 2;\n          } else {\n            if ((nocase ? tolower(p[pi]) : p[pi]) == (nocase ? tolower(s[si]) : s[si])) match = 1;\n          }\n          pi++;\n        }\n        if (neg) match = !match;\n        if (!match) goto fail;\n        si++;\n      } else if (p[pi] == '\\\\') {\n        pi++;\n        if (pi == plen || (nocase ? tolower(p[pi]) : p[pi]) != (nocase ? tolower(s[si]) : s[si])) goto fail;\n        pi++; si++;\n      } else {\n        if ((nocase ? tolower(p[pi]) : p[pi]) != (nocase ? tolower(s[si]) : s[si])) goto fail;\n        pi++; si++;\n      }\n    }\n    while (pi < plen && p[pi] == '*') pi++;\n    if (pi == plen && si == slen) puts(\"1\");\n    else fail: puts(\"0\");\n  }\n  return 0;\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_stringmatch",
+   "sample": 1,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <cctype>\n#include <cstdio>\n#include <cstring>\n\nchar p[1 << 16], s[1 << 16];\n\ninline bool match(char a, char b, int nocase) {\n  if (nocase) a = tolower(a), b = tolower(b);\n  return a == b;\n}\n\nbool stringmatchlen(const char *p, int plen, const char *s, int slen, int nocase) {\n  for (int i = 0; i < plen; i++) {\n    if (p[i] == '*') {\n      for (int j = 0; j <= slen - (plen - i); j++) {\n        if (stringmatchlen(p + i + 1, plen - i - 1, s + j, slen - j, nocase)) return true;\n      }\n      return false;\n    } else if (p[i] == '?') {\n      if (i == plen - 1) return true;\n      continue;\n    } else if (p[i] == '[') {\n      int j = i + 1;\n      bool neg = false;\n      if (p[j] == '^') neg = true, j++;\n      bool match = false;\n      while (p[j] != ']') {\n        if (p[j] == '\\\\' && j + 1 < plen) j++;\n        if (match) break;\n        if (j + 2 < plen && p[j + 1] == '-' && p[j + 2] != ']') {\n          if (match = (p[j] <= s[i] && s[i] <= p[j + 2])) j += 3;\n          else j += 2;\n        } else {\n          if (match = match(p[j], s[i], nocase)) j++;\n          else j++;\n        }\n      }\n      if (neg) match = !match;\n      if (!match) return false;\n      i = j;\n    } else if (p[i] == '\\\\') {\n      if (i + 1 < plen && !match(p[i + 1], s[i], nocase)) return false;\n      i++;\n    } else {\n      if (!match(p[i], s[i], nocase)) return false;\n    }\n    if (i == plen - 1) return true;\n  }\n  return false;\n}\n\nint main() {\n  int q; scanf(\"%d\", &q);\n  for (int i = 0; i < q; i++) {\n    scanf(\"%s %s\", p, s);\n    int nocase; scanf(\"%d\", &nocase);\n    puts(stringmatchlen(p, strlen(p), s, strlen(s), nocase) ? \"YES\" : \"NO\");\n  }\n  return 0;\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_stringmatch",
+   "sample": 2,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <cctype>\n#include <cstdio>\n#include <cstring>\n\ninline bool match(char a, char b, int nocase) {\n  if (nocase) {\n    a = std::tolower(a);\n    b = std::tolower(b);\n  }\n  return a == b;\n}\n\nbool stringmatchlen(const char* pattern, int patternLen, const char* string, int stringLen, int nocase) {\n  int pi = 0, si = 0;\n  while (pi < patternLen && si < stringLen) {\n    if (pattern[pi] == '*') {\n      while (pi < patternLen && pattern[pi] == '*') pi++;\n      if (pi == patternLen) return true;\n      while (si < stringLen) {\n        if (stringmatchlen(pattern + pi, patternLen - pi, string + si, stringLen - si, nocase)) return true;\n        si++;\n      }\n      return false;\n    } else if (pattern[pi] == '?') {\n      pi++;\n      si++;\n    } else if (pattern[pi] == '[') {\n      pi++;\n      bool negated = false;\n      if (pattern[pi] == '^') {\n        negated = true;\n        pi++;\n      }\n      bool matched = false;\n      while (pi < patternLen && pattern[pi] != ']') {\n        if (pattern[pi] == '\\\\' && pi + 1 < patternLen) {\n          pi++;\n          if (match(pattern[pi], string[si], nocase)) matched = true;\n        } else if (pi + 2 < patternLen && pattern[pi + 1] == '-' && pattern[pi + 2] != ']') {\n          char lo = pattern[pi];\n          char hi = pattern[pi + 2];\n          if (lo > hi) std::swap(lo, hi);\n          if (nocase) {\n            lo = std::tolower(lo);\n            hi = std::tolower(hi);\n          }\n          if (lo <= string[si] && string[si] <= hi) matched = true;\n          pi += 2;\n        } else {\n          if (match(pattern[pi], string[si], nocase)) matched = true;\n        }\n        pi++;\n      }\n      if (pi == patternLen || pattern[pi] != ']') return false;\n      pi++;\n      if (negated) matched = !matched;\n      if (!matched) return false;\n      si++;\n    } else if (pattern[pi] == '\\\\') {\n      pi++;\n      if (pi == patternLen) return false;\n      if (!match(pattern[pi], string[si], nocase)) return false;\n      pi++;\n      si++;\n    } else {\n      if (!match(pattern[pi], string[si], nocase)) return false;\n      pi++;\n      si++;\n    }\n  }\n  while (pi < patternLen && pattern[pi] == '*') pi++;\n  return pi == patternLen && si == stringLen;\n}\n\nint main() {\n  int q; scanf(\"%d\", &q);\n  static char p[1 << 16], s[1 << 16];\n  for (int i = 0; i < q; i++) {\n    int nocase;\n    scanf(\"%s %s %d\", p, s, &nocase);\n    puts(stringmatchlen(p, strlen(p), s, strlen(s), nocase) ? \"YES\" : \"NO\");\n  }\n  return 0;\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_stringmatch",
+   "sample": 3,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <cctype>\n#include <cstdio>\n#include <cstring>\n\nchar p[1 << 16], s[1 << 16];\n\nbool match(char a, char b, bool nocase) {\n  if (nocase) a = tolower(a), b = tolower(b);\n  return a == b;\n}\n\nbool stringmatchlen(const char *p, int plen, const char *s, int slen, bool nocase) {\n  int pi = 0, si = 0;\n  while (pi < plen && si < slen) {\n    if (p[pi] == '*') {\n      while (pi < plen && p[pi] == '*') pi++;\n      if (pi == plen) return true;\n      while (si < slen && !match(p[pi], s[si], nocase)) si++;\n      if (si == slen) return false;\n    } else if (p[pi] == '?') {\n      pi++, si++;\n    } else if (p[pi] == '[') {\n      pi++;\n      bool neg = false;\n      if (p[pi] == '^') neg = true, pi++;\n      bool match = false;\n      while (pi < plen && p[pi] != ']') {\n        if (p[pi] == '\\\\' && pi + 1 < plen) pi++;\n        if (pi + 2 < plen && p[pi + 1] == '-' && p[pi + 2] != ']') {\n          char lo = p[pi], hi = p[pi + 2];\n          if (nocase) lo = tolower(lo), hi = tolower(hi);\n          if (lo > hi) std::swap(lo, hi);\n          if (lo <= s[si] && s[si] <= hi) match = true;\n          pi += 3;\n        } else {\n          if (match(p[pi], s[si], nocase)) match = true;\n          pi++;\n        }\n      }\n      if (pi == plen || p[pi] != ']') return false;\n      pi++, si++;\n      if (neg) match = !match;\n      if (!match) return false;\n    } else if (p[pi] == '\\\\') {\n      pi++;\n      if (pi == plen) return false;\n      if (!match(p[pi], s[si], nocase)) return false;\n      pi++, si++;\n    } else {\n      if (!match(p[pi], s[si], nocase)) return false;\n      pi++, si++;\n    }\n  }\n  while (pi < plen && p[pi] == '*') pi++;\n  return pi == plen && si == slen;\n}\n\nint main() {\n  int q; scanf(\"%d\", &q);\n  while (q--) {\n    scanf(\"%s %s\", p, s);\n    int nocase; scanf(\"%d\", &nocase);\n    puts(stringmatchlen(p, strlen(p), s, strlen(s), nocase) ? \"YES\" : \"NO\");\n  }\n  return 0;\n}",
+   "compiled": false,
+   "passed": 0
+  },
+  {
+   "model": "E-SFT+EDP",
+   "case": "redis_stringmatch",
+   "sample": 4,
+   "prompt_tokens": 1163,
+   "generated_code": "#include <cctype>\n#include <cstdio>\n#include <cstring>\n\nchar p[1 << 16], s[1 << 16];\n\ninline bool match(char a, char b, int nocase) {\n  if (!nocase) return a == b;\n  return tolower(a) == tolower(b);\n}\n\nbool stringmatchlen(const char *pattern, int patternLen,\n                    const char *string, int stringLen, int nocase) {\n  while (patternLen && stringLen) {\n    switch (pattern[0]) {\n      case '*': {\n        while (patternLen && pattern[1] == '*') {\n          pattern++;\n          patternLen--;\n        }\n        if (patternLen == 1) return true; // match\n        while (stringLen) {\n          if (stringmatchlen(pattern + 1, patternLen - 1, string, stringLen, nocase)) return true; // match\n          string++;\n          stringLen--;\n        }\n        return false; // no match\n      }\n      case '?':\n        string++;\n        stringLen--;\n        break;\n      case '[': {\n        int negate, match;\n\n        pattern++;\n        patternLen--;\n        negate = patternLen && pattern[0] == '^';\n        if (negate) {\n          pattern++;\n          patternLen--;\n        }\n        match = 0;\n        while (1) {\n          if (patternLen >= 2 && pattern[0] == '\\\\') {\n            pattern++;\n            patternLen--;\n            if (pattern[0] == string[0]) match = 1;\n          } else if (patternLen == 0) {\n            pattern--;\n            patternLen++;\n            break;\n          } else if (pattern[0] == ']') {\n            break;\n          } else if (patternLen >= 3 && pattern[1] == '-') {\n            int start = pattern[0];\n            int end = pattern[2];\n            int c = string[0];\n            if (start > end) {\n              int t = start;\n              start = end;\n              end = t;\n            }\n            if (nocase) {\n              start = tolower(start);\n              end = tolower(end);\n              c = tolower(c);\n            }\n            pattern += 2;\n            patternLen -= 2;\n            if (c >= start && c <= end) match = 1;\n          } else {\n            if (!nocase) {\n              if (pattern[0] == string[0]) match = 1;\n            } else {\n              if (tolower((int)pattern[0]) == tolower((int)string[0])) match = 1;\n            }\n          }\n          pattern++;\n          patternLen--;\n        }\n        if (negate) match = !match;\n        if (!match) return false; // no match\n        string++;\n        stringLen--;\n        break;\n      }\n      case '\\\\':\n        if (patternLen >= 2) {\n          pattern++;\n          patternLen--;\n        }\n        // fall through\n      default:\n        if (!match(pattern[0], string[0], nocase)) return false; // no match\n        string++;\n        stringLen--;\n        break;\n    }\n    pattern++;\n    patternLen--;\n    if (stringLen == 0) {\n      while (patternLen && *pattern == '*') {\n        pattern++;\n        patternLen--;\n      }\n      break;\n    }\n  }\n  if (patternLen == 0 && stringLen == 0) return true;\n  return false;\n}\n\nint main() {\n  int q; scanf(\"%d\", &q);\n  for (int i = 0; i < q; i++) {\n    int nocase;\n    scanf(\"%s %s %d\", p, s, &nocase);\n    puts(stringmatchlen(p, strlen(p), s, strlen(s), nocase) ? \"YES\" : \"NO\");\n  }\n  return 0;\n}",
+   "compiled": true,
+   "passed": 0
+  }
+ ],
+ "base": {
+  "leveldb_hash:0": [
+   0.378076,
+   2714550
+  ],
+  "leveldb_hash:1": [
+   0.44267,
+   3177450
+  ],
+  "leveldb_hash:2": [
+   0.411805,
+   2978100
+  ],
+  "zlib_adler32:0": [
+   0.363255,
+   2601900
+  ],
+  "zlib_adler32:1": [
+   0.424165,
+   3036450
+  ],
+  "zlib_adler32:2": [
+   0.398229,
+   2861850
+  ],
+  "leveldb_varint:0": [
+   2.361273,
+   17909700
+  ],
+  "leveldb_varint:1": [
+   2.386183,
+   18103050
+  ],
+  "leveldb_varint:2": [
+   2.470277,
+   18759150
+  ],
+  "git_levenshtein:0": [
+   0.347696,
+   2536800
+  ],
+  "git_levenshtein:1": [
+   0.424928,
+   3060000
+  ],
+  "git_levenshtein:2": [
+   0.42415,
+   3070200
+  ],
+  "llvm_edit_distance:0": [
+   0.192298,
+   1460700
+  ],
+  "llvm_edit_distance:1": [
+   0.22812,
+   1732350
+  ],
+  "llvm_edit_distance:2": [
+   0.226304,
+   1718250
+  ],
+  "xxhash32:0": [
+   0.317985,
+   2380800
+  ],
+  "xxhash32:1": [
+   0.370315,
+   2770950
+  ],
+  "xxhash32:2": [
+   0.349582,
+   2616600
+  ],
+  "redis_siphash:0": [
+   0.329542,
+   2467650
+  ],
+  "redis_siphash:1": [
+   0.384689,
+   2879250
+  ],
+  "redis_siphash:2": [
+   0.360908,
+   2701350
+  ],
+  "ngx_murmurhash2:0": [
+   0.338536,
+   2537850
+  ],
+  "ngx_murmurhash2:1": [
+   0.395411,
+   2962800
+  ],
+  "ngx_murmurhash2:2": [
+   0.37145,
+   2783550
+  ],
+  "redis_stringmatch:0": [
+   0.501129,
+   3792000
+  ],
+  "redis_stringmatch:1": [
+   0.50127,
+   3793200
+  ],
+  "redis_stringmatch:2": [
+   0.514,
+   3891750
+  ]
+ }
+}

@@ -93,6 +93,19 @@ python3 analysis/rq1/rq1.py          # within-problem energy landscape and IPC-t
 python3 analysis/training_plots.py   # training-dynamics and hero-progression figures
 ```
 
+### Analyses added in the revision
+
+```bash
+python3 analysis/rapl_validation_analyze.py analysis/rapl_results.jsonl --pairs analysis/rapl_validation_pairs.jsonl \
+    --rapl-scanf analysis/rapl_scanf_results.jsonl --pairs-scanf analysis/rapl_scanf_pairs.jsonl   # Table 1: RAPL cross-check
+python3 analysis/robustness_audit.py --dataset <zenodo green-tea-dataset dir> --testcases <PIE merged_test_cases dir>
+    # Table 7 (all CARET conventions), paired tests, ghost-execution label sensitivity (analysis/matched_labels.jsonl),
+    # single-input reward fidelity, and the RQ1 variability figures; run on a compute node (re-executes programs natively)
+```
+
+- `analysis/frequency_sensitivity/`: re-simulation of test pairs at the EPYC 9554P's 3.1 GHz base clock (Section 4.2).
+- `analysis/library_case_study/`: functions copied verbatim from widely used open-source projects, their standalone harnesses with test vectors, generations, and complete evaluation results, in three settings (`systems_internal_data`, `systems_stdin`, `algorithm_libraries`; select with `CASE_SET`).
+
 `analysis/rq2/rq2.py` reads the cross-family simulation results from `data/cross_family_sim_results/` (override with the `GREEN_TEA_DATA` environment variable). The RQ1 landscape and dataset-statistics scripts additionally require the full execution corpus from Zenodo (`completed_samples.jsonl`, `PIE_Dataset/`).
 
 ## Data included in this repository
