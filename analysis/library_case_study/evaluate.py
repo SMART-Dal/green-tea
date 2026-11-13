@@ -38,15 +38,15 @@ if __name__ == "__main__":
     with Pool(n) as p:
         res = p.map(correctness, gens)
     jobs = [(("base", c, i), cases[c]["code"], inp) for c in cases for i, inp in enumerate(cases[c]["energy_inputs"])]
-    jobs += [((j, r["case"], i), r["generated_code"], inp) for j, r in enumerate(res) if r["passed"] == 10 for i, inp in enumerate(cases[r["case"]]["energy_inputs"])]
+    jobs += [((j, r["case"], i), r["generated_code"], inp) for j, r in enumerate(res) if r["passed"] == len(cases[r["case"]]["test_inputs"]) for i, inp in enumerate(cases[r["case"]]["energy_inputs"])]
     with Pool(n) as p:
         E = dict(p.map(energy, jobs, chunksize=1))
     for j, r in enumerate(res):
-        if r["passed"] == 10:
+        if r["passed"] == len(cases[r["case"]]["test_inputs"]):
             b = [E[("base", r["case"], i)][0] for i in range(3)]; g = [E[(j, r["case"], i)][0] for i in range(3)]
             if None not in b and None not in g:
                 r["err"] = (1 - np.mean(g) / np.mean(b)) * 100
                 r["cycle_ratio"] = float(np.mean([E[(j, r["case"], i)][1] for i in range(3)]) / np.mean([E[("base", r["case"], i)][1] for i in range(3)]))
     json.dump(dict(results=res, base={f"{k[1]}:{k[2]}": v for k, v in E.items() if k[0] == "base"}), open(str(HERE / os.environ.get("CASE_SET", "systems_stdin") / "results.json"), "w"), indent=1)
     for r in res:
-        print(r["model"], r["case"], r["sample"], "compiled" if r["compiled"] else "no-compile", f"{r['passed']}/10", f"ERR={r['err']:.2f}%" if "err" in r else "")
+        print(r["model"], r["case"], r["sample"], "compiled" if r["compiled"] else "no-compile", f"{r['passed']}/{len(cases[r['case']]['test_inputs'])}", f"ERR={r['err']:.2f}%" if "err" in r else "")

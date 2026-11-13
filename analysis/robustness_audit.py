@@ -122,6 +122,9 @@ def main():
             for R in recs.values() for r in R if valid(r) and r["tests_passed"] < r["num_inputs"]}
     with Pool(a.jobs) as pool:
         P_IN = dict(pool.imap_unordered(passed_inputs, jobs.values(), chunksize=4))
+    partial = [r for R in recs.values() for r in R if valid(r) and r["tests_passed"] < r["num_inputs"]]
+    same = sum(len(P_IN.get((r["problem_id"], h12(r["generated_code"]))) or []) == r["tests_passed"] for r in partial)
+    print(f"matched-input recovery: {len(partial)} partially correct records, {len(jobs)} distinct programs, logged pass count reproduced for {same / len(partial):.1%}")
 
     def matched_err(r):
         b = (r["problem_id"], h12(r["baseline_code"]))
@@ -141,6 +144,11 @@ def main():
               f"{np.mean([STRICT(r) for r in R]) * 100:5.1f} | {g(ALL):6.2f} {g(ALL, matched_err):7.2f} {g(STRICT):6.2f} {g(COV):5.2f} "
               f"{np.mean(list(perbase(R, ALL).values())):6.2f} {np.mean([np.mean(v) for v in _byprob(R).values()]):7.2f} {g(ALL, RR=[r for r in R if key(r) in common]):6.2f}")
     print(f"common population: {len(common)} pairs")
+    for n, R in recs.items():
+        zf = sum(contrib(r, r["energy_reduction"], ALL) for r in R) / 1227
+        sc = np.mean([contrib(r, r["energy_reduction"], STRICT) for r in R if key(r) in common])
+        cov = sum(1 for r in R if STRICT(r) and r["generated_success_count"] < r["num_inputs"])
+        print(f"  {n:15s} zero-filled over 1,227: {zf:6.2f}  strict on common population: {sc:5.2f}  fully correct with incomplete simulation: {cov}")
 
     # Paired tests: distinct baseline as pairing unit, problem as resampling unit (Section 5.3).
     for rule_n, rule in (("graded", ALL), ("strict", STRICT)):
@@ -150,6 +158,12 @@ def main():
             for k, v in zip(ks, d): pp[k[0]].append(v)
             dp = np.array([np.mean(v) for v in pp.values()]); keys = list(pp); rng = np.random.default_rng(0)
             boot = [np.mean(np.concatenate([pp[keys[j]] for j in rng.integers(0, len(keys), len(keys))])) for _ in range(5000)]
+            if rule_n == "graded" and ft == "Energy-SFT":
+                kx = [k for k in ks if k[0] != "p01192"]; px = defaultdict(list)
+                for k in kx: px[k[0]].append(b_[k] - a_[k])
+                pkx = list(px); rx = np.random.default_rng(0); bx = [np.mean(np.concatenate([px[pkx[j]] for j in rx.integers(0, len(pkx), len(pkx))])) for _ in range(5000)]
+                print(f"graded vs Energy-SFT without baseline of p01192 (contributes {max(b_[k] - a_[k] for k in ks if k[0] == 'p01192'):.0f}pp): mean diff {np.mean([b_[k] - a_[k] for k in kx]):.2f}pp CI {np.percentile(bx, [2.5, 97.5]).round(2)}; "
+                      f"Energy-SFT per-baseline CARET without it {np.mean([v for k, v in a_.items() if k[0] != 'p01192']):.2f}")
             print(f"{rule_n} E-SFT+EDP vs {ft}: baselines n={len(ks)} p={wilcoxon(d).pvalue:.1e} r_rb={rrb(d):.2f}; problems better/worse "
                   f"{(dp > 0).sum()}/{(dp < 0).sum()} p={wilcoxon(dp).pvalue:.1e} r_rb={rrb(dp):.2f}; mean diff {d.mean():.2f}pp CI {np.percentile(boot, [2.5, 97.5]).round(2)}")
 

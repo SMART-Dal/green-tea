@@ -104,7 +104,8 @@ python3 analysis/robustness_audit.py --dataset <zenodo green-tea-dataset dir> --
 ```
 
 - `analysis/frequency_sensitivity/`: re-simulation of test pairs at the EPYC 9554P's 3.1 GHz base clock (Section 4.2).
-- `analysis/library_case_study/`: functions copied verbatim from widely used open-source projects, their standalone harnesses with test vectors, generations, and complete evaluation results, in three settings (`systems_internal_data`, `systems_stdin`, `algorithm_libraries`; select with `CASE_SET`).
+- `analysis/library_case_study/`: functions copied verbatim from widely used open-source projects, with their standalone harnesses, test vectors, generations, and evaluation results, in four sets (`systems_internal_data`, `systems_stdin`, `algorithm_libraries`, `the_algorithms`; select with `CASE_SET`). `best_models/` holds the run reported in Section 6: `make_cases.py` merges the four sets (39 functions) and adds a non-ASCII test for functions that read text, and `gen.py` and `evaluate.py` run with `CASE_SET=best_models` and `MODELS="name=path;..."`.
+- `analysis/verification/`: `verify.sbatch` re-runs `robustness_audit.py` on the released data and re-evaluates the case-study run in one Slurm job, and `verify.log` records the output of that run, whose figures match those reported in the paper and the response letter.
 
 `analysis/rq2/rq2.py` reads the cross-family simulation results from `data/cross_family_sim_results/` (override with the `GREEN_TEA_DATA` environment variable). The RQ1 landscape and dataset-statistics scripts additionally require the full execution corpus from Zenodo (`completed_samples.jsonl`, `PIE_Dataset/`).
 

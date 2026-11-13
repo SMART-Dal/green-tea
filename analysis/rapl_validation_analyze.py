@@ -52,6 +52,10 @@ def main():
     show("Distinct program pairs", len({key(r, P) for _, R, P in sets for r in R}), distinct)
     meas = [r for _, R, _ in sets for r in R if ok(r)]
     print(f"measured pairs with ten valid readings for both programs: {sum(r['n_reps_base'] == 10 and r['n_reps_opt'] == 10 for r in meas)} of {len(meas)}")
+    gap = lambda r: abs(r["mcpat_baseline_energy_J"] - r["mcpat_optimized_energy_J"])
+    tie = [gap(r) for r in meas if r["rapl_baseline_J"] == r["rapl_optimized_J"]]; res = [gap(r) for r in meas if r["rapl_baseline_J"] != r["rapl_optimized_J"]]
+    print(f"tied pairs with simulated difference below one 0.077 J step: {sum(g < 0.077 for g in tie)} of {len(tie)}; "
+          f"median simulated difference {np.median(tie):.3f} J tied, {np.median(res):.2f} J resolved")
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ import json, os, sys, torch
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
 from unsloth import FastLanguageModel
-MODELS = {"Energy-SFT": os.environ["ESFT_MODEL"],  # merged Energy-SFT model (HF: green-tea-qwen2.5-coder-14b-energy-sft)
+MODELS = dict(m.split("=", 1) for m in os.environ["MODELS"].split(";")) if "MODELS" in os.environ else {"Energy-SFT": os.environ["ESFT_MODEL"],  # merged Energy-SFT model (HF: green-tea-qwen2.5-coder-14b-energy-sft)
           "E-SFT+EDP": os.environ["GRPO_MODEL"]}  # GRPO adapter (HF: green-tea-qwen2.5-coder-14b-grpo)
 N_SAMPLES = 5
 PROMPT_FMT = ("This is an energy inefficient program we want to optimize to score 10/10.\n"
