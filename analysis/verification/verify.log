@@ -1,0 +1,39 @@
+=== robustness_audit
+ghost executions: 95680 of 3507435 records (2.73%)
+power CV over all executions 1.60%; mean within-runtime-bin CV: power 1.36%, energy 6.72% (34 bins of 0.1 decade with >= 100 executions)
+labels train: n=9927 mean reduction 61.3% -> 58.6% matched; below 10% 201, reversed 135; Spearman 0.91
+labels val: n=1301 mean reduction 57.0% -> 53.4% matched; below 10% 17, reversed 12; Spearman 0.96
+labels test: n=1227 mean reduction 59.7% -> 56.9% matched; below 10% 21, reversed 15; Spearman 0.95
+reward input: n=9533 sign agreement 98.7%, Spearman 0.89, median deviation 0.3%
+matched-input recovery: 2797 partially correct records, 822 distinct programs, logged pass count reproduced for 99.7%
+
+config              N  Comp Tests  Full | Graded Matched Strict   Cov   Base Problem Common
+Energy-SFT       1218  60.3  42.2  30.3 |   4.45    3.55   3.26  2.39  -1.05  -13.37   4.08
+Runtime-SFT      1210  48.0  29.8  20.7 |   7.64    7.25   4.04  3.60   6.71    4.80   7.71
+EDP-SFT          1217  71.7  42.8  27.6 |  11.02   10.28   3.90  3.40   8.91    9.72   9.98
+E-SFT+EDP        1223  81.7  44.6  30.3 |  12.63   11.93   5.62  5.52  12.26   13.78  12.80
+R-SFT+EDP        1217  86.3  40.8  24.8 |  16.41   15.65   8.14  7.87  13.67   14.25  16.26
+E-SFT+energy     1158  82.0  51.1  38.3 |  12.78   11.67   7.45  6.64  10.79    9.61  12.97
+R-SFT+runtime    1050  88.5  64.6  47.0 |  12.19   11.36   6.67  5.65  10.76   10.16  12.03
+E-SFT+runtime    1181  82.2  51.1  35.4 |  14.44   12.94   8.32  7.85  13.13   14.49  14.68
+common population: 1015 pairs
+  Energy-SFT      zero-filled over 1,227:   4.41  strict on common population:  3.62  fully correct with incomplete simulation: 12
+  Runtime-SFT     zero-filled over 1,227:   7.53  strict on common population:  4.30  fully correct with incomplete simulation: 8
+  EDP-SFT         zero-filled over 1,227:  10.93  strict on common population:  3.96  fully correct with incomplete simulation: 12
+  E-SFT+EDP       zero-filled over 1,227:  12.59  strict on common population:  6.05  fully correct with incomplete simulation: 4
+  R-SFT+EDP       zero-filled over 1,227:  16.28  strict on common population:  9.06  fully correct with incomplete simulation: 8
+  E-SFT+energy    zero-filled over 1,227:  12.06  strict on common population:  7.65  fully correct with incomplete simulation: 16
+  R-SFT+runtime   zero-filled over 1,227:  10.43  strict on common population:  6.70  fully correct with incomplete simulation: 18
+  E-SFT+runtime   zero-filled over 1,227:  13.90  strict on common population:  8.85  fully correct with incomplete simulation: 7
+graded vs Energy-SFT without baseline of p01192 (contributes 2552pp): mean diff 7.51pp CI [ 1.65 12.13]; Energy-SFT per-baseline CARET without it 4.84
+graded E-SFT+EDP vs Energy-SFT: baselines n=435 p=2.7e-23 r_rb=0.63; problems better/worse 100/20 p=1.8e-11 r_rb=0.71; mean diff 13.36pp CI [ 2.9  28.03]
+graded E-SFT+EDP vs Runtime-SFT: baselines n=430 p=1.4e-19 r_rb=0.60; problems better/worse 91/25 p=2.1e-07 r_rb=0.56; mean diff 5.49pp CI [-0.9  10.48]
+graded E-SFT+EDP vs EDP-SFT: baselines n=434 p=1.1e-08 r_rb=0.37; problems better/worse 85/36 p=1.4e-03 r_rb=0.34; mean diff 3.37pp CI [0.34 6.45]
+strict E-SFT+EDP vs Energy-SFT: baselines n=435 p=8.9e-14 r_rb=0.61; problems better/worse 70/21 p=2.0e-06 r_rb=0.57; mean diff 3.71pp CI [-2.05  8.  ]
+strict E-SFT+EDP vs Runtime-SFT: baselines n=430 p=1.5e-13 r_rb=0.67; problems better/worse 70/11 p=1.5e-07 r_rb=0.67; mean diff 2.04pp CI [-3.91  6.11]
+strict E-SFT+EDP vs EDP-SFT: baselines n=434 p=2.8e-10 r_rb=0.54; problems better/worse 67/22 p=1.7e-04 r_rb=0.46; mean diff 2.52pp CI [-0.05  4.95]
+=== case study re-evaluation
+records 390; identical pass counts 388; outputs with energy 71; max ERR difference 892.718 pp
+('R-SFT+EDP', 'alg/kactl_dinic', 3) package 15.07 re-run 15.16
+('E-SFT+energy', 'alg/acl_dsu', 0) package 7.28 re-run 7.27
+('R-SFT+EDP', 'stdin/ngx_murmurhash2', 0) package 1.18 re-run 1.35

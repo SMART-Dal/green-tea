@@ -22,8 +22,8 @@ def correctness(g):
         ok = 0
         for inp, ref in zip(c["test_inputs"], c["test_outputs"]):
             try:
-                r = subprocess.run([str(b)], input=inp, capture_output=True, text=True, timeout=10)
-                ok += r.returncode == 0 and r.stdout.strip() == ref
+                r = subprocess.run([str(b)], input=inp.encode("latin-1"), capture_output=True, timeout=10)  # bytes as in make_cases.py, independent of locale
+                ok += r.returncode == 0 and r.stdout.decode("latin-1").strip() == ref
             except subprocess.TimeoutExpired:
                 pass
         return dict(g, compiled=True, passed=ok)
